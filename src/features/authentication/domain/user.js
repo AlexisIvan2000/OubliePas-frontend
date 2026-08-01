@@ -11,6 +11,7 @@ export function mapUser(dto) {
     role: dto.role,
     avatarUrl: dto.avatar_url ?? null,
     hasCustomAvatar: Boolean(dto.has_custom_avatar),
+    hasPassword: Boolean(dto.has_password),
     currency: dto.currency ?? "CAD",
   };
 }

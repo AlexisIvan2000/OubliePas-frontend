@@ -9,6 +9,7 @@ import { EmailSection } from "../components/EmailSection";
 import { LanguageSection } from "../components/LanguageSection";
 import { ProfileFieldsCard } from "../components/ProfileFieldsCard";
 import { SecuritySection } from "../components/SecuritySection";
+import { ThemeSection } from "../components/ThemeSection";
 import { UnverifiedBanner } from "../components/UnverifiedBanner";
 import styles from "../styles/settings.module.css";
 
@@ -71,6 +72,7 @@ export function ProfilePage() {
       {section === "general" ? (
         <TabPanel id="general" className={styles.panelStack}>
           <LanguageSection />
+          <ThemeSection />
         </TabPanel>
       ) : null}
     </div>

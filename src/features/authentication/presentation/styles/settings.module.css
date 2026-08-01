@@ -141,10 +141,10 @@
   align-items: center;
   gap: 0.875rem;
   padding: 0.875rem 1.125rem;
-  border: 1px solid #f0dcb8;
+  border: 1px solid var(--color-warning-border);
   border-radius: var(--radius-lg);
-  background-color: #fdf6e9;
-  color: #8a6520;
+  background-color: var(--color-warning-soft);
+  color: var(--color-warning-text);
   font-size: 0.875rem;
   line-height: 1.5;
 }
@@ -155,11 +155,11 @@
 
 .bannerAction {
   flex-shrink: 0;
-  border: 1px solid #e0c48b;
+  border: 1px solid var(--color-warning-border-strong);
   background-color: transparent;
   border-radius: var(--radius-md);
   padding: 0.4375rem 0.75rem;
-  color: #8a6520;
+  color: var(--color-warning-text);
   font-family: inherit;
   font-size: 0.8125rem;
   font-weight: 500;
@@ -167,7 +167,7 @@
 }
 
 .bannerAction:hover:not(:disabled) {
-  background-color: #f7ecd8;
+  background-color: var(--color-warning-hover);
 }
 
 .bannerAction:disabled {

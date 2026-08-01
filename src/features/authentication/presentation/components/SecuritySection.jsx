@@ -5,27 +5,37 @@ import {
   SettingsRows,
   SettingsSection,
 } from "../../../../core/components/SettingsSection/SettingsSection";
-import { ChangePasswordForm } from "./ChangePasswordForm";
 import { useTranslation } from "../../../../core/translation/useTranslation";
+import { useAuth } from "../providers/useAuth";
+import { ChangePasswordForm } from "./ChangePasswordForm";
 
 export function SecuritySection() {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [editing, setEditing] = useState(false);
+
+  const hasPassword = Boolean(user?.hasPassword);
 
   return (
     <SettingsSection
       title={t("settings.security")}
-      description={t("settings.securityDescription")}
+      description={
+        hasPassword ? t("settings.securityDescription") : t("settings.securityDescriptionGoogle")
+      }
       editing={editing}
       onEdit={() => setEditing(true)}
       onCancel={() => setEditing(false)}
-      editLabel={t("settings.changePassword")}
+      editLabel={hasPassword ? t("settings.changePassword") : t("settings.definePassword")}
     >
       {editing ? (
-        <ChangePasswordForm onDone={() => setEditing(false)} />
+        <ChangePasswordForm withoutPassword={!hasPassword} onDone={() => setEditing(false)} />
       ) : (
         <SettingsRows>
-          <SettingsRow label={t("settings.password")} value={t("settings.passwordMasked")} />
+          <SettingsRow
+            label={t("settings.password")}
+            value={hasPassword ? t("settings.passwordMasked") : ""}
+            placeholder={t("settings.passwordNotSet")}
+          />
         </SettingsRows>
       )}
     </SettingsSection>

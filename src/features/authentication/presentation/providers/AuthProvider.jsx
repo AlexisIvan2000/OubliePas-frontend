@@ -153,6 +153,15 @@ export function AuthProvider({ children }) {
     return refreshUser();
   }, [refreshUser]);
 
+  const deleteAccount = useCallback(
+    async (payload) => {
+      const result = await userApi.deleteAccount(payload);
+      applyAnonymous();
+      return result;
+    },
+    [applyAnonymous],
+  );
+
   const changePassword = useCallback(
     async (payload) => {
       const result = await userApi.changePassword(payload);
@@ -162,7 +171,14 @@ export function AuthProvider({ children }) {
     [applyAnonymous],
   );
 
-  const setPassword = useCallback(async (payload) => userApi.setPassword(payload), []);
+  const setPassword = useCallback(
+    async (payload) => {
+      const result = await userApi.setPassword(payload);
+      await refreshUser();
+      return result;
+    },
+    [refreshUser],
+  );
 
   const confirmEmailChange = useCallback(
     async (payload) => {
@@ -195,6 +211,7 @@ export function AuthProvider({ children }) {
       updateProfile,
       uploadAvatar,
       deleteAvatar,
+      deleteAccount,
       changePassword,
       setPassword,
       confirmEmailChange,
@@ -211,6 +228,7 @@ export function AuthProvider({ children }) {
       updateProfile,
       uploadAvatar,
       deleteAvatar,
+      deleteAccount,
       changePassword,
       setPassword,
       confirmEmailChange,

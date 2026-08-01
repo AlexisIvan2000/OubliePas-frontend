@@ -14,6 +14,13 @@
   padding: 4rem 4.5rem;
 }
 
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -25,7 +32,6 @@
   width: 2.25rem;
   height: 2.25rem;
   object-fit: contain;
-  mix-blend-mode: multiply;
 }
 
 .wordmark {

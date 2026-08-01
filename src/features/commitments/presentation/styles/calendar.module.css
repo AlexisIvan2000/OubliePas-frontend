@@ -38,7 +38,7 @@
 }
 
 .navButton:hover {
-  background-color: #e4edf4;
+  background-color: var(--color-track);
 }
 
 .navButton:focus-visible {
@@ -182,7 +182,7 @@
   color: var(--color-accent-deep);
   animation: checkPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
   text-decoration: line-through;
-  text-decoration-color: rgba(35, 65, 90, 0.45);
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
 }
 
 .skipped {

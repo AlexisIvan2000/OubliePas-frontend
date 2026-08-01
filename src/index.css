@@ -46,9 +46,22 @@
   --color-paid-soft: #ddf0e9;
 
   --color-warning: #c9862b;
+  --color-warning-soft: #fdf6e9;
+  --color-warning-hover: #f7ecd8;
+  --color-warning-border: #f0dcb8;
+  --color-warning-border-strong: #e0c48b;
+  --color-warning-text: #8a6520;
+
   --color-success-text: #1f8a70;
   --color-success-soft: #eaf6f2;
   --color-success-border: #bfe3d8;
+
+  --color-nav-text: #52708a;
+  --color-chip-soft: #c9d8e3;
+  --color-chip-text: #43607a;
+  --color-pending-soft: #e3ebf2;
+  --color-skeleton: #eff4f8;
+  --color-overlay: rgba(15, 34, 51, 0.42);
 
   --color-panel: #0f2233;
   --color-panel-card: #143047;
@@ -57,6 +70,67 @@
   --color-panel-muted: #8aa6ba;
 
   color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.35), 0 8px 24px -12px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.65);
+
+  --color-bg: #0b1620;
+  --color-surface: #12212e;
+  --color-surface-hover: #182a39;
+  --color-row-hover: #1a2c3c;
+  --color-border: #23394b;
+  --color-border-strong: #2f4a60;
+  --color-track: #1d3243;
+
+  --color-text: #e6eef5;
+  --color-text-muted: #9db1c2;
+  --color-text-subtle: #7b91a4;
+
+  --color-accent: #e8eff6;
+  --color-accent-hover: #ffffff;
+  --color-accent-contrast: #0f2233;
+  --color-accent-soft: #1e3448;
+
+  --color-link: #6ea8f0;
+  --color-link-hover: #8fbdf7;
+  --color-focus: #6ea8f0;
+  --color-accent-ring: rgba(110, 168, 240, 0.28);
+
+  --color-danger: #f08a8a;
+  --color-danger-hover: #f5a3a3;
+  --color-danger-soft: #34201f;
+  --color-danger-border: #5c2f33;
+  --color-danger-text: #f08a8a;
+  --color-danger-ring: rgba(240, 138, 138, 0.24);
+
+  --color-accent-deep: #cfe0ee;
+  --color-today-soft: #17324d;
+  --color-invoice-soft: #3c2220;
+  --color-invoice-text: #f0a79b;
+  --color-paid-soft: #14332b;
+
+  --color-warning: #e3ab5c;
+  --color-warning-soft: #2e2513;
+  --color-warning-hover: #3a2f18;
+  --color-warning-border: #4d3d17;
+  --color-warning-border-strong: #5c4a1c;
+  --color-warning-text: #e3ab5c;
+
+  --color-success-text: #4fc4a5;
+  --color-success-soft: #12302a;
+  --color-success-border: #1e4a41;
+
+  --color-nav-text: #9db1c2;
+  --color-chip-soft: #23394b;
+  --color-chip-text: #b6cadb;
+  --color-pending-soft: #1d3243;
+  --color-skeleton: #1b2b3a;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+
+  color-scheme: dark;
 }
 
 *,

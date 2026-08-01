@@ -3,7 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0f2233" />
+    <meta name="theme-color" content="#f1f5f9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b1620" media="(prefers-color-scheme: dark)" />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("oubliepas.theme");
+          var auto = !stored || stored === "system";
+          var dark =
+            stored === "dark" ||
+            (auto && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.dataset.theme = dark ? "dark" : "light";
+        } catch (error) {
+          document.documentElement.dataset.theme = "light";
+        }
+      })();
+    </script>
     <meta
       name="description"
       content="Oubliepas réunit vos abonnements, vos factures et leurs échéances dans une seule vue."

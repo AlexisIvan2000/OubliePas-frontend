@@ -19,6 +19,14 @@ export function deleteAvatar() {
   return http.delete(USER_ENDPOINTS.avatar, { auth: true });
 }
 
+export function deleteAccount({ password, confirmation }) {
+  return http.post(
+    USER_ENDPOINTS.deleteAccount,
+    password ? { password } : { confirmation },
+    { auth: true },
+  );
+}
+
 export function changePassword({ currentPassword, newPassword }) {
   return http.post(
     USER_ENDPOINTS.changePassword,

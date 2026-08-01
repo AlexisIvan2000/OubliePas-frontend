@@ -12,10 +12,10 @@ import { useAuth } from "../providers/useAuth";
 import styles from "../styles/authForms.module.css";
 import { PasswordRules } from "./PasswordRules";
 
-export function ChangePasswordForm({ onDone }) {
+export function ChangePasswordForm({ onDone, withoutPassword = false }) {
   const { t } = useTranslation();
   const { changePassword, setPassword } = useAuth();
-  const [googleOnly, setGoogleOnly] = useState(false);
+  const [googleOnly, setGoogleOnly] = useState(withoutPassword);
   const [form, setForm] = useState({ currentPassword: "", newPassword: "" });
   const toast = useToast();
 

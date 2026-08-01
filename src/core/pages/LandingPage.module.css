@@ -16,6 +16,12 @@
   margin: 0 auto 3.5rem;
 }
 
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -26,7 +32,6 @@
   width: 2rem;
   height: 2rem;
   object-fit: contain;
-  mix-blend-mode: multiply;
 }
 
 .wordmark {
@@ -278,8 +283,8 @@
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #43607a;
-  background-color: #c9d8e3;
+  color: var(--color-chip-text);
+  background-color: var(--color-chip-soft);
   border-radius: 1.25rem;
   padding: 0.125rem 0.4375rem;
 }

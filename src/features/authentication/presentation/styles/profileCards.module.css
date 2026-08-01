@@ -124,6 +124,20 @@
   color: var(--color-text-muted);
 }
 
+.dangerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  width: 100%;
+  max-width: 26rem;
+  animation: riseIn 0.2s ease;
+}
+
+.dangerActions {
+  display: flex;
+  gap: 0.625rem;
+}
+
 @media (max-width: 34rem) {
   .card {
     flex-direction: column;

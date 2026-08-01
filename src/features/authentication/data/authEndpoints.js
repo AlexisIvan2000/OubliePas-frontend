@@ -15,6 +15,7 @@ export const AUTH_ENDPOINTS = {
 export const USER_ENDPOINTS = {
   me: "/users/me",
   avatar: "/users/me/avatar",
+  deleteAccount: "/users/me/delete",
   changePassword: "/users/me/change-password",
   setPassword: "/users/me/set-password",
   changeEmail: "/users/me/change-email",

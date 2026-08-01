@@ -12,6 +12,7 @@ import { UpcomingList } from "../../features/commitments/presentation/components
 import { Alert } from "../components/Alert/Alert";
 import { Card } from "../components/Card/Card";
 import { formatLongDate } from "../utils/formatting";
+import { greetingKey, greetingSlot, msUntilNextSlot } from "../utils/greeting";
 import { messageForError } from "../network/errorMessages";
 import { useTranslation } from "../../core/translation/useTranslation";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
@@ -22,6 +23,7 @@ export function HomePage() {
   const { user } = useAuth();
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState(null);
+  const [now, setNow] = useState(() => new Date());
 
   useDocumentTitle(t("dashboard.documentTitle"));
 
@@ -37,12 +39,19 @@ export function HomePage() {
     };
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setNow(new Date()), msUntilNextSlot(now));
+    return () => clearTimeout(timer);
+  }, [now]);
+
   return (
     <>
       <div className={styles.header}>
         <div>
-          <div className={styles.eyebrow}>{formatLongDate(new Date())}</div>
-          <h1 className={styles.title}>{t("dashboard.greeting", { name: user?.firstName ?? "" })}</h1>
+          <div className={styles.eyebrow}>{formatLongDate(now)}</div>
+          <h1 key={greetingSlot(now)} className={styles.title}>
+            {t(greetingKey(now), { name: user?.firstName ?? "" })}
+          </h1>
         </div>
       </div>
 

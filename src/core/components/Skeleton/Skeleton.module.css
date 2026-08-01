@@ -3,7 +3,7 @@
   background-image: linear-gradient(
     90deg,
     var(--color-track) 25%,
-    #eff4f8 37%,
+    var(--color-skeleton) 37%,
     var(--color-track) 63%
   );
   background-size: 200% 100%;

@@ -29,7 +29,6 @@
   width: 2rem;
   height: 2rem;
   object-fit: contain;
-  mix-blend-mode: multiply;
 }
 
 .wordmark {
@@ -51,7 +50,7 @@
   gap: 0.625rem;
   padding: 0.5625rem 0.75rem;
   border-radius: 0.5625rem;
-  color: #52708a;
+  color: var(--color-nav-text);
   font-size: 0.875rem;
   font-weight: 400;
   text-decoration: none;
@@ -109,8 +108,8 @@
   font-size: 0.625rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #43607a;
-  background-color: #c9d8e3;
+  color: var(--color-chip-text);
+  background-color: var(--color-chip-soft);
   border-radius: 1.25rem;
   padding: 0.125rem 0.4375rem;
 }

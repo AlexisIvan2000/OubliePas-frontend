@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import { useTranslation } from "../translation/useTranslation";
 import { Icon } from "../components/Icon/Icon";
+import { PreferenceToggles } from "../components/PreferenceToggles/PreferenceToggles";
 import { formatMoney, formatShortDate } from "../utils/formatting";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
 import styles from "./LandingPage.module.css";
@@ -36,9 +37,12 @@ export function LandingPage() {
           <img className={styles.logo} src="/assets/logo.png" alt="" />
           <span className={styles.wordmark}>Oubliepas</span>
         </div>
-        <Link to="/connexion" className={styles.topLink}>
-          {t("auth.signIn")}
-        </Link>
+        <div className={styles.topActions}>
+          <PreferenceToggles />
+          <Link to="/connexion" className={styles.topLink}>
+            {t("auth.signIn")}
+          </Link>
+        </div>
       </header>
 
       <main>

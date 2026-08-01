@@ -137,8 +137,8 @@
   font-size: 0.625rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #43607a;
-  background-color: #c9d8e3;
+  color: var(--color-chip-text);
+  background-color: var(--color-chip-soft);
   border-radius: 1.25rem;
   padding: 0.125rem 0.4375rem;
 }
@@ -292,13 +292,13 @@
 }
 
 .pending {
-  color: #43607a;
-  background-color: #e3ebf2;
+  color: var(--color-chip-text);
+  background-color: var(--color-pending-soft);
 }
 
 .paid {
   color: var(--color-success-text);
-  background-color: #e2f4ef;
+  background-color: var(--color-paid-soft);
 }
 
 .muted {
