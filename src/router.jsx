@@ -1,0 +1,43 @@
+import { createBrowserRouter } from "react-router-dom";
+
+import { HomeRoute } from "./core/pages/HomeRoute";
+import { RemindersPage } from "./core/pages/RemindersPage";
+import { NotFoundPage } from "./core/pages/NotFoundPage";
+import { CalendarPage } from "./features/commitments/presentation/pages/CalendarPage";
+import { InvoicesPage } from "./features/commitments/presentation/pages/InvoicesPage";
+import { SubscriptionsPage } from "./features/commitments/presentation/pages/SubscriptionsPage";
+import { GuestLayout } from "./features/authentication/presentation/components/GuestLayout";
+import { PrivateLayout } from "./features/authentication/presentation/components/PrivateLayout";
+import { ForgotPasswordPage } from "./features/authentication/presentation/pages/ForgotPasswordPage";
+import { GoogleCallbackPage } from "./features/authentication/presentation/pages/GoogleCallbackPage";
+import { LoginPage } from "./features/authentication/presentation/pages/LoginPage";
+import { ProfilePage } from "./features/authentication/presentation/pages/ProfilePage";
+import { RegisterPage } from "./features/authentication/presentation/pages/RegisterPage";
+import { ResetPasswordPage } from "./features/authentication/presentation/pages/ResetPasswordPage";
+import { VerifyEmailPage } from "./features/authentication/presentation/pages/VerifyEmailPage";
+
+export const router = createBrowserRouter([
+  { path: "/", element: <HomeRoute /> },
+  {
+    element: <GuestLayout />,
+    children: [
+      { path: "/connexion", element: <LoginPage /> },
+      { path: "/inscription", element: <RegisterPage /> },
+      { path: "/verification", element: <VerifyEmailPage /> },
+      { path: "/mot-de-passe-oublie", element: <ForgotPasswordPage /> },
+      { path: "/reinitialisation", element: <ResetPasswordPage /> },
+      { path: "/auth/google/callback", element: <GoogleCallbackPage /> },
+    ],
+  },
+  {
+    element: <PrivateLayout />,
+    children: [
+      { path: "/reglages", element: <ProfilePage /> },
+      { path: "/abonnements", element: <SubscriptionsPage /> },
+      { path: "/calendrier", element: <CalendarPage /> },
+      { path: "/factures", element: <InvoicesPage /> },
+      { path: "/rappels", element: <RemindersPage /> },
+    ],
+  },
+  { path: "*", element: <NotFoundPage /> },
+]);

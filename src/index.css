@@ -1,0 +1,201 @@
+:root {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+
+  --shadow-sm: 0 1px 2px rgba(15, 34, 51, 0.04);
+  --shadow-md:
+    0 1px 2px rgba(15, 34, 51, 0.04), 0 8px 24px -12px rgba(15, 34, 51, 0.14);
+  --shadow-lg: 0 12px 30px rgba(15, 34, 51, 0.22);
+
+  --color-bg: #f1f5f9;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f7fafc;
+  --color-row-hover: #f1f5f9;
+  --color-border: #dde6ee;
+  --color-border-strong: #cfdbe5;
+  --color-track: #e7eef4;
+
+  --color-text: #0f2233;
+  --color-text-muted: #5c7285;
+  --color-text-subtle: #8699a8;
+
+  --color-accent: #0f2233;
+  --color-accent-hover: #1b3a54;
+  --color-accent-contrast: #ffffff;
+  --color-accent-soft: #e3edf9;
+
+  --color-link: #1e63de;
+  --color-link-hover: #1549b0;
+  --color-focus: #1e63de;
+  --color-accent-ring: rgba(30, 99, 222, 0.18);
+
+  --color-danger: #d14343;
+  --color-danger-hover: #b93636;
+  --color-danger-soft: #fceeec;
+  --color-danger-border: #f0c6c2;
+  --color-danger-text: #d14343;
+  --color-danger-ring: rgba(209, 67, 67, 0.16);
+
+  --color-accent-deep: #23415a;
+  --color-today-soft: #e6f0fd;
+  --color-invoice-soft: #fce3de;
+  --color-invoice-text: #a9382c;
+  --color-paid-soft: #ddf0e9;
+
+  --color-warning: #c9862b;
+  --color-success-text: #1f8a70;
+  --color-success-soft: #eaf6f2;
+  --color-success-border: #bfe3d8;
+
+  --color-panel: #0f2233;
+  --color-panel-card: #143047;
+  --color-panel-border: #24485f;
+  --color-panel-text: #f1f5f9;
+  --color-panel-muted: #8aa6ba;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+input[inputmode="numeric"],
+time,
+output {
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+::selection {
+  background: #c7ddf8;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes leaveDown {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+
+@keyframes checkPop {
+  0% {
+    transform: scale(0.6);
+  }
+  55% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes crossOut {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+::view-transition-old(root) {
+  animation: fadeAway 140ms ease both;
+}
+
+::view-transition-new(root) {
+  animation: fade 220ms ease both;
+}
+
+@keyframes fadeAway {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

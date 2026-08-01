@@ -1,0 +1,67 @@
+import {
+  Add,
+  ArrowDown2,
+  ArrowLeft2,
+  ArrowRight2,
+  Calendar,
+  CalendarTick,
+  Category,
+  Clock,
+  CloseCircle,
+  Coin,
+  Danger,
+  Edit2,
+  LogoutCurve,
+  NotificationBing,
+  ReceiptText,
+  Repeat,
+  SearchNormal1,
+  Setting2,
+  ShieldTick,
+  TickCircle,
+  Trash,
+  Wallet3,
+} from "iconsax-react";
+
+const ICONS = {
+  dashboard: Category,
+  subscriptions: Repeat,
+  calendar: Calendar,
+  invoices: ReceiptText,
+  reminders: NotificationBing,
+  settings: Setting2,
+  verified: ShieldTick,
+  currency: Coin,
+  logout: LogoutCurve,
+  add: Add,
+  edit: Edit2,
+  delete: Trash,
+  done: TickCircle,
+  undone: CloseCircle,
+  previous: ArrowLeft2,
+  next: ArrowRight2,
+  expand: ArrowDown2,
+  wallet: Wallet3,
+  clock: Clock,
+  search: SearchNormal1,
+  close: CloseCircle,
+  late: Danger,
+  scheduled: CalendarTick,
+};
+
+export function Icon({
+  name,
+  size = 20,
+  variant = "Linear",
+  color = "currentColor",
+  className,
+}) {
+  const Glyph = ICONS[name];
+  if (!Glyph) {
+    return null;
+  }
+
+  return (
+    <Glyph size={size} variant={variant} color={color} className={className} aria-hidden="true" />
+  );
+}

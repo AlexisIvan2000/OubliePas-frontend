@@ -1,0 +1,58 @@
+export const WEEKDAYS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+
+export const MAX_VISIBLE_EVENTS = 3;
+
+function isoDay(year, month, day) {
+  return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+export function buildMonthCells(reference, occurrences, today = new Date()) {
+  const year = reference.getFullYear();
+  const month = reference.getMonth();
+  const leading = (new Date(year, month, 1).getDay() + 6) % 7;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const byDay = new Map();
+  occurrences.forEach((occurrence) => {
+    const [rowYear, rowMonth, rowDay] = occurrence.dueDate.split("-").map(Number);
+    if (rowYear !== year || rowMonth - 1 !== month) {
+      return;
+    }
+    const bucket = byDay.get(rowDay);
+    if (bucket) {
+      bucket.push(occurrence);
+    } else {
+      byDay.set(rowDay, [occurrence]);
+    }
+  });
+
+  const todayIso = isoDay(today.getFullYear(), today.getMonth(), today.getDate());
+  const cells = [];
+
+  for (let index = 0; index < leading; index += 1) {
+    cells.push({ key: `pad-${index}`, empty: true });
+  }
+
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const iso = isoDay(year, month, day);
+    cells.push({
+      key: iso,
+      day,
+      iso,
+      isToday: iso === todayIso,
+      events: byDay.get(day) ?? [],
+    });
+  }
+
+  return cells;
+}
+
+export function eventTone(occurrence) {
+  if (occurrence.status === "paid") {
+    return "paid";
+  }
+  if (occurrence.status === "skipped") {
+    return "skipped";
+  }
+  return occurrence.type === "invoice" ? "invoice" : "subscription";
+}
