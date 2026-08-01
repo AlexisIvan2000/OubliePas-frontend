@@ -14,6 +14,7 @@ export const AUTH_ENDPOINTS = {
 
 export const USER_ENDPOINTS = {
   me: "/users/me",
+  avatar: "/users/me/avatar",
   changePassword: "/users/me/change-password",
   setPassword: "/users/me/set-password",
   changeEmail: "/users/me/change-email",

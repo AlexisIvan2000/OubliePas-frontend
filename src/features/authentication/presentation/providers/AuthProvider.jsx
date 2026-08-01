@@ -140,6 +140,19 @@ export function AuthProvider({ children }) {
     [refreshUser],
   );
 
+  const uploadAvatar = useCallback(
+    async (file) => {
+      await userApi.uploadAvatar(file);
+      return refreshUser();
+    },
+    [refreshUser],
+  );
+
+  const deleteAvatar = useCallback(async () => {
+    await userApi.deleteAvatar();
+    return refreshUser();
+  }, [refreshUser]);
+
   const changePassword = useCallback(
     async (payload) => {
       const result = await userApi.changePassword(payload);
@@ -180,6 +193,8 @@ export function AuthProvider({ children }) {
       logout,
       refreshUser,
       updateProfile,
+      uploadAvatar,
+      deleteAvatar,
       changePassword,
       setPassword,
       confirmEmailChange,
@@ -194,6 +209,8 @@ export function AuthProvider({ children }) {
       logout,
       refreshUser,
       updateProfile,
+      uploadAvatar,
+      deleteAvatar,
       changePassword,
       setPassword,
       confirmEmailChange,

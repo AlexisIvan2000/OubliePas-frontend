@@ -9,6 +9,16 @@ export function updateProfile(fields) {
   return http.patch(USER_ENDPOINTS.me, fields, { auth: true });
 }
 
+export function uploadAvatar(file) {
+  const payload = new FormData();
+  payload.append("file", file);
+  return http.post(USER_ENDPOINTS.avatar, payload, { auth: true });
+}
+
+export function deleteAvatar() {
+  return http.delete(USER_ENDPOINTS.avatar, { auth: true });
+}
+
 export function changePassword({ currentPassword, newPassword }) {
   return http.post(
     USER_ENDPOINTS.changePassword,

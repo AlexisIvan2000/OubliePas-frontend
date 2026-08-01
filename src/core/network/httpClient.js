@@ -59,10 +59,15 @@ async function parseBody(response) {
   }
 }
 
+function isFormData(body) {
+  return typeof FormData !== "undefined" && body instanceof FormData;
+}
+
 async function rawRequest(path, { method = "GET", body, token, signal } = {}) {
   const headers = { Accept: "application/json" };
+  const multipart = isFormData(body);
 
-  if (body !== undefined) {
+  if (body !== undefined && !multipart) {
     headers["Content-Type"] = "application/json";
   }
   if (token) {
@@ -75,7 +80,7 @@ async function rawRequest(path, { method = "GET", body, token, signal } = {}) {
       method,
       headers,
       signal,
-      body: body === undefined ? undefined : JSON.stringify(body),
+      body: body === undefined ? undefined : multipart ? body : JSON.stringify(body),
     });
   } catch (cause) {
     if (cause?.name === "AbortError") {

@@ -10,6 +10,7 @@ export function mapUser(dto) {
     isVerified: dto.is_verified,
     role: dto.role,
     avatarUrl: dto.avatar_url ?? null,
+    hasCustomAvatar: Boolean(dto.has_custom_avatar),
     currency: dto.currency ?? "CAD",
   };
 }
