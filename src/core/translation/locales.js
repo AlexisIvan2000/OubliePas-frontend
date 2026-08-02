@@ -39,7 +39,3 @@ export function rememberLocale(code) {
     /* stockage indisponible */
   }
 }
-
-export function dictionaryUrl(code) {
-  return `/assets/i18n/${code}.json`;
-}

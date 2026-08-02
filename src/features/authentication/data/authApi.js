@@ -42,12 +42,12 @@ export function completeGoogleSignIn({ code, codeVerifier }) {
   return http.post(AUTH_ENDPOINTS.google, { code, code_verifier: codeVerifier });
 }
 
-export function refreshSession({ refreshToken }) {
-  return http.post(AUTH_ENDPOINTS.refresh, { refresh_token: refreshToken });
+export function refreshSession() {
+  return http.post(AUTH_ENDPOINTS.refresh);
 }
 
-export function logout({ refreshToken }) {
-  return http.post(AUTH_ENDPOINTS.logout, { refresh_token: refreshToken });
+export function logout() {
+  return http.post(AUTH_ENDPOINTS.logout);
 }
 
 export function fetchCurrentUser() {

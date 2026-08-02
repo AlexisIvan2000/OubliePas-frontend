@@ -1,19 +1,28 @@
+import { useState } from "react";
+
 import { avatarColor } from "../../utils/avatarColor";
 import { cx } from "../../utils/classNames";
 import styles from "./Avatar.module.css";
 
 export function Avatar({ seed = "", initials = "", src, size = 30, shape = "circle", title }) {
+  const [brokenSrc, setBrokenSrc] = useState(null);
+  const showImage = Boolean(src) && src !== brokenSrc;
+
   const style = {
     width: size,
     height: size,
     fontSize: Math.round(size / 2.6),
-    backgroundColor: src ? "transparent" : avatarColor(seed || initials),
+    backgroundColor: showImage ? "transparent" : avatarColor(seed || initials),
     borderRadius: shape === "circle" ? "50%" : Math.round(size / 3.4),
   };
 
   return (
     <span className={cx(styles.avatar, shape === "circle" && styles.circle)} style={style} title={title}>
-      {src ? <img src={src} alt="" /> : initials}
+      {showImage ? (
+        <img src={src} alt="" referrerPolicy="no-referrer" onError={() => setBrokenSrc(src)} />
+      ) : (
+        initials
+      )}
     </span>
   );
 }

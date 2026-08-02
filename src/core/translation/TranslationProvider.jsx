@@ -1,45 +1,32 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { setFormattingLocale } from "../utils/formatting";
+import { defaultDictionary, loadDictionary } from "./dictionaries";
 import { TranslationContext } from "./TranslationContext";
-import {
-  DEFAULT_LOCALE,
-  LOCALES,
-  detectLocale,
-  dictionaryUrl,
-  isSupported,
-  rememberLocale,
-} from "./locales";
+import { DEFAULT_LOCALE, LOCALES, detectLocale, isSupported, rememberLocale } from "./locales";
+import { TranslationLoading } from "./TranslationBoot";
 import { createTranslator } from "./translate";
-
-const cache = new Map();
-
-async function loadDictionary(code) {
-  if (cache.has(code)) {
-    return cache.get(code);
-  }
-
-  const response = await fetch(dictionaryUrl(code), { headers: { Accept: "application/json" } });
-  if (!response.ok) {
-    throw new Error(`Dictionnaire ${code} introuvable`);
-  }
-
-  const dictionary = await response.json();
-  cache.set(code, dictionary);
-  return dictionary;
-}
 
 export function TranslationProvider({ children }) {
   const [locale, setLocale] = useState(detectLocale);
-  const [dictionary, setDictionary] = useState(null);
+  const [fetched, setFetched] = useState(null);
+
+  const dictionary = locale === DEFAULT_LOCALE ? defaultDictionary : fetched;
 
   useEffect(() => {
+    if (locale === DEFAULT_LOCALE) {
+      return;
+    }
+
     let active = true;
 
     loadDictionary(locale)
-      .catch(() => (locale === DEFAULT_LOCALE ? {} : loadDictionary(DEFAULT_LOCALE)))
-      .catch(() => ({}))
-      .then((loaded) => active && setDictionary(loaded));
+      .catch(() => defaultDictionary)
+      .then((loaded) => {
+        if (active) {
+          setFetched(loaded);
+        }
+      });
 
     return () => {
       active = false;
@@ -71,7 +58,7 @@ export function TranslationProvider({ children }) {
   }, [locale, dictionary, changeLocale]);
 
   if (!dictionary) {
-    return null;
+    return <TranslationLoading />;
   }
 
   return <TranslationContext.Provider value={value}>{children}</TranslationContext.Provider>;

@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { onSessionExpired } from "../../../../core/network/httpClient";
 import {
   clearTokens,
-  getRefreshToken,
   hasSession,
   setTokens,
   watchCrossTabChanges,
@@ -69,8 +68,8 @@ export function AuthProvider({ children }) {
 
   useEffect(
     () =>
-      watchCrossTabChanges(({ refreshToken }) => {
-        if (!refreshToken) {
+      watchCrossTabChanges(({ hasSession: stillSignedIn }) => {
+        if (!stillSignedIn) {
           setUser(null);
           setStatus(STATUS.anonymous);
         }
@@ -112,10 +111,9 @@ export function AuthProvider({ children }) {
   );
 
   const logout = useCallback(async () => {
-    const refreshToken = getRefreshToken();
-    if (refreshToken) {
+    if (hasSession()) {
       try {
-        await authApi.logout({ refreshToken });
+        await authApi.logout();
       } catch {
         /* la session locale est purgee quoi qu'il arrive */
       }

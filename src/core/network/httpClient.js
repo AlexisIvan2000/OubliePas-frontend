@@ -80,6 +80,7 @@ async function rawRequest(path, { method = "GET", body, token, signal } = {}) {
       method,
       headers,
       signal,
+      credentials: "include",
       body: body === undefined ? undefined : multipart ? body : JSON.stringify(body),
     });
   } catch (cause) {

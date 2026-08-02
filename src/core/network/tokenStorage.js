@@ -1,5 +1,5 @@
 const ACCESS_KEY = "oubliepas.access_token";
-const REFRESH_KEY = "oubliepas.refresh_token";
+const SESSION_KEY = "oubliepas.session";
 
 const listeners = new Set();
 
@@ -27,27 +27,23 @@ export function getAccessToken() {
   return read(ACCESS_KEY);
 }
 
-export function getRefreshToken() {
-  return read(REFRESH_KEY);
-}
-
 export function getTokens() {
-  return { accessToken: getAccessToken(), refreshToken: getRefreshToken() };
+  return { accessToken: getAccessToken(), hasSession: hasSession() };
 }
 
 export function hasSession() {
-  return Boolean(getRefreshToken());
+  return read(SESSION_KEY) === "1";
 }
 
-export function setTokens({ access_token, refresh_token }) {
+export function setTokens({ access_token }) {
   write(ACCESS_KEY, access_token ?? null);
-  write(REFRESH_KEY, refresh_token ?? null);
+  write(SESSION_KEY, access_token ? "1" : null);
   listeners.forEach((listener) => listener(getTokens()));
 }
 
 export function clearTokens() {
   write(ACCESS_KEY, null);
-  write(REFRESH_KEY, null);
+  write(SESSION_KEY, null);
   listeners.forEach((listener) => listener(getTokens()));
 }
 
@@ -58,7 +54,7 @@ export function subscribeToTokens(listener) {
 
 export function watchCrossTabChanges(onChange) {
   const handler = (event) => {
-    if (event.key === ACCESS_KEY || event.key === REFRESH_KEY) {
+    if (event.key === ACCESS_KEY || event.key === SESSION_KEY) {
       onChange(getTokens());
     }
   };

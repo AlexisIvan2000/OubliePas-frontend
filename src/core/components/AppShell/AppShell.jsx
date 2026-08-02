@@ -6,6 +6,7 @@ import { useTranslation } from "../../translation/useTranslation";
 import { cx } from "../../utils/classNames";
 import { Avatar } from "../Avatar/Avatar";
 import { Icon } from "../Icon/Icon";
+import { PreferenceToggles } from "../PreferenceToggles/PreferenceToggles";
 import styles from "./AppShell.module.css";
 
 const NAV_ITEMS = [
@@ -46,6 +47,8 @@ export function AppShell({ children }) {
         </nav>
 
         <div className={styles.foot}>
+          <PreferenceToggles className={styles.prefs} />
+
           <div className={styles.account}>
             <Avatar
               seed={user?.email ?? ""}

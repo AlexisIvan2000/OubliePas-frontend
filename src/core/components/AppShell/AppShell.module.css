@@ -123,6 +123,11 @@
   border-top: 1px solid var(--color-border);
 }
 
+.prefs {
+  padding: 0 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
 .account {
   display: flex;
   align-items: center;
@@ -213,9 +218,15 @@
     margin-left: auto;
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
     gap: 0.5rem;
     padding-top: 0;
     border-top: 0;
+  }
+
+  .prefs {
+    padding: 0;
+    margin-bottom: 0;
   }
 
   .signOut {
