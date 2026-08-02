@@ -445,6 +445,48 @@
   },
   "reminders": {
     "title": "Rappels",
-    "subtitle": "Les alertes envoyées avant chaque prélèvement."
+    "subtitle": "Les alertes envoyées avant chaque prélèvement.",
+    "documentTitle": "Rappels · Oubliepas",
+    "preferences": {
+      "title": "Préférences",
+      "description": "Comment et quand vous souhaitez être prévenu."
+    },
+    "channels": {
+      "title": "Canaux"
+    },
+    "digest": {
+      "title": "Résumé"
+    },
+    "channel": {
+      "email": {
+        "label": "Email",
+        "description": "Un message avant chaque échéance."
+      },
+      "push": {
+        "label": "Notifications push",
+        "description": "Une alerte directement sur votre appareil."
+      },
+      "weekly": {
+        "label": "Résumé hebdomadaire",
+        "description": "Un récapitulatif de la semaine, chaque lundi."
+      }
+    },
+    "lead": {
+      "title": "Prévenir avant l'échéance",
+      "description": "Le délai appliqué à vos nouveaux engagements.",
+      "sameDay": "Le jour même",
+      "before": {
+        "one": "{count} jour avant",
+        "other": "{count} jours avant"
+      }
+    },
+    "feed": {
+      "title": "Fil d'activité",
+      "description": "Les rappels programmés et ceux déjà envoyés.",
+      "sendOn": "Envoi le {date}",
+      "dueOn": "échéance {date}",
+      "emptyTitle": "Aucun rappel programmé",
+      "emptyText": "Les rappels apparaîtront ici dès qu'un engagement avec alerte approchera de son échéance."
+    }
   }
 }

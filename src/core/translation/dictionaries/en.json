@@ -445,6 +445,48 @@
   },
   "reminders": {
     "title": "Reminders",
-    "subtitle": "The alerts sent before every charge."
+    "subtitle": "The alerts sent before each payment.",
+    "documentTitle": "Reminders · Oubliepas",
+    "preferences": {
+      "title": "Preferences",
+      "description": "How and when you want to be notified."
+    },
+    "channels": {
+      "title": "Channels"
+    },
+    "digest": {
+      "title": "Digest"
+    },
+    "channel": {
+      "email": {
+        "label": "Email",
+        "description": "A message before each due date."
+      },
+      "push": {
+        "label": "Push notifications",
+        "description": "An alert straight to your device."
+      },
+      "weekly": {
+        "label": "Weekly digest",
+        "description": "A recap of the week, every Monday."
+      }
+    },
+    "lead": {
+      "title": "Notify before the due date",
+      "description": "The lead time applied to your new commitments.",
+      "sameDay": "Same day",
+      "before": {
+        "one": "{count} day before",
+        "other": "{count} days before"
+      }
+    },
+    "feed": {
+      "title": "Activity",
+      "description": "Scheduled reminders and those already sent.",
+      "sendOn": "Sending on {date}",
+      "dueOn": "due {date}",
+      "emptyTitle": "No reminder scheduled",
+      "emptyText": "Reminders will show up here as soon as a commitment with alerts approaches its due date."
+    }
   }
 }

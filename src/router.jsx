@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import { HomeRoute } from "./core/pages/HomeRoute";
-import { RemindersPage } from "./core/pages/RemindersPage";
 import { NotFoundPage } from "./core/pages/NotFoundPage";
+import { RemindersPage } from "./features/notifications/presentation/pages/RemindersPage";
 import { CalendarPage } from "./features/commitments/presentation/pages/CalendarPage";
 import { InvoicesPage } from "./features/commitments/presentation/pages/InvoicesPage";
 import { SubscriptionsPage } from "./features/commitments/presentation/pages/SubscriptionsPage";
