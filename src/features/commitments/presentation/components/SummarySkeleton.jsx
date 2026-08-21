@@ -28,6 +28,30 @@ export function SummaryTilesSkeleton() {
   );
 }
 
+export function CategoryDonutSkeleton({ rows = 4 }) {
+  const { t } = useTranslation();
+
+  return (
+    <div className={styles.categories} aria-busy="true" aria-label={t("a11y.loadingCategories")}>
+      <Skeleton width="11rem" height="11rem" radius="50%" className={styles.ring} />
+      <div className={styles.legend}>
+        {Array.from({ length: rows }, (_, index) => (
+          <div className={styles.legendRow} key={index}>
+            <Skeleton width="0.625rem" height="0.625rem" delay={index * SHIMMER_STEP} />
+            <Skeleton
+              width={["6rem", "4.5rem", "7rem", "5rem"][index % 4]}
+              height="0.875rem"
+              delay={index * SHIMMER_STEP + 40}
+              className={styles.legendName}
+            />
+            <Skeleton width="4rem" height="0.875rem" delay={index * SHIMMER_STEP + 80} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function UpcomingListSkeleton({ rows = 4 }) {
   const { t } = useTranslation();
 

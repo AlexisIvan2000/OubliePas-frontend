@@ -50,7 +50,88 @@ export function categoryOptions(t, type) {
   return CATEGORIES[type].map((value) => ({ value, label: t(`category.${value}`) }));
 }
 
+export const CHART_COLORS = [
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
+];
 
+export const REST_SLICE = "rest";
+export const MAX_SLICES = CHART_COLORS.length;
+
+export function topCategories(rows, max = MAX_SLICES) {
+  const sorted = [...rows].sort((left, right) => Number(right.total) - Number(left.total));
+  const head = sorted.slice(0, max);
+  const tail = sorted.slice(max);
+
+  const slices = head.map((row, index) => ({
+    key: row.category,
+    category: row.category,
+    total: Number(row.total),
+    count: row.count,
+    color: CHART_COLORS[index],
+  }));
+
+  if (tail.length) {
+    slices.push({
+      key: REST_SLICE,
+      category: REST_SLICE,
+      total: tail.reduce((sum, row) => sum + Number(row.total), 0),
+      count: tail.reduce((sum, row) => sum + row.count, 0),
+      color: "var(--chart-rest)",
+    });
+  }
+
+  const total = slices.reduce((sum, slice) => sum + slice.total, 0);
+  return {
+    total,
+    slices: slices.map((slice) => ({ ...slice, share: total ? slice.total / total : 0 })),
+  };
+}
+
+export function sliceLabel(t, slice) {
+  return slice.key === REST_SLICE
+    ? t("dashboard.categoryRest")
+    : categoryLabel(t, slice.category);
+}
+
+
+
+export const STATUS_TAG_KEYS = {
+  paused: "commitments.paused",
+  archived: "commitments.archived",
+};
+
+export const STATUS_ACTIONS = {
+  active: [
+    { id: "pause", status: "paused", icon: "pause", labelKey: "commitments.pause" },
+    { id: "archive", status: "archived", icon: "archive", labelKey: "commitments.archive" },
+  ],
+  paused: [
+    { id: "resume", status: "active", icon: "resume", labelKey: "commitments.resume" },
+    { id: "archive", status: "archived", icon: "archive", labelKey: "commitments.archive" },
+  ],
+  archived: [
+    { id: "restore", status: "active", icon: "restore", labelKey: "commitments.restore" },
+  ],
+};
+
+export const STATUS_TOAST_KEYS = {
+  active: "commitments.statusActive",
+  paused: "commitments.statusPaused",
+  archived: "commitments.statusArchived",
+};
+
+export function statusActions(t, commitment, onSelect) {
+  return (STATUS_ACTIONS[commitment.status] ?? []).map((action) => ({
+    id: action.id,
+    icon: action.icon,
+    label: t(action.labelKey),
+    onSelect: () => onSelect(commitment, action.status),
+  }));
+}
 
 export const OCCURRENCE_TONES = {
   pending: "pending",
@@ -139,6 +220,7 @@ export function toSummary(raw) {
     upcomingDays: raw.upcoming_days,
     upcomingTotal: raw.upcoming_total,
     upcoming: (raw.upcoming ?? []).map(toOccurrence),
+    byCategory: raw.by_category ?? [],
   };
 }
 

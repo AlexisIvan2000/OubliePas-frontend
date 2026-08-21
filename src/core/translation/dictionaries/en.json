@@ -80,7 +80,13 @@
       "one": "+{count} more",
       "other": "+{count} more"
     },
-    "upcomingEmptyAdd": "Add your {subscriptions} or your {invoices} to start tracking."
+    "upcomingEmptyAdd": "Add your {subscriptions} or your {invoices} to start tracking.",
+    "categoriesTitle": "Breakdown by category",
+    "categoriesWindow": "Your spending this month, subscriptions and bills combined.",
+    "categoriesCenter": "This month",
+    "categoriesEmpty": "No spending recorded this month.",
+    "categoriesAria": "Spending broken down by category: {legend}",
+    "categoryRest": "Other categories"
   },
   "commitments": {
     "subscriptionsTitle": "Subscriptions",
@@ -103,6 +109,25 @@
     },
     "shown": " shown",
     "paused": "paused",
+    "archived": "archived",
+    "pause": "Pause",
+    "resume": "Resume",
+    "archive": "Archive",
+    "restore": "Unarchive",
+    "statusActive": "{title} is active again.",
+    "statusPaused": "{title} is paused, upcoming due dates were removed.",
+    "statusArchived": "{title} has been archived.",
+    "moreAria": "More actions for {title}",
+    "showArchived": {
+      "one": "{count} archived",
+      "other": "{count} archived"
+    },
+    "onlyArchivedTitle": {
+      "one": "One archived line",
+      "other": "{count} archived lines"
+    },
+    "onlyArchivedBody": "Nothing active here yet. Your archived lines are kept along with their history.",
+    "revealArchived": "Show the archive",
     "noDueDate": "no due date",
     "reminderDays": "{count} d before",
     "editAria": "Edit {title}",
@@ -402,6 +427,7 @@
     "loadingCalendar": "Loading the calendar",
     "loadingSummary": "Loading the summary",
     "loadingUpcoming": "Loading the due dates",
+    "loadingCategories": "Loading the breakdown",
     "appPreview": "Application preview",
     "clearSearch": "Clear the search"
   },

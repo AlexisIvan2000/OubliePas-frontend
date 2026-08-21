@@ -49,6 +49,10 @@
   margin-top: 1rem;
 }
 
+.categories {
+  margin-top: 1rem;
+}
+
 .rows {
   display: flex;
   flex-direction: column;

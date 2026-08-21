@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../../features/authentication/presentation/providers/useAuth";
 import { getSummary } from "../../features/commitments/data/commitmentsApi";
+import { topCategories } from "../../features/commitments/domain/commitment";
+import { CategoryDonut } from "../../features/commitments/presentation/components/CategoryDonut";
 import {
+  CategoryDonutSkeleton,
   SummaryTilesSkeleton,
   UpcomingListSkeleton,
 } from "../../features/commitments/presentation/components/SummarySkeleton";
@@ -26,6 +29,11 @@ export function HomePage() {
   const [now, setNow] = useState(() => new Date());
 
   useDocumentTitle(t("dashboard.documentTitle"));
+
+  const categories = useMemo(
+    () => topCategories(summary?.byCategory ?? []),
+    [summary?.byCategory],
+  );
 
   useEffect(() => {
     let active = true;
@@ -93,6 +101,22 @@ export function HomePage() {
           </div>
         </Card>
       </div>
+
+      <Card
+        className={styles.categories}
+        title={t("dashboard.categoriesTitle")}
+        description={t("dashboard.categoriesWindow")}
+      >
+        {summary ? (
+          <CategoryDonut
+            slices={categories.slices}
+            total={categories.total}
+            currency={summary.currency}
+          />
+        ) : (
+          <CategoryDonutSkeleton />
+        )}
+      </Card>
     </>
   );
 }

@@ -1,23 +1,48 @@
 import { Icon } from "../../../../core/components/Icon/Icon";
+import { Menu } from "../../../../core/components/Menu/Menu";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
-import { FREQUENCY_SHORT_KEYS, categoryLabel } from "../../domain/commitment";
+import {
+  FREQUENCY_SHORT_KEYS,
+  STATUS_TAG_KEYS,
+  categoryLabel,
+  statusActions,
+} from "../../domain/commitment";
 import { formatDate, formatMoney, relativeDue } from "../../domain/formatting";
 import styles from "../styles/commitments.module.css";
 
-export function CommitmentRow({ commitment, currency, index = 0, onEdit, onDelete }) {
+export function CommitmentRow({
+  commitment,
+  currency,
+  index = 0,
+  onEdit,
+  onDelete,
+  onStatusChange,
+}) {
   const { t } = useTranslation();
-  const paused = commitment.status !== "active";
+  const dimmed = commitment.status !== "active";
+  const tagKey = STATUS_TAG_KEYS[commitment.status];
+
+  const items = [
+    ...statusActions(t, commitment, onStatusChange),
+    {
+      id: "delete",
+      icon: "delete",
+      tone: "danger",
+      label: t("common.delete"),
+      onSelect: () => onDelete(commitment),
+    },
+  ];
 
   return (
     <li
-      className={cx(styles.row, styles.enter, paused && styles.paused)}
+      className={cx(styles.row, styles.enter, dimmed && styles.paused)}
       style={{ "--enter-delay": `${Math.min(index, 12) * 40}ms` }}
     >
       <div className={styles.rowMain}>
         <div className={styles.rowTitle}>
           {commitment.title}
-          {paused ? <span className={styles.pausedTag}>{t("commitments.paused")}</span> : null}
+          {tagKey ? <span className={styles.pausedTag}>{t(tagKey)}</span> : null}
         </div>
         <div className={styles.rowMeta}>
           <span>{categoryLabel(t, commitment.category)}</span>
@@ -57,14 +82,10 @@ export function CommitmentRow({ commitment, currency, index = 0, onEdit, onDelet
         >
           <Icon name="edit" size={16} />
         </button>
-        <button
-          type="button"
-          className={cx(styles.iconButton, styles.danger)}
-          onClick={() => onDelete(commitment)}
-          aria-label={t("commitments.deleteAria", { title: commitment.title })}
-        >
-          <Icon name="delete" size={16} />
-        </button>
+        <Menu
+          label={t("commitments.moreAria", { title: commitment.title })}
+          items={items}
+        />
       </div>
     </li>
   );

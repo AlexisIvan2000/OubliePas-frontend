@@ -48,6 +48,13 @@ export function formatMoney(amount, currency = "CAD") {
   }
 }
 
+export function formatPercent(share) {
+  return new Intl.NumberFormat(activeLocale, {
+    style: "percent",
+    maximumFractionDigits: share > 0 && share < 0.01 ? 1 : 0,
+  }).format(share);
+}
+
 export function parseDate(iso) {
   const [year, month, day] = iso.split("-").map(Number);
   return new Date(year, month - 1, day);

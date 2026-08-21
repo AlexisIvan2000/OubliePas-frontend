@@ -56,6 +56,13 @@
   --color-success-soft: #eaf6f2;
   --color-success-border: #bfe3d8;
 
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
+  --chart-rest: #8699a8;
+
   --color-nav-text: #52708a;
   --color-chip-soft: #c9d8e3;
   --color-chip-text: #43607a;
@@ -122,6 +129,13 @@
   --color-success-text: #4fc4a5;
   --color-success-soft: #12302a;
   --color-success-border: #1e4a41;
+
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
+  --chart-4: #c98500;
+  --chart-5: #d55181;
+  --chart-rest: #6d8598;
 
   --color-nav-text: #9db1c2;
   --color-chip-soft: #23394b;

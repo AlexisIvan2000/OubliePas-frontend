@@ -1,5 +1,7 @@
 import {
   Add,
+  Archive,
+  ArchiveMinus,
   ArrowDown2,
   ArrowLeft2,
   ArrowRight2,
@@ -13,7 +15,10 @@ import {
   Edit2,
   LogoutCurve,
   Moon,
+  More,
   NotificationBing,
+  PauseCircle,
+  PlayCircle,
   ReceiptText,
   Repeat,
   SearchNormal1,
@@ -51,6 +56,11 @@ const ICONS = {
   close: CloseCircle,
   late: Danger,
   scheduled: CalendarTick,
+  more: More,
+  pause: PauseCircle,
+  resume: PlayCircle,
+  archive: Archive,
+  restore: ArchiveMinus,
 };
 
 export function Icon({

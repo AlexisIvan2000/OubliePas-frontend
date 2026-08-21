@@ -80,7 +80,13 @@
       "one": "+{count} autre",
       "other": "+{count} autres"
     },
-    "upcomingEmptyAdd": "Ajoutez vos {subscriptions} ou vos {invoices} pour lancer le suivi."
+    "upcomingEmptyAdd": "Ajoutez vos {subscriptions} ou vos {invoices} pour lancer le suivi.",
+    "categoriesTitle": "Répartition par catégorie",
+    "categoriesWindow": "Vos dépenses de ce mois-ci, abonnements et factures confondus.",
+    "categoriesCenter": "Ce mois-ci",
+    "categoriesEmpty": "Aucune dépense enregistrée ce mois-ci.",
+    "categoriesAria": "Répartition des dépenses par catégorie : {legend}",
+    "categoryRest": "Autres catégories"
   },
   "commitments": {
     "subscriptionsTitle": "Abonnements",
@@ -103,6 +109,25 @@
     },
     "shown": " affichées",
     "paused": "en pause",
+    "archived": "archivé",
+    "pause": "Mettre en pause",
+    "resume": "Reprendre",
+    "archive": "Archiver",
+    "restore": "Désarchiver",
+    "statusActive": "{title} est de nouveau actif.",
+    "statusPaused": "{title} est en pause, les prochaines échéances sont retirées.",
+    "statusArchived": "{title} a été archivé.",
+    "moreAria": "Autres actions pour {title}",
+    "showArchived": {
+      "one": "{count} archivé",
+      "other": "{count} archivés"
+    },
+    "onlyArchivedTitle": {
+      "one": "Une ligne archivée",
+      "other": "{count} lignes archivées"
+    },
+    "onlyArchivedBody": "Rien d’actif ici pour le moment. Vos lignes archivées sont conservées avec leur historique.",
+    "revealArchived": "Afficher les archives",
     "noDueDate": "aucune échéance",
     "reminderDays": "{count} j avant",
     "editAria": "Modifier {title}",
@@ -402,6 +427,7 @@
     "loadingCalendar": "Chargement du calendrier",
     "loadingSummary": "Chargement du résumé",
     "loadingUpcoming": "Chargement des échéances",
+    "loadingCategories": "Chargement de la répartition",
     "appPreview": "Aperçu de l'application",
     "clearSearch": "Effacer la recherche"
   },

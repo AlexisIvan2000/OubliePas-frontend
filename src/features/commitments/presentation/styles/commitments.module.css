@@ -33,7 +33,12 @@
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  max-width: 32rem;
+  flex-wrap: wrap;
+}
+
+.search {
+  flex: 1 1 16rem;
+  max-width: 28rem;
 }
 
 .results {
@@ -211,6 +216,7 @@
 
 .rowActions {
   display: flex;
+  align-items: center;
   gap: 0.25rem;
 }
 

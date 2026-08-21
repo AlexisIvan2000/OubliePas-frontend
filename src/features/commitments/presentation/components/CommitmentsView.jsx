@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { Alert } from "../../../../core/components/Alert/Alert";
 import { Button } from "../../../../core/components/Button/Button";
+import { Chip } from "../../../../core/components/Chip/Chip";
 import { ConfirmDialog } from "../../../../core/components/ConfirmDialog/ConfirmDialog";
 import { Icon } from "../../../../core/components/Icon/Icon";
 import { SearchField } from "../../../../core/components/SearchField/SearchField";
@@ -10,8 +11,8 @@ import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
-import { deleteCommitment } from "../../data/commitmentsApi";
-import { COMMITMENT_TYPES, matchesQuery } from "../../domain/commitment";
+import { deleteCommitment, updateCommitment } from "../../data/commitmentsApi";
+import { COMMITMENT_TYPES, STATUS_TOAST_KEYS, matchesQuery } from "../../domain/commitment";
 import { formatMoney } from "../../domain/formatting";
 import { useCommitments } from "../providers/useCommitments";
 import styles from "../styles/commitments.module.css";
@@ -32,14 +33,25 @@ export function CommitmentsView({ type }) {
   const [editing, setEditing] = useState(null);
   const [formOpen, setFormOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(null);
+  const [showArchived, setShowArchived] = useState(false);
 
   const meta = COMMITMENT_TYPES[type];
   const title = t(meta.titleKey);
   useDocumentTitle(title);
 
+  const archivedCount = useMemo(
+    () => items.filter((item) => item.status === "archived").length,
+    [items],
+  );
+
+  const pool = useMemo(
+    () => (showArchived ? items : items.filter((item) => item.status !== "archived")),
+    [items, showArchived],
+  );
+
   const visible = useMemo(
-    () => items.filter((item) => matchesQuery(t, item, query)),
-    [items, query, t],
+    () => pool.filter((item) => matchesQuery(t, item, query)),
+    [pool, query, t],
   );
 
   const active = useMemo(() => visible.filter((item) => item.status === "active"), [visible]);
@@ -64,6 +76,16 @@ export function CommitmentsView({ type }) {
   const openEdit = (commitment) => {
     setEditing(commitment);
     setFormOpen(true);
+  };
+
+  const changeStatus = async (commitment, status) => {
+    try {
+      await updateCommitment(commitment.id, { status });
+      toast.push(t(STATUS_TOAST_KEYS[status], { title: commitment.title }));
+      await reload();
+    } catch (caught) {
+      toast.push(messageForError(t, caught), "error");
+    }
   };
 
   const confirmDelete = async () => {
@@ -94,15 +116,21 @@ export function CommitmentsView({ type }) {
       {items.length ? (
         <div className={styles.toolbar}>
           <SearchField
+            className={styles.search}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onClear={() => setQuery("")}
             label={t("commitments.searchLabel", { kind: title.toLowerCase() })}
             placeholder={t(meta.searchKey)}
           />
+          {archivedCount || showArchived ? (
+            <Chip active={showArchived} onClick={() => setShowArchived((current) => !current)}>
+              {t("commitments.showArchived", { count: archivedCount })}
+            </Chip>
+          ) : null}
           {searching ? (
             <span className={styles.results}>
-              {t("commitments.results", { count: visible.length, total: items.length })}
+              {t("commitments.results", { count: visible.length, total: pool.length })}
             </span>
           ) : null}
         </div>
@@ -133,6 +161,7 @@ export function CommitmentsView({ type }) {
               index={index}
               onEdit={openEdit}
               onDelete={setPendingDelete}
+              onStatusChange={changeStatus}
             />
           ))}
         </ul>
@@ -143,6 +172,14 @@ export function CommitmentsView({ type }) {
           message={t("commitments.noResultsBody")}
           actionLabel={t("commitments.clearSearch")}
           onAction={() => setQuery("")}
+        />
+      ) : archivedCount ? (
+        <EmptyState
+          icon="archive"
+          title={t("commitments.onlyArchivedTitle", { count: archivedCount })}
+          message={t("commitments.onlyArchivedBody")}
+          actionLabel={t("commitments.revealArchived")}
+          onAction={() => setShowArchived(true)}
         />
       ) : (
         <EmptyState
