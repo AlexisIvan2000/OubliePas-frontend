@@ -189,7 +189,7 @@
 
 .content {
   padding: 2.125rem clamp(2.5rem, 3vw, 4rem) 4rem;
-  animation: fade 0.25s ease;
+  animation: global(fade) 0.25s ease;
 }
 
 @media (max-width: 60rem) {

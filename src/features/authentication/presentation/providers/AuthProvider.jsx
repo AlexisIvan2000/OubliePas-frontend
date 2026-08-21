@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { onSessionExpired } from "../../../../core/network/httpClient";
+import { clearResources } from "../../../../core/network/resourceCache";
 import {
   clearTokens,
   hasSession,
@@ -38,6 +39,7 @@ export function AuthProvider({ children }) {
 
   const applyAnonymous = useCallback((notice = null) => {
     clearTokens();
+    clearResources();
     setUser(null);
     setStatus(STATUS.anonymous);
     setSessionNotice(notice);
@@ -70,6 +72,7 @@ export function AuthProvider({ children }) {
     () =>
       watchCrossTabChanges(({ hasSession: stillSignedIn }) => {
         if (!stillSignedIn) {
+          clearResources();
           setUser(null);
           setStatus(STATUS.anonymous);
         }
@@ -79,6 +82,7 @@ export function AuthProvider({ children }) {
 
   const startSession = useCallback(
     async (tokens) => {
+      clearResources();
       setTokens(tokens);
       setSessionNotice(null);
       return loadUser();

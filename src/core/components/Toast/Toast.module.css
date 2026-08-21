@@ -17,22 +17,23 @@
   padding: 0.875rem 1.125rem;
   border-radius: 0.75rem;
   background-color: var(--color-accent);
-  color: #ffffff;
+  color: var(--color-accent-contrast);
   font-size: 0.875rem;
   line-height: 1.45;
   box-shadow: var(--shadow-lg);
-  animation: riseIn 0.24s cubic-bezier(0.22, 0.8, 0.3, 1);
+  animation: global(riseIn) 0.24s cubic-bezier(0.22, 0.8, 0.3, 1);
   pointer-events: auto;
   cursor: pointer;
 }
 
 .leaving {
-  animation: leaveDown 0.2s ease forwards;
+  animation: global(leaveDown) 0.2s ease forwards;
   pointer-events: none;
 }
 
 .error {
   background-color: var(--color-danger);
+  color: var(--color-danger-contrast);
 }
 
 .mark {

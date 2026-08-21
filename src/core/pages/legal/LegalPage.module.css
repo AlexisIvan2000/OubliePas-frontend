@@ -1,0 +1,148 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+  background-color: var(--color-bg);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1.5rem 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.logo {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.wordmark {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2.5rem clamp(1.25rem, 4vw, 3rem) 3rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.updated {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.intro {
+  margin: 0 0 2.5rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+.section {
+  margin-bottom: 2.25rem;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.heading {
+  margin: 0 0 0.75rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.body {
+  margin: 0 0 0.875rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+
+.body:last-child {
+  margin-bottom: 0;
+}
+
+.list {
+  margin: 0 0 0.875rem;
+  padding-left: 1.125rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+
+.list li {
+  margin-bottom: 0.375rem;
+}
+
+.list li::marker {
+  color: var(--color-text-subtle);
+}
+
+.group {
+  margin-bottom: 1.125rem;
+}
+
+.groupLabel {
+  margin: 0 0 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 48rem;
+  margin: 1.5rem auto 0;
+  padding: 1.5rem 0 2.5rem;
+  font-size: 0.875rem;
+}
+
+.crossLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--color-link);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.crossLink:hover {
+  color: var(--color-link-hover);
+}

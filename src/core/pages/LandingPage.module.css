@@ -152,7 +152,7 @@
   background-color: var(--color-panel);
   color: var(--color-panel-text);
   box-shadow: var(--shadow-lg);
-  animation: riseIn 0.4s ease backwards;
+  animation: global(riseIn) 0.4s ease backwards;
   animation-delay: 80ms;
 }
 
@@ -311,6 +311,39 @@
   border-top: 1px solid var(--color-border);
   font-size: 0.8125rem;
   color: var(--color-text-subtle);
+  flex-wrap: wrap;
+}
+
+.footerBrand {
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.footerLinks {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.footerLinks a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.footerLinks a:hover {
+  color: var(--color-link);
+}
+
+.footerTagline {
+  margin-left: auto;
+}
+
+@media (max-width: 44rem) {
+  .footerTagline {
+    margin-left: 0;
+    width: 100%;
+  }
 }
 
 

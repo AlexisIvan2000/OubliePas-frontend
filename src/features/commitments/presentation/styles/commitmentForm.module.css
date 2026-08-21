@@ -8,7 +8,7 @@
   padding: 1.5rem;
   overflow-y: auto;
   background-color: var(--color-overlay);
-  animation: fade 0.16s ease;
+  animation: global(fade) 0.16s ease;
 }
 
 .dialog {
@@ -19,7 +19,7 @@
   border-radius: var(--radius-lg);
   background-color: var(--color-surface);
   box-shadow: var(--shadow-lg);
-  animation: riseIn 0.2s ease;
+  animation: global(riseIn) 0.2s ease;
 }
 
 .head {

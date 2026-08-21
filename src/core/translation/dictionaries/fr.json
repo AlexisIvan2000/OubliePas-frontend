@@ -33,7 +33,18 @@
     "soon": "bientôt",
     "signOut": "Déconnexion"
   },
+  "legal": {
+    "terms": "Conditions d’utilisation",
+    "privacy": "Politique de confidentialité",
+    "contact": "Nous écrire",
+    "footerAria": "Pages légales",
+    "updated": "Mise à jour le {date}",
+    "backHome": "Retour à l’accueil",
+    "loading": "Chargement du document"
+  },
   "landing": {
+    "sampleRent": "Loyer",
+    "sampleInsurance": "Assurance auto",
     "documentTitle": "Oubliepas — ne manquez plus une échéance",
     "eyebrow": "Suivi d'abonnements et de charges fixes",
     "title": "Vous saurez toujours ce qui va être prélevé.",
@@ -464,6 +475,7 @@
     "budgetBody": "Fixez un plafond, voyez où vous en êtes à tout moment du mois."
   },
   "preview": {
+    "sampleGym": "Salle de sport Vitalis",
     "heading": "Aperçu de l'application",
     "monthlyTotal": "Total mensuel récurrent",
     "ghostSpending": "Dépenses fantômes",

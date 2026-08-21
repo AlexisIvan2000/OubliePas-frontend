@@ -8,7 +8,7 @@
   );
   background-size: 200% 100%;
   border-radius: var(--radius-sm);
-  animation: shimmer 1.9s cubic-bezier(0.42, 0, 0.35, 1) infinite;
+  animation: global(shimmer) 1.9s cubic-bezier(0.42, 0, 0.35, 1) infinite;
 }
 
 .app {

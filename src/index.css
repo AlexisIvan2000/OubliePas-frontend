@@ -37,6 +37,7 @@
   --color-danger-soft: #fceeec;
   --color-danger-border: #f0c6c2;
   --color-danger-text: #d14343;
+  --color-danger-contrast: #ffffff;
   --color-danger-ring: rgba(209, 67, 67, 0.16);
 
   --color-accent-deep: #23415a;
@@ -111,6 +112,7 @@
   --color-danger-soft: #34201f;
   --color-danger-border: #5c2f33;
   --color-danger-text: #f08a8a;
+  --color-danger-contrast: #3a1111;
   --color-danger-ring: rgba(240, 138, 138, 0.24);
 
   --color-accent-deep: #cfe0ee;

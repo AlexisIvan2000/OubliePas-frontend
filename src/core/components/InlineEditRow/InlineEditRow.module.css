@@ -133,6 +133,11 @@
   cursor: pointer;
 }
 
+.select option {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
 .select:focus {
   outline: none;
 }

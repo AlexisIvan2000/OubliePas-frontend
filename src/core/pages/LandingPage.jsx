@@ -5,6 +5,7 @@ import { Icon } from "../components/Icon/Icon";
 import { PreferenceToggles } from "../components/PreferenceToggles/PreferenceToggles";
 import { formatMoney, formatShortDate } from "../utils/formatting";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
+import { LEGAL } from "./legal/legalConfig";
 import styles from "./LandingPage.module.css";
 
 const PILLARS = [
@@ -15,9 +16,15 @@ const PILLARS = [
 ];
 
 const PREVIEW = [
-  { title: "Loyer", day: "2026-08-01", amount: 1250, tone: "invoice" },
-  { title: "Netflix", day: "2026-08-02", amount: 18.99, tone: "subscription" },
-  { title: "Assurance auto", day: "2026-08-13", amount: 142, tone: "invoice" },
+  { id: "rent", labelKey: "landing.sampleRent", day: "2026-08-01", amount: 1250, tone: "invoice" },
+  { id: "netflix", title: "Netflix", day: "2026-08-02", amount: 18.99, tone: "subscription" },
+  {
+    id: "insurance",
+    labelKey: "landing.sampleInsurance",
+    day: "2026-08-13",
+    amount: 142,
+    tone: "invoice",
+  },
 ];
 
 const PREVIEW_TOTAL = 1410.99;
@@ -82,9 +89,11 @@ export function LandingPage() {
 
             <div className={styles.previewRows}>
               {PREVIEW.map((row) => (
-                <div className={styles.previewRow} key={row.title}>
+                <div className={styles.previewRow} key={row.id}>
                   <span className={`${styles.dot} ${styles[row.tone]}`} />
-                  <span className={styles.rowTitle}>{row.title}</span>
+                  <span className={styles.rowTitle}>
+                    {row.labelKey ? t(row.labelKey) : row.title}
+                  </span>
                   <span className={styles.rowWhen}>{formatShortDate(row.day)}</span>
                   <span className={styles.rowAmount}>{formatMoney(row.amount, PREVIEW_CURRENCY)}</span>
                 </div>
@@ -111,8 +120,13 @@ export function LandingPage() {
       </main>
 
       <footer className={styles.footer}>
-        <span>Oubliepas</span>
-        <span>{t("landing.tagline")}</span>
+        <span className={styles.footerBrand}>Oubliepas</span>
+        <nav className={styles.footerLinks} aria-label={t("legal.footerAria")}>
+          <Link to="/conditions">{t("legal.terms")}</Link>
+          <Link to="/confidentialite">{t("legal.privacy")}</Link>
+          <a href={`mailto:${LEGAL.contactEmail}`}>{t("legal.contact")}</a>
+        </nav>
+        <span className={styles.footerTagline}>{t("landing.tagline")}</span>
       </footer>
     </div>
   );

@@ -12,7 +12,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background-color: var(--color-surface);
-  animation: riseIn 0.36s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+  animation: global(riseIn) 0.36s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
   transition:
     border-color 160ms ease,
     box-shadow 160ms ease,
@@ -111,7 +111,7 @@
   align-items: center;
   gap: 0.875rem;
   padding: 0.5625rem 0;
-  animation: fade 0.32s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+  animation: global(fade) 0.32s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
   animation-delay: var(--enter-delay, 0ms);
 }
 

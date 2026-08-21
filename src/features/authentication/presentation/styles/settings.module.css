@@ -79,7 +79,7 @@
   border-radius: var(--radius-lg);
   background-color: var(--color-surface);
   box-shadow: var(--shadow-md);
-  animation: riseIn 0.22s ease;
+  animation: global(riseIn) 0.22s ease;
 }
 
 .steps {
@@ -127,7 +127,7 @@
 .stepDone .stepMark {
   background-color: var(--color-success-text);
   border-color: var(--color-success-text);
-  color: #ffffff;
+  color: var(--color-accent-contrast);
 }
 
 .stepBar {

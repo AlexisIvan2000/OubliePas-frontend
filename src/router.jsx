@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import { HomeRoute } from "./core/pages/HomeRoute";
+import { PrivacyPage } from "./core/pages/legal/PrivacyPage";
+import { TermsPage } from "./core/pages/legal/TermsPage";
 import { NotFoundPage } from "./core/pages/NotFoundPage";
 import { RemindersPage } from "./features/notifications/presentation/pages/RemindersPage";
 import { CalendarPage } from "./features/commitments/presentation/pages/CalendarPage";
@@ -18,6 +20,8 @@ import { VerifyEmailPage } from "./features/authentication/presentation/pages/Ve
 
 export const router = createBrowserRouter([
   { path: "/", element: <HomeRoute /> },
+  { path: "/conditions", element: <TermsPage /> },
+  { path: "/confidentialite", element: <PrivacyPage /> },
   {
     element: <GuestLayout />,
     children: [

@@ -47,7 +47,7 @@
 }
 
 .panel {
-  animation: riseIn 0.24s ease;
+  animation: global(riseIn) 0.24s ease;
 }
 
 @media (max-width: 30rem) {

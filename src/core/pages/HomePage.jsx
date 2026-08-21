@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useAuth } from "../../features/authentication/presentation/providers/useAuth";
 import { getSummary, updateOccurrence } from "../../features/commitments/data/commitmentsApi";
+import { useResource } from "../network/useResource";
 import { STRIP_DAYS } from "../../features/commitments/domain/calendar";
 import { topCategories } from "../../features/commitments/domain/commitment";
 import { CategoryDonut } from "../../features/commitments/presentation/components/CategoryDonut";
@@ -30,12 +31,16 @@ export function HomePage() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const toast = useToast();
-  const [summary, setSummary] = useState(null);
-  const [error, setError] = useState(null);
   const [busyId, setBusyId] = useState(null);
   const [now, setNow] = useState(() => new Date());
 
   useDocumentTitle(t("dashboard.documentTitle"));
+
+  const {
+    data: summary,
+    error,
+    revalidate: reloadSummary,
+  } = useResource("summary", getSummary);
 
   const range = useMemo(() => upcomingRange(new Date(), STRIP_DAYS), []);
   const { items, loading, error: dueError, setItems } = useOccurrences(range);
@@ -44,18 +49,6 @@ export function HomePage() {
     () => topCategories(summary?.byCategory ?? []),
     [summary?.byCategory],
   );
-
-  useEffect(() => {
-    let active = true;
-
-    getSummary()
-      .then((data) => active && setSummary(data))
-      .catch((caught) => active && setError(caught));
-
-    return () => {
-      active = false;
-    };
-  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setNow(new Date()), msUntilNextSlot(now));
@@ -71,7 +64,7 @@ export function HomePage() {
         status: occurrence.status === "paid" ? "pending" : "paid",
       });
       setItems((current) => current.map((row) => (row.id === updated.id ? updated : row)));
-      getSummary().then(setSummary).catch(setError);
+      reloadSummary();
     } catch (caught) {
       toast.push(messageForError(t, caught), "error");
     } finally {

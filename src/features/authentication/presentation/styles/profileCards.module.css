@@ -130,7 +130,7 @@
   gap: 0.875rem;
   width: 100%;
   max-width: 26rem;
-  animation: riseIn 0.2s ease;
+  animation: global(riseIn) 0.2s ease;
 }
 
 .dangerActions {

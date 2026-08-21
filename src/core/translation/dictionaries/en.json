@@ -33,7 +33,18 @@
     "soon": "soon",
     "signOut": "Sign out"
   },
+  "legal": {
+    "terms": "Terms of use",
+    "privacy": "Privacy policy",
+    "contact": "Contact us",
+    "footerAria": "Legal pages",
+    "updated": "Updated on {date}",
+    "backHome": "Back to home",
+    "loading": "Loading the document"
+  },
   "landing": {
+    "sampleRent": "Rent",
+    "sampleInsurance": "Car insurance",
     "documentTitle": "Oubliepas — never miss a payment again",
     "eyebrow": "Subscription and fixed-cost tracking",
     "title": "You'll always know what's about to be charged.",
@@ -464,6 +475,7 @@
     "budgetBody": "Set a cap, see where you stand at any point in the month."
   },
   "preview": {
+    "sampleGym": "Vitalis Gym",
     "heading": "Application preview",
     "monthlyTotal": "Recurring monthly total",
     "ghostSpending": "Ghost expenses",

@@ -33,6 +33,11 @@
   transition: border-color 140ms ease;
 }
 
+.select option {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
 .select:focus {
   outline: 2px solid var(--color-focus);
   outline-offset: 1px;
