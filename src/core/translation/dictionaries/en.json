@@ -100,16 +100,36 @@
     "searchSubscriptions": "Search a service…",
     "searchInvoices": "Search a cost…",
     "searchLabel": "Search your {kind}",
+    "statThisMonth": "This month",
+    "statPerYear": "Per year",
+    "statNext": "Next due date",
+    "statDueCount": {
+      "one": "{count} due date",
+      "other": "{count} due dates"
+    },
+    "statNothingDue": "nothing this month",
+    "statRecurring": {
+      "one": "{count} recurring line",
+      "other": "{count} recurring lines"
+    },
+    "statExcluded": {
+      "one": "excludes {count} one-off line",
+      "other": "excludes {count} one-off lines"
+    },
+    "statNoRecurring": "no recurring line",
+    "statNoNext": "nothing coming up",
+    "sortLabel": "Sort the list",
+    "sort_due": "Next due date",
+    "sort_amount": "Amount",
+    "sort_title": "Name",
+    "perYear": "{amount}/yr",
+    "allCategories": "All ({count})",
+    "noCategoryTitle": "Nothing in those categories",
+    "clearFilters": "Show everything",
     "results": {
       "one": "{count} result of {total}",
       "other": "{count} results of {total}"
     },
-    "monthlyEquivalent": "Monthly equivalent",
-    "activeLines": {
-      "one": "{count} active line",
-      "other": "{count} active lines"
-    },
-    "shown": " shown",
     "paused": "paused",
     "archived": "archived",
     "pause": "Pause",
@@ -146,8 +166,7 @@
     "addSubscription": "Add a subscription",
     "addInvoice": "Add a bill",
     "noResultsTitle": "No result for “{query}”",
-    "noResultsBody": "Try another name or another category.",
-    "clearSearch": "Clear the search"
+    "noResultsBody": "Try another name or another category."
   },
   "form": {
     "newSubscription": "New subscription",

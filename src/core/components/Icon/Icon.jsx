@@ -44,7 +44,6 @@ const ICONS = {
   edit: Edit2,
   delete: Trash,
   done: TickCircle,
-  undone: CloseCircle,
   previous: ArrowLeft2,
   next: ArrowRight2,
   expand: ArrowDown2,

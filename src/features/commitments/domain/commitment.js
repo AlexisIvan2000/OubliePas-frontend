@@ -50,6 +50,69 @@ export function categoryOptions(t, type) {
   return CATEGORIES[type].map((value) => ({ value, label: t(`category.${value}`) }));
 }
 
+export const MONTHLY_FACTOR = { weekly: 52 / 12, monthly: 1, quarterly: 1 / 3, yearly: 1 / 12 };
+export const ANNUAL_FACTOR = { weekly: 52, monthly: 12, quarterly: 4, yearly: 1 };
+
+export function isRecurring(commitment) {
+  return Object.hasOwn(MONTHLY_FACTOR, commitment.frequency);
+}
+
+export function runRate(commitments) {
+  const recurring = commitments.filter(isRecurring);
+  if (!recurring.length) {
+    return { monthly: null, annual: null, lines: 0, oneoff: commitments.length };
+  }
+
+  return {
+    monthly: recurring.reduce(
+      (total, item) => total + Number(item.amount) * MONTHLY_FACTOR[item.frequency],
+      0,
+    ),
+    annual: recurring.reduce(
+      (total, item) => total + Number(item.amount) * ANNUAL_FACTOR[item.frequency],
+      0,
+    ),
+    lines: recurring.length,
+    oneoff: commitments.length - recurring.length,
+  };
+}
+
+export const SORTS = ["due", "amount", "title"];
+
+const COMPARATORS = {
+  due: (left, right) => {
+    if (left.nextDueDate === right.nextDueDate) return 0;
+    if (!left.nextDueDate) return 1;
+    if (!right.nextDueDate) return -1;
+    return left.nextDueDate < right.nextDueDate ? -1 : 1;
+  },
+  amount: (left, right) => Number(right.amount) - Number(left.amount),
+  title: (left, right) => left.title.localeCompare(right.title),
+};
+
+export function sortCommitments(commitments, sort) {
+  return [...commitments].sort(
+    (left, right) => COMPARATORS[sort](left, right) || COMPARATORS.title(left, right),
+  );
+}
+
+export function categoryCounts(commitments) {
+  const counts = new Map();
+  commitments.forEach((item) => {
+    counts.set(item.category, (counts.get(item.category) ?? 0) + 1);
+  });
+  return [...counts.entries()]
+    .map(([category, count]) => ({ category, count }))
+    .sort((left, right) => right.count - left.count || left.category.localeCompare(right.category));
+}
+
+export function nextUp(commitments) {
+  return sortCommitments(
+    commitments.filter((item) => item.nextDueDate),
+    "due",
+  )[0] ?? null;
+}
+
 export const CHART_COLORS = [
   "var(--chart-1)",
   "var(--chart-2)",

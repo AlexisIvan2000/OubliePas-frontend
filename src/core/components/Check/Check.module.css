@@ -1,0 +1,75 @@
+.check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.compact {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.check:hover:not(:disabled) {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.check:disabled {
+  cursor: default;
+}
+
+.paid {
+  color: var(--color-success-text);
+}
+
+.mark {
+  position: relative;
+  display: inline-flex;
+  width: 1.125rem;
+  height: 1.125rem;
+  animation: global(checkPop) 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.circle {
+  position: absolute;
+  inset: 1.5px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.55;
+  transition: opacity 140ms ease;
+}
+
+.tick {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.check:hover:not(:disabled) .circle {
+  opacity: 0;
+}
+
+.check:hover:not(:disabled) .tick {
+  opacity: 0.4;
+}
+
+.paid .circle {
+  opacity: 0;
+}
+
+.paid .tick,
+.paid:hover:not(:disabled) .tick {
+  opacity: 1;
+}

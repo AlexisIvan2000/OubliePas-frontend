@@ -100,16 +100,36 @@
     "searchSubscriptions": "Rechercher un service…",
     "searchInvoices": "Rechercher une charge…",
     "searchLabel": "Rechercher parmi vos {kind}",
+    "statThisMonth": "Ce mois-ci",
+    "statPerYear": "Par an",
+    "statNext": "Prochaine échéance",
+    "statDueCount": {
+      "one": "{count} échéance",
+      "other": "{count} échéances"
+    },
+    "statNothingDue": "rien ce mois-ci",
+    "statRecurring": {
+      "one": "{count} ligne récurrente",
+      "other": "{count} lignes récurrentes"
+    },
+    "statExcluded": {
+      "one": "hors {count} ligne ponctuelle",
+      "other": "hors {count} lignes ponctuelles"
+    },
+    "statNoRecurring": "aucune ligne récurrente",
+    "statNoNext": "aucune échéance à venir",
+    "sortLabel": "Trier la liste",
+    "sort_due": "Prochaine échéance",
+    "sort_amount": "Montant",
+    "sort_title": "Nom",
+    "perYear": "{amount}/an",
+    "allCategories": "Toutes ({count})",
+    "noCategoryTitle": "Rien dans ces catégories",
+    "clearFilters": "Tout afficher",
     "results": {
       "one": "{count} résultat sur {total}",
       "other": "{count} résultats sur {total}"
     },
-    "monthlyEquivalent": "Équivalent mensuel",
-    "activeLines": {
-      "one": "{count} ligne active",
-      "other": "{count} lignes actives"
-    },
-    "shown": " affichées",
     "paused": "en pause",
     "archived": "archivé",
     "pause": "Mettre en pause",
@@ -146,8 +166,7 @@
     "addSubscription": "Ajouter un abonnement",
     "addInvoice": "Ajouter une facture",
     "noResultsTitle": "Aucun résultat pour « {query} »",
-    "noResultsBody": "Essayez un autre nom ou une autre catégorie.",
-    "clearSearch": "Effacer la recherche"
+    "noResultsBody": "Essayez un autre nom ou une autre catégorie."
   },
   "form": {
     "newSubscription": "Nouvel abonnement",

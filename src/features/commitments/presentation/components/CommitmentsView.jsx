@@ -12,16 +12,25 @@ import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { deleteCommitment, updateCommitment } from "../../data/commitmentsApi";
-import { COMMITMENT_TYPES, STATUS_TOAST_KEYS, matchesQuery } from "../../domain/commitment";
-import { formatMoney } from "../../domain/formatting";
+import {
+  COMMITMENT_TYPES,
+  SORTS,
+  STATUS_TOAST_KEYS,
+  categoryCounts,
+  categoryLabel,
+  matchesQuery,
+  nextUp,
+  runRate,
+  sortCommitments,
+} from "../../domain/commitment";
+import { monthRange, useOccurrences } from "../providers/useOccurrences";
 import { useCommitments } from "../providers/useCommitments";
 import styles from "../styles/commitments.module.css";
 import { CommitmentFormDialog } from "./CommitmentFormDialog";
 import { CommitmentListSkeleton } from "./CommitmentListSkeleton";
 import { CommitmentRow } from "./CommitmentRow";
+import { CommitmentStats } from "./CommitmentStats";
 import { EmptyState } from "./EmptyState";
-
-const MONTHLY_FACTOR = { weekly: 52 / 12, monthly: 1, quarterly: 1 / 3, yearly: 1 / 12, oneoff: 0 };
 
 export function CommitmentsView({ type }) {
   const { t } = useTranslation();
@@ -29,7 +38,12 @@ export function CommitmentsView({ type }) {
   const toast = useToast();
   const { items, loading, error, reload } = useCommitments(type);
 
+  const range = useMemo(() => monthRange(new Date()), []);
+  const { items: occurrences, loading: dueLoading } = useOccurrences(range);
+
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState("due");
+  const [picked, setPicked] = useState(() => new Set());
   const [editing, setEditing] = useState(null);
   const [formOpen, setFormOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState(null);
@@ -49,24 +63,48 @@ export function CommitmentsView({ type }) {
     [items, showArchived],
   );
 
+  const buckets = useMemo(() => categoryCounts(pool), [pool]);
+
   const visible = useMemo(
-    () => pool.filter((item) => matchesQuery(t, item, query)),
-    [pool, query, t],
+    () =>
+      sortCommitments(
+        pool.filter(
+          (item) =>
+            (picked.size === 0 || picked.has(item.category)) && matchesQuery(t, item, query),
+        ),
+        sort,
+      ),
+    [pool, picked, query, sort, t],
   );
 
   const active = useMemo(() => visible.filter((item) => item.status === "active"), [visible]);
+  const rate = useMemo(() => runRate(active), [active]);
+  const next = useMemo(() => nextUp(active), [active]);
 
-  const monthly = useMemo(
-    () =>
-      active.reduce(
-        (total, item) => total + Number(item.amount) * MONTHLY_FACTOR[item.frequency],
-        0,
-      ),
-    [active],
+  const dueThisMonth = useMemo(() => {
+    const ids = new Set(visible.map((item) => item.id));
+    return occurrences.filter(
+      (row) => row.status !== "skipped" && ids.has(row.commitmentId),
+    );
+  }, [occurrences, visible]);
+
+  const monthTotal = useMemo(
+    () => dueThisMonth.reduce((total, row) => total + Number(row.amount), 0),
+    [dueThisMonth],
   );
 
   const currency = user?.currency ?? "CAD";
   const searching = query.trim().length > 0;
+  const filtering = searching || picked.size > 0;
+
+  const toggleCategory = (category) =>
+    setPicked((current) => {
+      const next = new Set(current);
+      if (!next.delete(category)) {
+        next.add(category);
+      }
+      return next;
+    });
 
   const openCreate = () => {
     setEditing(null);
@@ -114,37 +152,75 @@ export function CommitmentsView({ type }) {
       </header>
 
       {items.length ? (
-        <div className={styles.toolbar}>
-          <SearchField
-            className={styles.search}
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            onClear={() => setQuery("")}
-            label={t("commitments.searchLabel", { kind: title.toLowerCase() })}
-            placeholder={t(meta.searchKey)}
+        <>
+          <CommitmentStats
+            month={monthTotal}
+            due={dueThisMonth.length}
+            pending={dueLoading}
+            rate={rate}
+            next={next}
+            currency={currency}
           />
-          {archivedCount || showArchived ? (
-            <Chip active={showArchived} onClick={() => setShowArchived((current) => !current)}>
-              {t("commitments.showArchived", { count: archivedCount })}
-            </Chip>
-          ) : null}
-          {searching ? (
-            <span className={styles.results}>
-              {t("commitments.results", { count: visible.length, total: pool.length })}
-            </span>
-          ) : null}
-        </div>
-      ) : null}
 
-      {active.length ? (
-        <div className={styles.total}>
-          <span className={styles.totalLabel}>{t("commitments.monthlyEquivalent")}</span>
-          <span className={styles.totalValue}>{formatMoney(monthly, currency)}</span>
-          <span className={styles.totalNote}>
-            {t("commitments.activeLines", { count: active.length })}
-            {searching ? t("commitments.shown") : ""}
-          </span>
-        </div>
+          <div className={styles.toolbar}>
+            <SearchField
+              className={styles.search}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onClear={() => setQuery("")}
+              label={t("commitments.searchLabel", { kind: title.toLowerCase() })}
+              placeholder={t(meta.searchKey)}
+            />
+
+            <select
+              className={styles.sort}
+              value={sort}
+              onChange={(event) => setSort(event.target.value)}
+              aria-label={t("commitments.sortLabel")}
+            >
+              {SORTS.map((value) => (
+                <option key={value} value={value}>
+                  {t(`commitments.sort_${value}`)}
+                </option>
+              ))}
+            </select>
+
+            {archivedCount || showArchived ? (
+              <Chip active={showArchived} onClick={() => setShowArchived((current) => !current)}>
+                {t("commitments.showArchived", { count: archivedCount })}
+              </Chip>
+            ) : null}
+          </div>
+
+          {buckets.length > 1 ? (
+            <div className={styles.filters}>
+              <Chip
+                className={styles.filterChip}
+                active={picked.size === 0}
+                onClick={() => setPicked(new Set())}
+              >
+                {t("commitments.allCategories", { count: pool.length })}
+              </Chip>
+              {buckets.map((bucket) => (
+                <Chip
+                  key={bucket.category}
+                  className={styles.filterChip}
+                  active={picked.has(bucket.category)}
+                  onClick={() => toggleCategory(bucket.category)}
+                >
+                  {categoryLabel(t, bucket.category)}
+                  <span className={styles.filterCount}>{bucket.count}</span>
+                </Chip>
+              ))}
+            </div>
+          ) : null}
+
+          {filtering ? (
+            <p className={styles.results}>
+              {t("commitments.results", { count: visible.length, total: pool.length })}
+            </p>
+          ) : null}
+        </>
       ) : null}
 
       {error ? <Alert variant="error">{messageForError(t, error)}</Alert> : null}
@@ -165,13 +241,20 @@ export function CommitmentsView({ type }) {
             />
           ))}
         </ul>
-      ) : searching ? (
+      ) : filtering ? (
         <EmptyState
           icon="search"
-          title={t("commitments.noResultsTitle", { query: query.trim() })}
+          title={
+            searching
+              ? t("commitments.noResultsTitle", { query: query.trim() })
+              : t("commitments.noCategoryTitle")
+          }
           message={t("commitments.noResultsBody")}
-          actionLabel={t("commitments.clearSearch")}
-          onAction={() => setQuery("")}
+          actionLabel={t("commitments.clearFilters")}
+          onAction={() => {
+            setQuery("");
+            setPicked(new Set());
+          }}
         />
       ) : archivedCount ? (
         <EmptyState

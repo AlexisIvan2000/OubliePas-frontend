@@ -1,5 +1,4 @@
-import { Icon } from "../../../../core/components/Icon/Icon";
-import { Spinner } from "../../../../core/components/Spinner/Spinner";
+import { Check } from "../../../../core/components/Check/Check";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { categoryLabel, occurrenceStatus } from "../../domain/commitment";
@@ -21,23 +20,14 @@ export function OccurrenceRow({ occurrence, currency, busy, index = 0, onToggle 
       )}
       style={{ "--enter-delay": `${Math.min(index, 12) * 40}ms` }}
     >
-      <button
-        type="button"
-        className={cx(styles.check, paid && styles.checked)}
+      <Check
+        paid={paid}
+        busy={busy}
         onClick={() => onToggle(occurrence)}
-        disabled={busy}
-        aria-label={t(paid ? "occurrence.markPending" : "occurrence.markPaid", {
+        label={t(paid ? "occurrence.markPending" : "occurrence.markPaid", {
           title: occurrence.title,
         })}
-      >
-        {busy ? (
-          <Spinner size={14} />
-        ) : (
-          <span key={occurrence.status} className={styles.checkGlyph}>
-            <Icon name={paid ? "done" : "undone"} size={18} />
-          </span>
-        )}
-      </button>
+      />
 
       <div className={styles.occurrenceMain}>
         <div className={styles.occurrenceTitle}>{occurrence.title}</div>

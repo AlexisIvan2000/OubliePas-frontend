@@ -1,8 +1,8 @@
-import { useEffect, useId, useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { Check } from "../../../../core/components/Check/Check";
 import { Icon } from "../../../../core/components/Icon/Icon";
-import { Spinner } from "../../../../core/components/Spinner/Spinner";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { buildStripDays } from "../../domain/calendar";
@@ -16,10 +16,8 @@ export function UpcomingStrip({ items, days, currency, busyId, onToggle }) {
   const panelId = useId();
 
   const cells = useMemo(() => buildStripDays(items, new Date(), days), [items, days]);
-  const firstBusy = cells.find((cell) => cell.events.length)?.iso ?? null;
-  const [selected, setSelected] = useState(firstBusy);
-
-  useEffect(() => setSelected(firstBusy), [firstBusy]);
+  const firstBusy = cells.find((cell) => cell.events.length) ?? null;
+  const [picked, setPicked] = useState(null);
 
   if (!firstBusy) {
     const [before, middle, after] = t("dashboard.upcomingEmptyAdd").split(
@@ -37,7 +35,7 @@ export function UpcomingStrip({ items, days, currency, busyId, onToggle }) {
     );
   }
 
-  const open = cells.find((cell) => cell.iso === selected) ?? null;
+  const open = cells.find((cell) => cell.iso === picked && cell.events.length) ?? firstBusy;
 
   return (
     <>
@@ -51,12 +49,12 @@ export function UpcomingStrip({ items, days, currency, busyId, onToggle }) {
               cell.isToday && styles.today,
               cell.events.length && styles.loaded,
               cell.settled && styles.settled,
-              selected === cell.iso && styles.open,
+              open?.iso === cell.iso && styles.open,
             )}
             style={{ "--enter-delay": `${index * 22}ms`, "--fill": cell.fill }}
             disabled={!cell.events.length}
             aria-controls={cell.events.length ? panelId : undefined}
-            aria-current={selected === cell.iso ? "true" : undefined}
+            aria-current={open?.iso === cell.iso ? "true" : undefined}
             aria-label={
               cell.events.length
                 ? t("dashboard.dayAria", {
@@ -66,7 +64,7 @@ export function UpcomingStrip({ items, days, currency, busyId, onToggle }) {
                   })
                 : t("dashboard.dayEmptyAria", { date: formatDate(cell.iso) })
             }
-            onClick={() => setSelected(cell.iso)}
+            onClick={() => setPicked(cell.iso)}
           >
             <span className={styles.weekday}>{weekdays[cell.weekday]}</span>
             <span className={styles.number}>{cell.day}</span>
@@ -98,21 +96,15 @@ export function UpcomingStrip({ items, days, currency, busyId, onToggle }) {
                   className={cx(styles.line, paid && styles.linePaid)}
                   style={{ "--enter-delay": `${index * 45}ms` }}
                 >
-                  <button
-                    type="button"
-                    className={cx(styles.check, paid && styles.checked)}
-                    disabled={busyId === event.id}
+                  <Check
+                    compact
+                    paid={paid}
+                    busy={busyId === event.id}
                     onClick={() => onToggle(event)}
-                    aria-label={t(paid ? "occurrence.markPending" : "occurrence.markPaid", {
+                    label={t(paid ? "occurrence.markPending" : "occurrence.markPaid", {
                       title: event.title,
                     })}
-                  >
-                    {busyId === event.id ? (
-                      <Spinner size={14} />
-                    ) : (
-                      <Icon name={paid ? "done" : "undone"} size={18} />
-                    )}
-                  </button>
+                  />
 
                   <span className={styles.lineMain}>
                     <span className={styles.lineTitle}>

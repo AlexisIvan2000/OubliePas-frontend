@@ -79,7 +79,7 @@
   border-radius: var(--radius-sm);
   font-size: 0.875rem;
   transition: background-color 140ms ease;
-  animation: fade 0.32s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+  animation: global(fade) 0.32s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
   animation-delay: var(--enter-delay, 0ms);
 }
 

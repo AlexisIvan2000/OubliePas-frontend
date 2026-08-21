@@ -3,6 +3,7 @@ import { Menu } from "../../../../core/components/Menu/Menu";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import {
+  ANNUAL_FACTOR,
   FREQUENCY_SHORT_KEYS,
   STATUS_TAG_KEYS,
   categoryLabel,
@@ -22,6 +23,8 @@ export function CommitmentRow({
   const { t } = useTranslation();
   const dimmed = commitment.status !== "active";
   const tagKey = STATUS_TAG_KEYS[commitment.status];
+  const factor = ANNUAL_FACTOR[commitment.frequency];
+  const annual = factor && factor !== 1 ? Number(commitment.amount) * factor : null;
 
   const items = [
     ...statusActions(t, commitment, onStatusChange),
@@ -71,7 +74,14 @@ export function CommitmentRow({
         )}
       </div>
 
-      <div className={styles.rowAmount}>{formatMoney(commitment.amount, currency)}</div>
+      <div className={styles.rowAmount}>
+        <div>{formatMoney(commitment.amount, currency)}</div>
+        {annual ? (
+          <div className={styles.rowAnnual}>
+            {t("commitments.perYear", { amount: formatMoney(annual, currency) })}
+          </div>
+        ) : null}
+      </div>
 
       <div className={styles.rowActions}>
         <button
