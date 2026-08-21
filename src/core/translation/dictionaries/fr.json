@@ -34,6 +34,9 @@
     "signOut": "Déconnexion"
   },
   "legal": {
+    "sectionTitle": "Documents",
+    "termsHint": "Ce que vous acceptez en utilisant {entity}.",
+    "privacyHint": "Ce qui est collecté, pourquoi et pour combien de temps.",
     "terms": "Conditions d’utilisation",
     "privacy": "Politique de confidentialité",
     "contact": "Nous écrire",

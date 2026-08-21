@@ -36,10 +36,15 @@
   letter-spacing: -0.01em;
 }
 
-.sheet {
+.standalone,
+.inShell {
   width: 100%;
   max-width: 48rem;
   margin: 0 auto;
+}
+
+.sheet {
+  width: 100%;
   padding: 2.5rem clamp(1.25rem, 4vw, 3rem) 3rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -121,6 +126,7 @@
   color: var(--color-text-muted);
 }
 
+.crossNav,
 .footer {
   display: flex;
   align-items: center;
@@ -128,10 +134,15 @@
   gap: 1rem;
   flex-wrap: wrap;
   width: 100%;
-  max-width: 48rem;
-  margin: 1.5rem auto 0;
-  padding: 1.5rem 0 2.5rem;
+  margin-top: 1.25rem;
+  padding: 1.25rem 0 0;
   font-size: 0.875rem;
+}
+
+.footer {
+  max-width: 48rem;
+  margin: 0.5rem auto 0;
+  padding: 1.25rem 0 2.5rem;
 }
 
 .crossLink {

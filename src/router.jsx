@@ -4,6 +4,7 @@ import { HomeRoute } from "./core/pages/HomeRoute";
 import { PrivacyPage } from "./core/pages/legal/PrivacyPage";
 import { TermsPage } from "./core/pages/legal/TermsPage";
 import { NotFoundPage } from "./core/pages/NotFoundPage";
+import { RootLayout } from "./core/pages/RootLayout";
 import { RemindersPage } from "./features/notifications/presentation/pages/RemindersPage";
 import { CalendarPage } from "./features/commitments/presentation/pages/CalendarPage";
 import { InvoicesPage } from "./features/commitments/presentation/pages/InvoicesPage";
@@ -19,29 +20,34 @@ import { ResetPasswordPage } from "./features/authentication/presentation/pages/
 import { VerifyEmailPage } from "./features/authentication/presentation/pages/VerifyEmailPage";
 
 export const router = createBrowserRouter([
-  { path: "/", element: <HomeRoute /> },
-  { path: "/conditions", element: <TermsPage /> },
-  { path: "/confidentialite", element: <PrivacyPage /> },
   {
-    element: <GuestLayout />,
+    element: <RootLayout />,
     children: [
-      { path: "/connexion", element: <LoginPage /> },
-      { path: "/inscription", element: <RegisterPage /> },
-      { path: "/verification", element: <VerifyEmailPage /> },
-      { path: "/mot-de-passe-oublie", element: <ForgotPasswordPage /> },
-      { path: "/reinitialisation", element: <ResetPasswordPage /> },
-      { path: "/auth/google/callback", element: <GoogleCallbackPage /> },
+      { path: "/", element: <HomeRoute /> },
+      { path: "/conditions", element: <TermsPage /> },
+      { path: "/confidentialite", element: <PrivacyPage /> },
+      {
+        element: <GuestLayout />,
+        children: [
+          { path: "/connexion", element: <LoginPage /> },
+          { path: "/inscription", element: <RegisterPage /> },
+          { path: "/verification", element: <VerifyEmailPage /> },
+          { path: "/mot-de-passe-oublie", element: <ForgotPasswordPage /> },
+          { path: "/reinitialisation", element: <ResetPasswordPage /> },
+          { path: "/auth/google/callback", element: <GoogleCallbackPage /> },
+        ],
+      },
+      {
+        element: <PrivateLayout />,
+        children: [
+          { path: "/reglages", element: <ProfilePage /> },
+          { path: "/abonnements", element: <SubscriptionsPage /> },
+          { path: "/calendrier", element: <CalendarPage /> },
+          { path: "/factures", element: <InvoicesPage /> },
+          { path: "/rappels", element: <RemindersPage /> },
+        ],
+      },
+      { path: "*", element: <NotFoundPage /> },
     ],
   },
-  {
-    element: <PrivateLayout />,
-    children: [
-      { path: "/reglages", element: <ProfilePage /> },
-      { path: "/abonnements", element: <SubscriptionsPage /> },
-      { path: "/calendrier", element: <CalendarPage /> },
-      { path: "/factures", element: <InvoicesPage /> },
-      { path: "/rappels", element: <RemindersPage /> },
-    ],
-  },
-  { path: "*", element: <NotFoundPage /> },
 ]);

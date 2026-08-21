@@ -34,6 +34,9 @@
     "signOut": "Sign out"
   },
   "legal": {
+    "sectionTitle": "Documents",
+    "termsHint": "What you agree to by using {entity}.",
+    "privacyHint": "What is collected, why, and for how long.",
     "terms": "Terms of use",
     "privacy": "Privacy policy",
     "contact": "Contact us",
