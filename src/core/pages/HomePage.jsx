@@ -20,11 +20,12 @@ import {
 import { Alert } from "../components/Alert/Alert";
 import { Card } from "../components/Card/Card";
 import { useToast } from "../components/Toast/useToast";
-import { formatLongDate } from "../utils/formatting";
+import { formatLongDate, parseDate } from "../utils/formatting";
 import { greetingKey, greetingSlot, msUntilNextSlot } from "../utils/greeting";
 import { messageForError } from "../network/errorMessages";
 import { useTranslation } from "../../core/translation/useTranslation";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
+import { useToday } from "../utils/useToday";
 import styles from "./HomePage.module.css";
 
 export function HomePage() {
@@ -42,7 +43,8 @@ export function HomePage() {
     revalidate: reloadSummary,
   } = useResource("summary", getSummary);
 
-  const range = useMemo(() => upcomingRange(new Date(), STRIP_DAYS), []);
+  const today = useToday();
+  const range = useMemo(() => upcomingRange(parseDate(today), STRIP_DAYS), [today]);
   const { items, loading, error: dueError, setItems } = useOccurrences(range);
 
   const categories = useMemo(

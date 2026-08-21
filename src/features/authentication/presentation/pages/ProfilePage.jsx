@@ -7,7 +7,7 @@ import { AvatarCard } from "../components/AvatarCard";
 import { DangerZone } from "../components/DangerZone";
 import { EmailSection } from "../components/EmailSection";
 import { LanguageSection } from "../components/LanguageSection";
-import { LegalSection } from "../components/LegalSection";
+import { LegalSection, SupportSection } from "../components/LegalSection";
 import { ProfileFieldsCard } from "../components/ProfileFieldsCard";
 import { SecuritySection } from "../components/SecuritySection";
 import { ThemeSection } from "../components/ThemeSection";
@@ -75,6 +75,7 @@ export function ProfilePage() {
           <LanguageSection />
           <ThemeSection />
           <LegalSection />
+          <SupportSection />
         </TabPanel>
       ) : null}
     </div>

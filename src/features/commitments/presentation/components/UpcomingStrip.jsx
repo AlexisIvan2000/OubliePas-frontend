@@ -7,7 +7,14 @@ import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { buildStripDays } from "../../domain/calendar";
 import { COMMITMENT_TYPES, categoryLabel } from "../../domain/commitment";
-import { formatDate, formatMoney, formatWeekdays, relativeDue } from "../../domain/formatting";
+import { useToday } from "../../../../core/utils/useToday";
+import {
+  formatDate,
+  formatMoney,
+  formatWeekdays,
+  parseDate,
+  relativeDue,
+} from "../../domain/formatting";
 import styles from "../styles/upcoming.module.css";
 
 export function UpcomingStrip({ items, days, currency, busyId, onToggle }) {
@@ -15,7 +22,11 @@ export function UpcomingStrip({ items, days, currency, busyId, onToggle }) {
   const weekdays = formatWeekdays();
   const panelId = useId();
 
-  const cells = useMemo(() => buildStripDays(items, new Date(), days), [items, days]);
+  const today = useToday();
+  const cells = useMemo(
+    () => buildStripDays(items, parseDate(today), days),
+    [items, today, days],
+  );
   const firstBusy = cells.find((cell) => cell.events.length) ?? null;
   const [picked, setPicked] = useState(null);
 

@@ -6,10 +6,11 @@ import { useToast } from "../../../../core/components/Toast/useToast";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
+import { useToday } from "../../../../core/utils/useToday";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { updateOccurrence } from "../../data/commitmentsApi";
 import { buildMonthCells } from "../../domain/calendar";
-import { formatMoney, formatMonth } from "../../domain/formatting";
+import { formatMoney, formatMonth, parseDate } from "../../domain/formatting";
 import { MonthGrid } from "../components/MonthGrid";
 import { MonthGridSkeleton } from "../components/MonthGridSkeleton";
 import { OccurrenceRow } from "../components/OccurrenceRow";
@@ -23,6 +24,7 @@ export function CalendarPage() {
   const toast = useToast();
   const [cursor, setCursor] = useState(() => new Date());
   const [busyId, setBusyId] = useState(null);
+  const today = useToday();
 
   useDocumentTitle(t("calendar.documentTitle"));
 
@@ -32,7 +34,10 @@ export function CalendarPage() {
   const currency = user?.currency ?? "CAD";
   const monthLabel = formatMonth(range.start.slice(0, 7));
 
-  const cells = useMemo(() => buildMonthCells(cursor, items), [cursor, items]);
+  const cells = useMemo(
+    () => buildMonthCells(cursor, items, parseDate(today)),
+    [cursor, items, today],
+  );
 
   const remaining = useMemo(
     () =>

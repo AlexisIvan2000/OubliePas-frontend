@@ -10,6 +10,7 @@ import { useToast } from "../../../../core/components/Toast/useToast";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
+import { useToday } from "../../../../core/utils/useToday";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { deleteCommitment, updateCommitment } from "../../data/commitmentsApi";
 import {
@@ -23,6 +24,7 @@ import {
   runRate,
   sortCommitments,
 } from "../../domain/commitment";
+import { parseDate } from "../../domain/formatting";
 import { monthRange, useOccurrences } from "../providers/useOccurrences";
 import { useCommitments } from "../providers/useCommitments";
 import styles from "../styles/commitments.module.css";
@@ -38,8 +40,9 @@ export function CommitmentsView({ type }) {
   const toast = useToast();
   const { items, loading, error, reload } = useCommitments(type);
 
-  const range = useMemo(() => monthRange(new Date()), []);
-  const { items: occurrences, loading: dueLoading } = useOccurrences(range);
+  const today = useToday();
+  const range = useMemo(() => monthRange(parseDate(today)), [today]);
+  const { items: occurrences, loading: dueLoading, reload: reloadDue } = useOccurrences(range);
 
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("due");
@@ -97,6 +100,8 @@ export function CommitmentsView({ type }) {
   const searching = query.trim().length > 0;
   const filtering = searching || picked.size > 0;
 
+  const refresh = () => Promise.all([reload(), reloadDue()]);
+
   const toggleCategory = (category) =>
     setPicked((current) => {
       const next = new Set(current);
@@ -120,7 +125,7 @@ export function CommitmentsView({ type }) {
     try {
       await updateCommitment(commitment.id, { status });
       toast.push(t(STATUS_TOAST_KEYS[status], { title: commitment.title }));
-      await reload();
+      await refresh();
     } catch (caught) {
       toast.push(messageForError(t, caught), "error");
     }
@@ -132,7 +137,7 @@ export function CommitmentsView({ type }) {
     try {
       await deleteCommitment(target.id);
       toast.push(t("commitments.deleted", { title: target.title }));
-      await reload();
+      await refresh();
     } catch (caught) {
       toast.push(messageForError(t, caught), "error");
     }
@@ -284,7 +289,7 @@ export function CommitmentsView({ type }) {
             toast.push(
               t(editing ? "commitments.updated" : "commitments.created", { title: saved.title }),
             );
-            reload();
+            refresh();
           }}
         />
       ) : null}

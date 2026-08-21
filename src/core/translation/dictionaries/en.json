@@ -34,6 +34,8 @@
     "signOut": "Sign out"
   },
   "legal": {
+    "supportTitle": "Support",
+    "supportHint": "A question or a problem? We answer.",
     "sectionTitle": "Documents",
     "termsHint": "What you agree to by using {entity}.",
     "privacyHint": "What is collected, why, and for how long.",
@@ -183,6 +185,11 @@
     "noResultsBody": "Try another name or another category."
   },
   "form": {
+    "suggestHint": "Suggestions — type freely if your service is not listed.",
+    "suggestCount": {
+      "one": "{count} suggestion",
+      "other": "{count} suggestions"
+    },
     "newSubscription": "New subscription",
     "newInvoice": "New bill",
     "editTitle": "Edit {title}",
@@ -212,6 +219,43 @@
     "shortQuarterly": "per quarter",
     "shortYearly": "per year",
     "shortOneoff": "once"
+  },
+  "catalog": {
+    "gym": "Gym membership",
+    "yoga": "Yoga classes",
+    "charity": "Monthly donation",
+    "cloudGaming": "Cloud gaming",
+    "meals": "Meal kit",
+    "petFood": "Pet food delivery",
+    "rent": "Rent",
+    "mortgage": "Mortgage",
+    "condoFees": "Condo fees",
+    "maintenance": "Home maintenance",
+    "electricity": "Electricity",
+    "naturalGas": "Natural gas",
+    "heatingOil": "Heating oil",
+    "water": "Water",
+    "internet": "Internet",
+    "mobile": "Mobile plan",
+    "landline": "Landline",
+    "cable": "Television",
+    "homeInsurance": "Home insurance",
+    "carInsurance": "Car insurance",
+    "lifeInsurance": "Life insurance",
+    "healthInsurance": "Health insurance",
+    "petInsurance": "Pet insurance",
+    "transitPass": "Transit pass",
+    "carPayment": "Car payment",
+    "fuel": "Fuel",
+    "parking": "Parking",
+    "vehicleRegistration": "Vehicle registration",
+    "propertyTax": "Property tax",
+    "schoolTax": "School tax",
+    "incomeTax": "Income tax",
+    "bankFees": "Bank fees",
+    "childcare": "Childcare",
+    "tuition": "Tuition",
+    "storageUnit": "Storage unit"
   },
   "category": {
     "entertainment": "Entertainment",

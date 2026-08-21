@@ -34,6 +34,8 @@
     "signOut": "Déconnexion"
   },
   "legal": {
+    "supportTitle": "Assistance",
+    "supportHint": "Une question ou un problème ? Nous répondons.",
     "sectionTitle": "Documents",
     "termsHint": "Ce que vous acceptez en utilisant {entity}.",
     "privacyHint": "Ce qui est collecté, pourquoi et pour combien de temps.",
@@ -183,6 +185,11 @@
     "noResultsBody": "Essayez un autre nom ou une autre catégorie."
   },
   "form": {
+    "suggestHint": "Suggestions — tapez librement si votre service n’y est pas.",
+    "suggestCount": {
+      "one": "{count} suggestion",
+      "other": "{count} suggestions"
+    },
     "newSubscription": "Nouvel abonnement",
     "newInvoice": "Nouvelle facture",
     "editTitle": "Modifier {title}",
@@ -212,6 +219,43 @@
     "shortQuarterly": "par trimestre",
     "shortYearly": "par an",
     "shortOneoff": "une fois"
+  },
+  "catalog": {
+    "gym": "Salle de sport",
+    "yoga": "Cours de yoga",
+    "charity": "Don mensuel",
+    "cloudGaming": "Jeu en nuage",
+    "meals": "Boîte repas",
+    "petFood": "Nourriture pour animaux",
+    "rent": "Loyer",
+    "mortgage": "Hypothèque",
+    "condoFees": "Frais de copropriété",
+    "maintenance": "Entretien du logement",
+    "electricity": "Électricité",
+    "naturalGas": "Gaz naturel",
+    "heatingOil": "Mazout",
+    "water": "Eau",
+    "internet": "Internet",
+    "mobile": "Forfait mobile",
+    "landline": "Téléphone résidentiel",
+    "cable": "Télévision",
+    "homeInsurance": "Assurance habitation",
+    "carInsurance": "Assurance auto",
+    "lifeInsurance": "Assurance vie",
+    "healthInsurance": "Assurance santé",
+    "petInsurance": "Assurance animaux",
+    "transitPass": "Titre de transport",
+    "carPayment": "Paiement de voiture",
+    "fuel": "Essence",
+    "parking": "Stationnement",
+    "vehicleRegistration": "Immatriculation",
+    "propertyTax": "Taxes municipales",
+    "schoolTax": "Taxes scolaires",
+    "incomeTax": "Impôt sur le revenu",
+    "bankFees": "Frais bancaires",
+    "childcare": "Garderie",
+    "tuition": "Frais de scolarité",
+    "storageUnit": "Entreposage"
   },
   "category": {
     "entertainment": "Divertissement",

@@ -31,12 +31,25 @@ export function LegalSection() {
           <Link key={entry.id} to={entry.to} className={styles.legalLink}>
             <span className={styles.legalMain}>
               <span className={styles.legalLabel}>{t(entry.labelKey)}</span>
-              <span className={styles.legalHint}>{t(entry.hintKey)}</span>
+              <span className={styles.legalHint}>
+                {t(entry.hintKey, { entity: LEGAL.entity })}
+              </span>
             </span>
             <Icon name="next" size={16} />
           </Link>
         ))}
 
+      </div>
+    </SettingsSection>
+  );
+}
+
+export function SupportSection() {
+  const { t } = useTranslation();
+
+  return (
+    <SettingsSection title={t("legal.supportTitle")} description={t("legal.supportHint")}>
+      <div className={styles.legalLinks}>
         <a href={`mailto:${LEGAL.contactEmail}`} className={styles.legalLink}>
           <span className={styles.legalMain}>
             <span className={styles.legalLabel}>{t("legal.contact")}</span>

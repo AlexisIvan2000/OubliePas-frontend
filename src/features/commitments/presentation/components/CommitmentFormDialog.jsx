@@ -3,13 +3,16 @@ import { useEffect, useMemo, useState } from "react";
 import { Alert } from "../../../../core/components/Alert/Alert";
 import { Button } from "../../../../core/components/Button/Button";
 import { SelectField } from "../../../../core/components/SelectField/SelectField";
+import { Suggest } from "../../../../core/components/Suggest/Suggest";
 import { TextField } from "../../../../core/components/TextField/TextField";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useAsyncAction } from "../../../../core/utils/useAsyncAction";
 import { createCommitment, updateCommitment } from "../../data/commitmentsApi";
+import { catalogLabel, findSuggestions } from "../../domain/catalog";
 import {
   COMMITMENT_TYPES,
+  categoryLabel,
   categoryOptions,
   emptyForm,
   formFromCommitment,
@@ -31,6 +34,19 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
 
   const frequencies = useMemo(() => frequencyOptions(t), [t]);
   const categories = useMemo(() => categoryOptions(t, type), [t, type]);
+  const suggestions = useMemo(
+    () => findSuggestions(t, type, form.title),
+    [t, type, form.title],
+  );
+
+  const pick = (entry) => {
+    setForm((current) => ({
+      ...current,
+      title: catalogLabel(t, entry),
+      category: entry.category,
+      frequency: entry.frequency ?? current.frequency,
+    }));
+  };
 
   useEffect(() => {
     const handler = (event) => event.key === "Escape" && onClose();
@@ -76,10 +92,16 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
             {save.error ? messageForError(t, save.error) : null}
           </Alert>
 
-          <TextField
+          <Suggest
             label={t("form.name")}
             value={form.title}
             onChange={set("title")}
+            items={suggestions}
+            onPick={pick}
+            renderLabel={(entry) => catalogLabel(t, entry)}
+            renderMeta={(entry) => categoryLabel(t, entry.category)}
+            emptyHint={t("form.suggestHint")}
+            countLabel={(count) => t("form.suggestCount", { count })}
             placeholder={t(meta.namePlaceholderKey)}
             maxLength={100}
             required
