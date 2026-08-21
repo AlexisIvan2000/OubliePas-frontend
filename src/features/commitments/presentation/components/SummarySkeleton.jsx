@@ -52,23 +52,36 @@ export function CategoryDonutSkeleton({ rows = 4 }) {
   );
 }
 
-export function UpcomingListSkeleton({ rows = 4 }) {
+export function UpcomingStripSkeleton({ days = 14, rows = 3 }) {
   const { t } = useTranslation();
 
   return (
-    <div className={styles.upcoming} aria-busy="true" aria-label={t("a11y.loadingUpcoming")}>
-      {Array.from({ length: rows }, (_, index) => (
-        <div className={styles.upcomingRow} key={index}>
-          <Skeleton width="3.25rem" height="0.75rem" delay={index * SHIMMER_STEP} />
+    <div aria-busy="true" aria-label={t("a11y.loadingUpcoming")}>
+      <div className={styles.strip}>
+        {Array.from({ length: days }, (_, index) => (
           <Skeleton
-            width={["6rem", "7.5rem", "5rem", "8rem"][index % 4]}
-            height="0.875rem"
-            delay={index * SHIMMER_STEP + 40}
-            className={styles.upcomingTitle}
+            key={index}
+            height="3.75rem"
+            radius="0.625rem"
+            delay={(index % 7) * SHIMMER_STEP}
           />
-          <Skeleton width="4rem" height="0.875rem" delay={index * SHIMMER_STEP + 80} />
-        </div>
-      ))}
+        ))}
+      </div>
+
+      <div className={styles.upcoming}>
+        {Array.from({ length: rows }, (_, index) => (
+          <div className={styles.upcomingRow} key={index}>
+            <Skeleton width="1.75rem" height="1.75rem" radius="50%" delay={index * SHIMMER_STEP} />
+            <Skeleton
+              width={["6rem", "7.5rem", "5rem"][index % 3]}
+              height="0.875rem"
+              delay={index * SHIMMER_STEP + 40}
+              className={styles.upcomingTitle}
+            />
+            <Skeleton width="4rem" height="0.875rem" delay={index * SHIMMER_STEP + 80} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

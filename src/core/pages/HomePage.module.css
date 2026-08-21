@@ -49,38 +49,10 @@
   margin-top: 1rem;
 }
 
-.categories {
-  margin-top: 1rem;
-}
-
 .rows {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-}
-
-.shortcuts {
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-}
-
-.shortcut {
-  display: block;
-  padding: 0.625rem 0.75rem;
-  margin: 0 -0.75rem;
-  border-radius: 0.5625rem;
-  font-size: 0.875rem;
-  color: var(--color-text);
-  text-decoration: none;
-  transition:
-    background-color 140ms ease,
-    color 140ms ease;
-}
-
-.shortcut:hover {
-  background-color: var(--color-surface-hover);
-  color: var(--color-link);
 }
 
 @media (max-width: 60rem) {

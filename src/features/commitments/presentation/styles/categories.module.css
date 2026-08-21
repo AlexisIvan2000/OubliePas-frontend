@@ -1,7 +1,8 @@
 .layout {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .ring {
@@ -59,7 +60,7 @@
 }
 
 .legend {
-  flex: 1;
+  align-self: stretch;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -122,13 +123,3 @@
   color: var(--color-text-muted);
 }
 
-@media (max-width: 48rem) {
-  .layout {
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .legend {
-    align-self: stretch;
-  }
-}

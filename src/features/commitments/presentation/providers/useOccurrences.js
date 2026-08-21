@@ -14,6 +14,17 @@ export function monthRange(reference) {
   };
 }
 
+export function upcomingRange(reference, days) {
+  const iso = (value) =>
+    `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}-${String(
+      value.getDate(),
+    ).padStart(2, "0")}`;
+
+  const start = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate());
+  const end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + days - 1);
+  return { start: iso(start), end: iso(end) };
+}
+
 export function useOccurrences({ start, end }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);

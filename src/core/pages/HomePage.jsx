@@ -1,19 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 
 import { useAuth } from "../../features/authentication/presentation/providers/useAuth";
-import { getSummary } from "../../features/commitments/data/commitmentsApi";
+import { getSummary, updateOccurrence } from "../../features/commitments/data/commitmentsApi";
+import { STRIP_DAYS } from "../../features/commitments/domain/calendar";
 import { topCategories } from "../../features/commitments/domain/commitment";
 import { CategoryDonut } from "../../features/commitments/presentation/components/CategoryDonut";
 import {
   CategoryDonutSkeleton,
   SummaryTilesSkeleton,
-  UpcomingListSkeleton,
+  UpcomingStripSkeleton,
 } from "../../features/commitments/presentation/components/SummarySkeleton";
 import { SummaryTiles } from "../../features/commitments/presentation/components/SummaryTiles";
-import { UpcomingList } from "../../features/commitments/presentation/components/UpcomingList";
+import { UpcomingStrip } from "../../features/commitments/presentation/components/UpcomingStrip";
+import {
+  upcomingRange,
+  useOccurrences,
+} from "../../features/commitments/presentation/providers/useOccurrences";
 import { Alert } from "../components/Alert/Alert";
 import { Card } from "../components/Card/Card";
+import { useToast } from "../components/Toast/useToast";
 import { formatLongDate } from "../utils/formatting";
 import { greetingKey, greetingSlot, msUntilNextSlot } from "../utils/greeting";
 import { messageForError } from "../network/errorMessages";
@@ -24,11 +29,16 @@ import styles from "./HomePage.module.css";
 export function HomePage() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const toast = useToast();
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState(null);
+  const [busyId, setBusyId] = useState(null);
   const [now, setNow] = useState(() => new Date());
 
   useDocumentTitle(t("dashboard.documentTitle"));
+
+  const range = useMemo(() => upcomingRange(new Date(), STRIP_DAYS), []);
+  const { items, loading, error: dueError, setItems } = useOccurrences(range);
 
   const categories = useMemo(
     () => topCategories(summary?.byCategory ?? []),
@@ -52,6 +62,25 @@ export function HomePage() {
     return () => clearTimeout(timer);
   }, [now]);
 
+  const currency = summary?.currency ?? user?.currency ?? "CAD";
+
+  const toggle = async (occurrence) => {
+    setBusyId(occurrence.id);
+    try {
+      const updated = await updateOccurrence(occurrence.id, {
+        status: occurrence.status === "paid" ? "pending" : "paid",
+      });
+      setItems((current) => current.map((row) => (row.id === updated.id ? updated : row)));
+      getSummary().then(setSummary).catch(setError);
+    } catch (caught) {
+      toast.push(messageForError(t, caught), "error");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const failure = error ?? dueError;
+
   return (
     <>
       <div className={styles.header}>
@@ -63,60 +92,43 @@ export function HomePage() {
         </div>
       </div>
 
-      {error ? <Alert variant="error">{messageForError(t, error)}</Alert> : null}
+      {failure ? <Alert variant="error">{messageForError(t, failure)}</Alert> : null}
 
       {summary ? <SummaryTiles summary={summary} /> : <SummaryTilesSkeleton />}
 
       <div className={styles.columns}>
         <Card
           title={t("dashboard.upcomingTitle")}
-          description={summary ? t("dashboard.upcomingWindow", { count: summary.upcomingDays }) : undefined}
+          description={t("dashboard.upcomingWindow", { count: STRIP_DAYS })}
         >
-          {summary ? (
-            <UpcomingList
-              items={summary.upcoming}
-              total={summary.upcomingTotal}
-              days={summary.upcomingDays}
-              currency={summary.currency}
-            />
+          {loading ? (
+            <UpcomingStripSkeleton days={STRIP_DAYS} />
           ) : (
-            <UpcomingListSkeleton />
+            <UpcomingStrip
+              items={items}
+              days={STRIP_DAYS}
+              currency={currency}
+              busyId={busyId}
+              onToggle={toggle}
+            />
           )}
         </Card>
 
-        <Card title={t("dashboard.shortcuts")}>
-          <div className={styles.shortcuts}>
-            <Link to="/abonnements" className={styles.shortcut}>
-              {t("dashboard.addSubscription")}
-            </Link>
-            <Link to="/factures" className={styles.shortcut}>
-              {t("dashboard.addInvoice")}
-            </Link>
-            <Link to="/calendrier" className={styles.shortcut}>
-              {t("dashboard.seeCalendar")}
-            </Link>
-            <Link to="/reglages" className={styles.shortcut}>
-              {t("dashboard.editSettings")}
-            </Link>
-          </div>
+        <Card
+          title={t("dashboard.categoriesTitle")}
+          description={t("dashboard.categoriesWindow")}
+        >
+          {summary ? (
+            <CategoryDonut
+              slices={categories.slices}
+              total={categories.total}
+              currency={summary.currency}
+            />
+          ) : (
+            <CategoryDonutSkeleton />
+          )}
         </Card>
       </div>
-
-      <Card
-        className={styles.categories}
-        title={t("dashboard.categoriesTitle")}
-        description={t("dashboard.categoriesWindow")}
-      >
-        {summary ? (
-          <CategoryDonut
-            slices={categories.slices}
-            total={categories.total}
-            currency={summary.currency}
-          />
-        ) : (
-          <CategoryDonutSkeleton />
-        )}
-      </Card>
     </>
   );
 }

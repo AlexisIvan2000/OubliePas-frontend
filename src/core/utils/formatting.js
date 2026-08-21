@@ -4,12 +4,14 @@ let activeLocale = "fr-CA";
 
 const dateFormatters = new Map();
 const moneyFormatters = new Map();
+const percentFormatters = new Map();
 
 export function setFormattingLocale(locale) {
   if (locale !== activeLocale) {
     activeLocale = locale;
     dateFormatters.clear();
     moneyFormatters.clear();
+    percentFormatters.clear();
   }
 }
 
@@ -48,11 +50,27 @@ export function formatMoney(amount, currency = "CAD") {
   }
 }
 
+function percentFormatter() {
+  if (!percentFormatters.has(activeLocale)) {
+    percentFormatters.set(
+      activeLocale,
+      new Intl.NumberFormat(activeLocale, { style: "percent", maximumFractionDigits: 0 }),
+    );
+  }
+  return percentFormatters.get(activeLocale);
+}
+
 export function formatPercent(share) {
-  return new Intl.NumberFormat(activeLocale, {
-    style: "percent",
-    maximumFractionDigits: share > 0 && share < 0.01 ? 1 : 0,
-  }).format(share);
+  const formatter = percentFormatter();
+  const rounded = Math.round(share * 100);
+
+  if (share > 0 && rounded === 0) {
+    return `< ${formatter.format(0.01)}`;
+  }
+  if (share < 1 && rounded === 100) {
+    return `> ${formatter.format(0.99)}`;
+  }
+  return formatter.format(share);
 }
 
 export function parseDate(iso) {

@@ -60,11 +60,17 @@
     "greetingEvening": "Bonsoir {name}",
     "upcomingTitle": "Prochaines échéances",
     "upcomingWindow": "Les {count} prochains jours",
-    "shortcuts": "Raccourcis",
-    "addSubscription": "Ajouter un abonnement",
-    "addInvoice": "Ajouter une facture",
+    "stripAria": "Les {days} prochains jours",
+    "dayAria": {
+      "one": "{date} : {count} échéance, {amount}",
+      "other": "{date} : {count} échéances, {amount}"
+    },
+    "dayEmptyAria": "{date} : rien à payer",
+    "dayTotal": {
+      "one": "{count} échéance · {amount}",
+      "other": "{count} échéances · {amount}"
+    },
     "seeCalendar": "Voir le calendrier",
-    "editSettings": "Modifier mes réglages",
     "tileMonth": "Ce mois-ci",
     "tileRemaining": "Reste à payer",
     "tileAlreadyPaid": "{amount} déjà réglés",
@@ -76,10 +82,6 @@
     "upcomingEmpty": "Rien à payer dans les {days} prochains jours.",
     "upcomingEmptySubscriptions": "abonnements",
     "upcomingEmptyInvoices": "factures",
-    "upcomingHidden": {
-      "one": "+{count} autre",
-      "other": "+{count} autres"
-    },
     "upcomingEmptyAdd": "Ajoutez vos {subscriptions} ou vos {invoices} pour lancer le suivi.",
     "categoriesTitle": "Répartition par catégorie",
     "categoriesWindow": "Vos dépenses de ce mois-ci, abonnements et factures confondus.",

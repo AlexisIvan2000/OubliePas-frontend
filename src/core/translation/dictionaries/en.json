@@ -60,11 +60,17 @@
     "greetingEvening": "Good evening, {name}",
     "upcomingTitle": "Upcoming due dates",
     "upcomingWindow": "The next {count} days",
-    "shortcuts": "Shortcuts",
-    "addSubscription": "Add a subscription",
-    "addInvoice": "Add a bill",
+    "stripAria": "The next {days} days",
+    "dayAria": {
+      "one": "{date}: {count} due date, {amount}",
+      "other": "{date}: {count} due dates, {amount}"
+    },
+    "dayEmptyAria": "{date}: nothing to pay",
+    "dayTotal": {
+      "one": "{count} due date · {amount}",
+      "other": "{count} due dates · {amount}"
+    },
     "seeCalendar": "Open the calendar",
-    "editSettings": "Edit my settings",
     "tileMonth": "This month",
     "tileRemaining": "Left to pay",
     "tileAlreadyPaid": "{amount} already settled",
@@ -76,10 +82,6 @@
     "upcomingEmpty": "Nothing to pay in the next {days} days.",
     "upcomingEmptySubscriptions": "subscriptions",
     "upcomingEmptyInvoices": "bills",
-    "upcomingHidden": {
-      "one": "+{count} more",
-      "other": "+{count} more"
-    },
     "upcomingEmptyAdd": "Add your {subscriptions} or your {invoices} to start tracking.",
     "categoriesTitle": "Breakdown by category",
     "categoriesWindow": "Your spending this month, subscriptions and bills combined.",
