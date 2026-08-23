@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from "react";
 
 import { cx } from "../../utils/classNames";
 import { Icon } from "../Icon/Icon";
+import { Picker } from "../Picker/Picker";
 import { Spinner } from "../Spinner/Spinner";
 import styles from "./InlineEditRow.module.css";
 
@@ -108,14 +109,10 @@ export function InlineEditRow({
   );
 }
 
-export function InlineSelectRow({ label, value, options, onChange, name }) {
+export function InlineSelectRow({ label, value, options, onChange }) {
   const [saving, setSaving] = useState(false);
 
-  const handleChange = (event) => {
-    const next = event.target.value;
-    if (next === value) {
-      return;
-    }
+  const handleChange = (next) => {
     setSaving(true);
     Promise.resolve(onChange(next)).then(
       () => setSaving(false),
@@ -126,24 +123,14 @@ export function InlineSelectRow({ label, value, options, onChange, name }) {
   return (
     <div className={styles.row}>
       <span className={styles.label}>{label}</span>
-      <span className={styles.selectWrap}>
-        <select
-          className={styles.select}
-          name={name}
-          value={value ?? ""}
-          disabled={saving}
-          onChange={handleChange}
-        >
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <span className={styles.caret}>
-          {saving ? <Spinner size={14} /> : <Icon name="expand" size={15} />}
-        </span>
-      </span>
+      <Picker
+        label={label}
+        value={value ?? ""}
+        options={options}
+        disabled={saving}
+        onChange={handleChange}
+        trailing={saving ? <Spinner size={14} /> : undefined}
+      />
     </div>
   );
 }

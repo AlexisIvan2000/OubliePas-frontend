@@ -61,7 +61,6 @@ export function ProfileFieldsCard() {
         />
         <InlineSelectRow
           label={t("settings.currency")}
-          name="currency"
           value={user?.currency}
           options={currencyOptions(user?.currency)}
           onChange={saveCurrency}
