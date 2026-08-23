@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Alert } from "../../../../core/components/Alert/Alert";
 import { Button } from "../../../../core/components/Button/Button";
 import { Chip } from "../../../../core/components/Chip/Chip";
-import { SelectField } from "../../../../core/components/SelectField/SelectField";
+import { PickerField } from "../../../../core/components/Picker/PickerField";
 import { Suggest } from "../../../../core/components/Suggest/Suggest";
 import { TextField } from "../../../../core/components/TextField/TextField";
 import { messageForError } from "../../../../core/network/errorMessages";
@@ -76,6 +76,9 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
     const value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
     setForm((current) => ({ ...current, [field]: value }));
   };
+
+  const choose = (field) => (value) =>
+    setForm((current) => ({ ...current, [field]: value }));
 
   const option = (field, fallback) => (event) => {
     const on = event.target.checked;
@@ -193,18 +196,18 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
               hint={t("form.amountHint", { currency: user?.currency ?? "CAD" })}
               required
             />
-            <SelectField
+            <PickerField
               label={t("form.frequency")}
               value={form.frequency}
-              onChange={set("frequency")}
+              onChange={choose("frequency")}
               options={frequencies}
             />
           </div>
 
-          <SelectField
+          <PickerField
             label={t("form.category")}
             value={form.category}
-            onChange={set("category")}
+            onChange={choose("category")}
             options={categories}
           />
 

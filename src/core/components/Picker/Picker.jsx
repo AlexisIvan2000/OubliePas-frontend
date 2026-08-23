@@ -3,6 +3,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { cx } from "../../utils/classNames";
 import { useDismiss } from "../../utils/useDismiss";
 import { Icon } from "../Icon/Icon";
+import { opensUpward } from "./placement";
 import styles from "./Picker.module.css";
 
 const TYPEAHEAD_RESET = 700;
@@ -20,6 +21,7 @@ export function Picker({
   onChange,
 }) {
   const [open, setOpen] = useState(false);
+  const [up, setUp] = useState(false);
   const [active, setActive] = useState(0);
   const triggerRef = useRef(null);
   const listRef = useRef(null);
@@ -43,6 +45,10 @@ export function Picker({
   );
 
   const start = () => {
+    const box = triggerRef.current?.getBoundingClientRect();
+    if (box) {
+      setUp(opensUpward(box, window.innerHeight));
+    }
     setActive(selected < 0 ? 0 : selected);
     setOpen(true);
   };
@@ -159,7 +165,7 @@ export function Picker({
           aria-label={label}
           aria-activedescendant={`${listId}-${active}`}
           tabIndex={-1}
-          className={cx(styles.list, leaving && styles.leaving)}
+          className={cx(styles.list, up && styles.up, leaving && styles.leaving)}
           onKeyDown={onKeyDown}
         >
           {options.map((option, index) => (
