@@ -107,10 +107,22 @@ export function ActivityFeedCard({ entries, loading, muted }) {
                 aria-controls={foldId}
                 onClick={() => setOpen((current) => !current)}
               >
-                <Icon name="next" size={15} className={styles.foldChevron} />
-                {open
-                  ? t("reminders.feed.showLess")
-                  : t("reminders.feed.showMore", { count: folded.length })}
+                {open ? null : (
+                  <span className={styles.deck} aria-hidden="true">
+                    {folded.slice(0, 3).map((card, depth) => (
+                      <span
+                        key={card.id}
+                        className={styles.deckCard}
+                        style={{ "--depth": depth }}
+                      />
+                    ))}
+                  </span>
+                )}
+                <span className={styles.foldLabel}>
+                  {open
+                    ? t("reminders.feed.showLess")
+                    : t("reminders.feed.showMore", { count: folded.length })}
+                </span>
               </button>
             </>
           ) : null}
