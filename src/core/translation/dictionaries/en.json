@@ -622,11 +622,9 @@
       "mutedTitle": "Email reminders are switched off",
       "mutedText": "Nothing will be sent while the switch is off. Your due dates are still tracked in the app.",
       "sameDay": "on the day",
-      "showLess": "Fold back",
-      "showRest": {
-        "one": "Show the last one",
-        "other": "Show the {count} remaining"
-      }
+      "page": "{current} / {pages}",
+      "previous": "Previous page",
+      "next": "Next page"
     }
   }
 }

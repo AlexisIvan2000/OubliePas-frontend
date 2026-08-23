@@ -1,20 +1,18 @@
-import { useId, useState } from "react";
+import { useState } from "react";
 
 import { Icon } from "../../../../core/components/Icon/Icon";
 import { useTranslation } from "../../../../core/translation/useTranslation";
-import { cx } from "../../../../core/utils/classNames";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { formatMoney, formatShortDate, relativeDue } from "../../../commitments/domain/formatting";
 import styles from "../styles/reminders.module.css";
 
-function FeedRow({ entry, currency, index = 0, folded = false }) {
+const PER_PAGE = 5;
+
+function FeedRow({ entry, currency, index }) {
   const { t } = useTranslation();
 
   return (
-    <li
-      className={cx(styles.feedRow, folded && styles.feedRowFolded)}
-      style={folded ? { "--fold-delay": `${Math.min(index, 8) * 45}ms` } : undefined}
-    >
+    <li className={styles.feedRow} style={{ "--enter-delay": `${index * 55}ms` }}>
       <span className={styles.feedIcon}>
         <Icon name="reminders" size={15} />
       </span>
@@ -35,17 +33,17 @@ function FeedRow({ entry, currency, index = 0, folded = false }) {
   );
 }
 
-const VISIBLE = 10;
-
 export function ActivityFeedCard({ entries, loading, muted }) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [open, setOpen] = useState(false);
-  const foldId = useId();
+  const [page, setPage] = useState(1);
 
   const currency = user?.currency ?? "CAD";
-  const head = entries.slice(0, VISIBLE);
-  const folded = entries.slice(VISIBLE);
+  const pages = Math.max(1, Math.ceil(entries.length / PER_PAGE));
+  const current = Math.min(page, pages);
+  const shown = entries.slice((current - 1) * PER_PAGE, current * PER_PAGE);
+
+  const go = (step) => setPage(Math.min(Math.max(current + step, 1), pages));
 
   return (
     <section className={styles.card}>
@@ -74,42 +72,38 @@ export function ActivityFeedCard({ entries, loading, muted }) {
         </div>
       ) : (
         <>
-          <ul className={styles.feed}>
-            {head.map((entry) => (
-              <FeedRow key={entry.id} entry={entry} currency={currency} />
+          <ul key={current} className={styles.feed}>
+            {shown.map((entry, index) => (
+              <FeedRow key={entry.id} entry={entry} currency={currency} index={index} />
             ))}
           </ul>
 
-          {folded.length ? (
-            <>
-              {open ? (
-                <ul id={foldId} className={cx(styles.feed, styles.unfolded)}>
-                  {folded.map((entry, index) => (
-                    <FeedRow
-                      key={entry.id}
-                      entry={entry}
-                      currency={currency}
-                      index={index}
-                      folded
-                    />
-                  ))}
-                </ul>
-              ) : null}
+          {pages > 1 ? (
+            <div className={styles.pager}>
+              <button
+                type="button"
+                className={styles.pagerButton}
+                onClick={() => go(-1)}
+                disabled={current === 1}
+                aria-label={t("reminders.feed.previous")}
+              >
+                <Icon name="previous" size={15} />
+              </button>
+
+              <span className={styles.pagerCount} aria-live="polite">
+                {t("reminders.feed.page", { current, pages })}
+              </span>
 
               <button
                 type="button"
-                className={styles.foldToggle}
-                aria-expanded={open}
-                aria-controls={foldId}
-                onClick={() => setOpen((current) => !current)}
+                className={styles.pagerButton}
+                onClick={() => go(1)}
+                disabled={current === pages}
+                aria-label={t("reminders.feed.next")}
               >
-                <span className={styles.foldLabel}>
-                  {open
-                    ? t("reminders.feed.showLess")
-                    : t("reminders.feed.showRest", { count: folded.length })}
-                </span>
+                <Icon name="next" size={15} />
               </button>
-            </>
+            </div>
           ) : null}
         </>
       )}

@@ -622,11 +622,9 @@
       "mutedTitle": "Les rappels par courriel sont désactivés",
       "mutedText": "Rien ne partira tant que l'interrupteur ci-contre est éteint. Tes échéances restent suivies dans l'app.",
       "sameDay": "le jour même",
-      "showLess": "Replier",
-      "showRest": {
-        "one": "Voir le dernier",
-        "other": "Voir les {count} restants"
-      }
+      "page": "{current} / {pages}",
+      "previous": "Page précédente",
+      "next": "Page suivante"
     }
   }
 }
