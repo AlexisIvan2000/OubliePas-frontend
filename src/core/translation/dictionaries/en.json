@@ -664,6 +664,11 @@
     "comingEmpty": "Nothing scheduled yet.",
     "heaviestTitle": "The heaviest lines",
     "heaviestDescription": "Ranked by yearly cost, both types together.",
-    "heaviestEmpty": "No active recurring line to rank."
+    "heaviestEmpty": "No active recurring line to rank.",
+    "dueCount": {
+      "one": "{count} due date",
+      "other": "{count} due dates"
+    },
+    "columnAria": "{month}: {amount} across {count} due date(s)"
   }
 }

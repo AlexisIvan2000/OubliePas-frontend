@@ -664,6 +664,11 @@
     "comingEmpty": "Rien n'est encore programmé.",
     "heaviestTitle": "Les lignes les plus lourdes",
     "heaviestDescription": "Classées par coût annuel, tous types confondus.",
-    "heaviestEmpty": "Aucune ligne récurrente active à classer."
+    "heaviestEmpty": "Aucune ligne récurrente active à classer.",
+    "dueCount": {
+      "one": "{count} échéance",
+      "other": "{count} échéances"
+    },
+    "columnAria": "{month} : {amount} sur {count} échéance(s)"
   }
 }
