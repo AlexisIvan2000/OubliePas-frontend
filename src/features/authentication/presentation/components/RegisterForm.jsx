@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Alert } from "../../../../core/components/Alert/Alert";
 import { Button } from "../../../../core/components/Button/Button";
 import { PasswordField } from "../../../../core/components/PasswordField/PasswordField";
-import { SelectField } from "../../../../core/components/SelectField/SelectField";
+import { PickerField } from "../../../../core/components/Picker/PickerField";
 import { TextField } from "../../../../core/components/TextField/TextField";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
@@ -64,12 +64,11 @@ export function RegisterForm() {
           required
         />
 
-        <SelectField
+        <PickerField
           label={t("auth.currencyLabel")}
-          name="currency"
           options={CURRENCY_OPTIONS}
           value={form.currency}
-          onChange={handleChange("currency")}
+          onChange={(next) => setForm((current) => ({ ...current, currency: next }))}
           error={fieldErrors.currency}
         />
       </div>

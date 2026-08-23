@@ -14,6 +14,8 @@ export function Picker({
   disabled,
   trailing,
   variant,
+  invalid,
+  describedBy,
   className,
   onChange,
 }) {
@@ -131,6 +133,8 @@ export function Picker({
         className={cx(
           styles.trigger,
           variant === "inline" && styles.inline,
+          variant === "field" && styles.field,
+          invalid && styles.invalid,
           open && styles.triggerOpen,
         )}
         disabled={disabled}
@@ -138,6 +142,8 @@ export function Picker({
         aria-expanded={open}
         aria-controls={open ? listId : undefined}
         aria-label={label}
+        aria-invalid={invalid ? true : undefined}
+        aria-describedby={describedBy}
         onClick={() => (open ? close() : start())}
         onKeyDown={onKeyDown}
       >

@@ -35,6 +35,29 @@
   border-color: var(--color-link);
 }
 
+.field {
+  width: 100%;
+  height: 2.875rem;
+  padding: 0 0.9375rem 0 0.875rem;
+  border-color: var(--color-border-strong);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+}
+
+.field:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+  border-color: var(--color-focus);
+}
+
+.invalid {
+  border-color: var(--color-danger);
+}
+
+.field .value {
+  font-weight: 400;
+}
+
 .inline {
   padding: 0.3125rem 0.4rem 0.3125rem 0.5rem;
   border-color: transparent;
