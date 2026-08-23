@@ -24,7 +24,13 @@ export function ThemeSection() {
                 <Chip
                   key={item.code}
                   active={theme === item.code}
-                  onClick={() => setTheme(item.code)}
+                  onClick={(event) => {
+                    const box = event.currentTarget.getBoundingClientRect();
+                    setTheme(item.code, {
+                      x: box.left + box.width / 2,
+                      y: box.top + box.height / 2,
+                    });
+                  }}
                 >
                   {t(item.labelKey)}
                 </Chip>

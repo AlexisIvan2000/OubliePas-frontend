@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { flushSync } from "react-dom";
 
+import { revealTheme } from "./reveal";
 import { ThemeContext } from "./ThemeContext";
 import {
   applyTheme,
@@ -22,13 +24,19 @@ export function ThemeProvider({ children }) {
     applyTheme(resolved);
   }, [resolved]);
 
-  const changeTheme = useCallback((code) => {
-    if (!isSupported(code)) {
-      return;
-    }
-    rememberTheme(code);
-    setTheme(code);
-  }, []);
+  const changeTheme = useCallback(
+    (code, origin) => {
+      if (!isSupported(code) || code === theme) {
+        return;
+      }
+      rememberTheme(code);
+      revealTheme(() => {
+        applyTheme(code === "system" ? system : code);
+        flushSync(() => setTheme(code));
+      }, origin);
+    },
+    [theme, system],
+  );
 
   const value = useMemo(
     () => ({ theme, resolved, setTheme: changeTheme }),
