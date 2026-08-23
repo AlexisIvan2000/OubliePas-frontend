@@ -222,7 +222,7 @@
     "trialCustomDays": "Trial days",
     "trialRecap": "Trial until {end} — first charge of {amount} on {end}.",
     "trialRecapPlain": "Trial until {end} — first charge on {end}.",
-    "trialOver": "This trial is already over. The subscription will be created as active, with no trial-end reminder.",
+    "trialOver": "This trial is already over. It will be created without a trial-end reminder.",
     "trialCurrent": "Current trial: until {date}",
     "pastDueDate": "This date has passed: the bill will show up as late."
   },
@@ -604,8 +604,8 @@
       }
     },
     "lead": {
-      "title": "Default lead time for new subscriptions",
-      "description": "Each subscription can then carry its own lead time.",
+      "title": "Default lead time for new subscriptions and bills",
+      "description": "Each subscription or bill can then carry its own lead time.",
       "sameDay": "Same day",
       "before": {
         "one": "{count} day before",
@@ -614,11 +614,11 @@
     },
     "feed": {
       "title": "Activity",
-      "description": "Scheduled reminders, each with its own lead time.",
+      "description": "Scheduled reminders, each with the lead time of its own subscription or bill.",
       "sendOn": "Sending on {date}",
       "dueOn": "due {date}",
       "emptyTitle": "No reminder scheduled",
-      "emptyText": "Reminders will show up here as soon as a commitment with alerts approaches its due date.",
+      "emptyText": "Reminders will show up here as soon as a subscription or bill with alerts approaches its due date.",
       "mutedTitle": "Email reminders are switched off",
       "mutedText": "Nothing will be sent while the switch is off. Your due dates are still tracked in the app.",
       "sameDay": "on the day"
