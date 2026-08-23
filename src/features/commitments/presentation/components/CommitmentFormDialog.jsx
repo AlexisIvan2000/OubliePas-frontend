@@ -81,6 +81,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
     setForm((current) => ({
       ...current,
       isTrial: on,
+      endsOn: on && !editing ? "" : current.endsOn,
       trialStartsOn: on && !editing ? today : "",
       trialDays: on ? current.trialDays : "",
       trialCustom: on ? current.trialCustom : false,
@@ -100,6 +101,8 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
     : null;
   const trialOver = derivedTrial !== null && derivedTrial <= today;
   const blocked = form.isTrial && derivedTrial === null && currentTrial === null;
+  const firstCharge = form.isTrial ? (derivedTrial ?? currentTrial) : form.startsOn;
+  const showEnd = !form.isTrial || editing;
 
   const submit = async (event) => {
     event.preventDefault();
@@ -264,13 +267,16 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
           </div>
 
           {form.isTrial ? (
-            <TextField
-              label={t("form.endDate")}
-              type="date"
-              value={form.endsOn}
-              onChange={set("endsOn")}
-              hint={t("form.endDateHint")}
-            />
+            showEnd ? (
+              <TextField
+                label={t("form.endDate")}
+                type="date"
+                value={form.endsOn}
+                onChange={set("endsOn")}
+                min={firstCharge ?? undefined}
+                hint={t("form.endDateHint")}
+              />
+            ) : null
           ) : (
             <div className={styles.pair}>
               <TextField
@@ -285,6 +291,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
                 type="date"
                 value={form.endsOn}
                 onChange={set("endsOn")}
+                min={firstCharge ?? undefined}
                 hint={t("form.endDateHint")}
               />
             </div>
