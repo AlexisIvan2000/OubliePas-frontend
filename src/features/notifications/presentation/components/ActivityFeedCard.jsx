@@ -7,24 +7,13 @@ import { useAuth } from "../../../authentication/presentation/providers/useAuth"
 import { formatMoney, formatShortDate, relativeDue } from "../../../commitments/domain/formatting";
 import styles from "../styles/reminders.module.css";
 
-function FeedRow({ entry, currency, index = 0, folded = false, depth = null }) {
+function FeedRow({ entry, currency, index = 0, folded = false }) {
   const { t } = useTranslation();
-  const stacked = depth !== null;
 
   return (
     <li
-      className={cx(
-        styles.feedRow,
-        folded && styles.feedRowFolded,
-        stacked && styles.feedRowStacked,
-      )}
-      style={
-        stacked
-          ? { "--depth": depth }
-          : folded
-            ? { "--fold-delay": `${index * 45}ms` }
-            : undefined
-      }
+      className={cx(styles.feedRow, folded && styles.feedRowFolded)}
+      style={folded ? { "--fold-delay": `${Math.min(index, 8) * 45}ms` } : undefined}
     >
       <span className={styles.feedIcon}>
         <Icon name="reminders" size={15} />
@@ -46,7 +35,7 @@ function FeedRow({ entry, currency, index = 0, folded = false, depth = null }) {
   );
 }
 
-const VISIBLE = 4;
+const VISIBLE = 10;
 
 export function ActivityFeedCard({ entries, loading, muted }) {
   const { t } = useTranslation();
@@ -105,18 +94,7 @@ export function ActivityFeedCard({ entries, loading, muted }) {
                     />
                   ))}
                 </ul>
-              ) : (
-                <ul id={foldId} className={styles.stack} aria-hidden="true">
-                  {folded.slice(0, 3).map((entry, depth) => (
-                    <FeedRow
-                      key={entry.id}
-                      entry={entry}
-                      currency={currency}
-                      depth={depth}
-                    />
-                  ))}
-                </ul>
-              )}
+              ) : null}
 
               <button
                 type="button"
@@ -128,7 +106,7 @@ export function ActivityFeedCard({ entries, loading, muted }) {
                 <span className={styles.foldLabel}>
                   {open
                     ? t("reminders.feed.showLess")
-                    : t("reminders.feed.showMore", { count: folded.length })}
+                    : t("reminders.feed.showRest", { count: folded.length })}
                 </span>
               </button>
             </>
