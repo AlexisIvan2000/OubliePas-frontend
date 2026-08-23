@@ -7,13 +7,24 @@ import { useAuth } from "../../../authentication/presentation/providers/useAuth"
 import { formatMoney, formatShortDate, relativeDue } from "../../../commitments/domain/formatting";
 import styles from "../styles/reminders.module.css";
 
-function FeedRow({ entry, currency, index = 0, folded = false }) {
+function FeedRow({ entry, currency, index = 0, folded = false, depth = null }) {
   const { t } = useTranslation();
+  const stacked = depth !== null;
 
   return (
     <li
-      className={cx(styles.feedRow, folded && styles.feedRowFolded)}
-      style={folded ? { "--fold-delay": `${index * 45}ms` } : undefined}
+      className={cx(
+        styles.feedRow,
+        folded && styles.feedRowFolded,
+        stacked && styles.feedRowStacked,
+      )}
+      style={
+        stacked
+          ? { "--depth": depth }
+          : folded
+            ? { "--fold-delay": `${index * 45}ms` }
+            : undefined
+      }
     >
       <span className={styles.feedIcon}>
         <Icon name="reminders" size={15} />
@@ -82,12 +93,8 @@ export function ActivityFeedCard({ entries, loading, muted }) {
 
           {folded.length ? (
             <>
-              <div
-                id={foldId}
-                className={cx(styles.fold, open && styles.unfolded)}
-                aria-hidden={!open}
-              >
-                <ul className={cx(styles.feed, styles.foldInner)}>
+              {open ? (
+                <ul id={foldId} className={cx(styles.feed, styles.unfolded)}>
                   {folded.map((entry, index) => (
                     <FeedRow
                       key={entry.id}
@@ -98,7 +105,18 @@ export function ActivityFeedCard({ entries, loading, muted }) {
                     />
                   ))}
                 </ul>
-              </div>
+              ) : (
+                <ul id={foldId} className={styles.stack} aria-hidden="true">
+                  {folded.slice(0, 3).map((entry, depth) => (
+                    <FeedRow
+                      key={entry.id}
+                      entry={entry}
+                      currency={currency}
+                      depth={depth}
+                    />
+                  ))}
+                </ul>
+              )}
 
               <button
                 type="button"
@@ -107,17 +125,6 @@ export function ActivityFeedCard({ entries, loading, muted }) {
                 aria-controls={foldId}
                 onClick={() => setOpen((current) => !current)}
               >
-                {open ? null : (
-                  <span className={styles.deck} aria-hidden="true">
-                    {folded.slice(0, 3).map((card, depth) => (
-                      <span
-                        key={card.id}
-                        className={styles.deckCard}
-                        style={{ "--depth": depth }}
-                      />
-                    ))}
-                  </span>
-                )}
                 <span className={styles.foldLabel}>
                   {open
                     ? t("reminders.feed.showLess")
