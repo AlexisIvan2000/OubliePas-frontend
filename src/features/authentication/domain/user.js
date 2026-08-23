@@ -15,6 +15,7 @@ export function mapUser(dto) {
     currency: dto.currency ?? "CAD",
     reminderEmailEnabled: dto.reminder_email_enabled ?? true,
     defaultReminderDays: dto.default_reminder_days ?? 3,
+    locale: dto.locale ?? "fr",
   };
 }
 

@@ -1,12 +1,13 @@
 import { http } from "../../../core/network/httpClient";
 import { AUTH_ENDPOINTS } from "./authEndpoints";
 
-export function register({ firstName, email, password, currency }) {
+export function register({ firstName, email, password, currency, locale }) {
   return http.post(AUTH_ENDPOINTS.register, {
     first_name: firstName,
     email,
     password,
     currency,
+    locale,
   });
 }
 

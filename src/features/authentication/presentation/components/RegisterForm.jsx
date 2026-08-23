@@ -19,7 +19,7 @@ import { PasswordRules } from "./PasswordRules";
 const CURRENCY_OPTIONS = currencyOptions();
 
 export function RegisterForm() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const { register } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -40,7 +40,7 @@ export function RegisterForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await run(form);
+    const result = await run({ ...form, locale });
     if (result.ok) {
       navigate("/verification", { state: { email: form.email } });
     }
