@@ -4,6 +4,8 @@ import { Button } from "../../../../core/components/Button/Button";
 import { Icon } from "../../../../core/components/Icon/Icon";
 import { TextField } from "../../../../core/components/TextField/TextField";
 import { useTranslation } from "../../../../core/translation/useTranslation";
+import { cx } from "../../../../core/utils/classNames";
+import { useDismiss } from "../../../../core/utils/useDismiss";
 import { categoryLabel } from "../../domain/commitment";
 import { formatDate, formatMoney } from "../../domain/formatting";
 import styles from "../styles/settle.module.css";
@@ -11,12 +13,14 @@ import styles from "../styles/settle.module.css";
 export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) {
   const { t } = useTranslation();
   const [amount, setAmount] = useState(() => String(occurrence.amount));
+  const { leaving, dismiss } = useDismiss();
+  const close = () => dismiss(onClose);
 
   useEffect(() => {
-    const handler = (event) => event.key === "Escape" && onClose();
+    const handler = (event) => event.key === "Escape" && dismiss(onClose);
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [onClose]);
+  }, [onClose, dismiss]);
 
   const value = Number(amount);
   const changed = value !== Number(occurrence.amount);
@@ -31,9 +35,12 @@ export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) 
   };
 
   return (
-    <div className={styles.overlay} onMouseDown={onClose}>
+    <div
+      className={cx(styles.overlay, leaving && styles.leavingVeil)}
+      onMouseDown={close}
+    >
       <div
-        className={styles.dialog}
+        className={cx(styles.dialog, leaving && styles.leaving)}
         role="dialog"
         aria-modal="true"
         aria-label={t("occurrence.settle", { title: occurrence.title })}
@@ -68,7 +75,7 @@ export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) 
           />
 
           <div className={styles.actions}>
-            <Button variant="secondary" onClick={onClose} disabled={busy}>
+            <Button variant="secondary" onClick={close} disabled={busy}>
               {t("common.cancel")}
             </Button>
             <Button type="submit" loading={busy} disabled={!valid}>

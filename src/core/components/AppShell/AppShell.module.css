@@ -70,11 +70,20 @@
   background-color: var(--color-link);
   transform: scaleY(0);
   transform-origin: center;
-  transition: transform 220ms cubic-bezier(0.22, 0.8, 0.3, 1);
+  transition: transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .active::before {
   transform: scaleY(1);
+}
+
+.enter {
+  animation: global(slideInLeft) 0.36s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+.active .icon {
+  animation: global(checkPop) 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .link:hover {

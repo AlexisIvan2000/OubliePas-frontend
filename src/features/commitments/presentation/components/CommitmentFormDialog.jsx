@@ -8,6 +8,7 @@ import { Suggest } from "../../../../core/components/Suggest/Suggest";
 import { TextField } from "../../../../core/components/TextField/TextField";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { cx } from "../../../../core/utils/classNames";
+import { useDismiss } from "../../../../core/utils/useDismiss";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useAsyncAction } from "../../../../core/utils/useAsyncAction";
 import { useToday } from "../../../../core/utils/useToday";
@@ -35,6 +36,8 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const today = useToday();
+  const { leaving, dismiss } = useDismiss();
+  const close = () => dismiss(onClose);
   const editing = Boolean(commitment);
   const [form, setForm] = useState(() =>
     commitment ? formFromCommitment(commitment) : emptyForm(type, user?.defaultReminderDays),
@@ -61,10 +64,10 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   };
 
   useEffect(() => {
-    const handler = (event) => event.key === "Escape" && onClose();
+    const handler = (event) => event.key === "Escape" && dismiss(onClose);
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [onClose]);
+  }, [onClose, dismiss]);
 
   const set = (field) => (event) => {
     const value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
@@ -137,9 +140,12 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
     : t(meta.formTitleKey);
 
   return (
-    <div className={styles.overlay} onMouseDown={onClose}>
+    <div
+      className={cx(styles.overlay, leaving && styles.leavingVeil)}
+      onMouseDown={close}
+    >
       <div
-        className={styles.dialog}
+        className={cx(styles.dialog, leaving && styles.leaving)}
         role="dialog"
         aria-modal="true"
         aria-label={heading}
@@ -351,7 +357,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
           </div>
 
           <div className={styles.actions}>
-            <Button variant="secondary" onClick={onClose} disabled={save.loading}>
+            <Button variant="secondary" onClick={close} disabled={save.loading}>
               {t("common.cancel")}
             </Button>
             <Button type="submit" loading={save.loading} disabled={blocked}>

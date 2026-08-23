@@ -1,6 +1,7 @@
 const DURATION = 420;
-const EASING = "cubic-bezier(0.4, 0, 0.2, 1)";
+const EASING = "cubic-bezier(0.4, 0, 1, 1)";
 const SWEEP_LEFT_TO_RIGHT = ["inset(0 100% 0 0)", "inset(0 0 0 0)"];
+const FLAG = "themeSweep";
 
 function prefersReducedMotion() {
   return Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
@@ -16,11 +17,15 @@ export function revealTheme(apply) {
     return;
   }
 
+  const root = document.documentElement;
+  root.dataset[FLAG] = "";
+  const clear = () => delete root.dataset[FLAG];
   const transition = document.startViewTransition(apply);
 
+  transition.finished.then(clear, clear);
   transition.ready
     .then(() => {
-      document.documentElement.animate(
+      root.animate(
         { clipPath: SWEEP_LEFT_TO_RIGHT },
         {
           duration: DURATION,

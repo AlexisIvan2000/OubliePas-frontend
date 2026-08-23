@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { fullName, initials } from "../../../features/authentication/domain/user";
 import { useAuth } from "../../../features/authentication/presentation/providers/useAuth";
@@ -21,7 +21,6 @@ const NAV_ITEMS = [
 export function AppShell({ children }) {
   const { user, logout } = useAuth();
   const { t } = useTranslation();
-  const { pathname } = useLocation();
 
   return (
     <div className={styles.shell}>
@@ -32,13 +31,14 @@ export function AppShell({ children }) {
         </NavLink>
 
         <nav className={styles.nav}>
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.map((item, index) => (
             <NavLink
               key={item.to}
               to={item.to}
               end={item.end}
               viewTransition
-              className={({ isActive }) => cx(styles.link, isActive && styles.active)}
+              style={{ "--enter-delay": `${index * 34}ms` }}
+              className={({ isActive }) => cx(styles.link, styles.enter, isActive && styles.active)}
             >
               <Icon name={item.icon} size={18} className={styles.icon} />
               <span className={styles.linkLabel}>{t(`nav.${item.key}`)}</span>
@@ -70,9 +70,7 @@ export function AppShell({ children }) {
         </div>
       </aside>
 
-      <main key={pathname} className={styles.content}>
-        {children}
-      </main>
+      <main className={styles.content}>{children}</main>
     </div>
   );
 }

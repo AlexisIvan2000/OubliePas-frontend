@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import { cx } from "../../utils/classNames";
+import { useDismiss } from "../../utils/useDismiss";
 import { Icon } from "../Icon/Icon";
 import styles from "./Menu.module.css";
 
@@ -11,13 +12,19 @@ export function Menu({ label, icon = "more", items, className }) {
   const triggerRef = useRef(null);
   const listRef = useRef(null);
   const listId = useId();
+  const { leaving, dismiss } = useDismiss(130);
 
-  const close = useCallback((refocus = true) => {
-    setOpen(false);
-    if (refocus) {
-      triggerRef.current?.focus();
-    }
-  }, []);
+  const close = useCallback(
+    (refocus = true) => {
+      dismiss(() => {
+        setOpen(false);
+        if (refocus) {
+          triggerRef.current?.focus();
+        }
+      });
+    },
+    [dismiss],
+  );
 
   useEffect(() => {
     if (!open) {
@@ -30,7 +37,7 @@ export function Menu({ label, icon = "more", items, className }) {
       const inside =
         listRef.current?.contains(event.target) || triggerRef.current?.contains(event.target);
       if (!inside) {
-        setOpen(false);
+        close(false);
       }
     };
 
@@ -51,7 +58,7 @@ export function Menu({ label, icon = "more", items, className }) {
 
   const onListKeyDown = (event) => {
     if (event.key === "Tab") {
-      setOpen(false);
+      close(false);
       return;
     }
     if (event.key !== "ArrowDown" && event.key !== "ArrowUp") {
@@ -87,7 +94,7 @@ export function Menu({ label, icon = "more", items, className }) {
           id={listId}
           role="menu"
           aria-label={label}
-          className={styles.list}
+          className={cx(styles.list, leaving && styles.leaving)}
           onKeyDown={onListKeyDown}
         >
           {items.map((item) => (

@@ -231,6 +231,53 @@ a:hover {
   }
 }
 
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes popOut {
+  to {
+    opacity: 0;
+    transform: translateY(4px) scale(0.97);
+  }
+}
+
+@keyframes veilIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}
+
+@keyframes veilOut {
+  to {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes shimmer {
   to {
     background-position: -200% 0;
@@ -275,17 +322,31 @@ a:hover {
     scroll-behavior: auto !important;
   }
 }
-::view-transition-old(root),
+::view-transition-old(root) {
+  animation: fadeAway 140ms ease both;
+}
+
 ::view-transition-new(root) {
+  animation: fade 220ms ease both;
+}
+
+@keyframes fadeAway {
+  to {
+    opacity: 0;
+  }
+}
+
+:root[data-theme-sweep]::view-transition-old(root),
+:root[data-theme-sweep]::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
 
-::view-transition-old(root) {
+:root[data-theme-sweep]::view-transition-old(root) {
   z-index: 0;
 }
 
-::view-transition-new(root) {
+:root[data-theme-sweep]::view-transition-new(root) {
   z-index: 1;
 }
 
