@@ -4,7 +4,7 @@ import { useTranslation } from "../../../../core/translation/useTranslation";
 import { CHANNELS, DIGESTS, LEAD_TIMES } from "../../domain/reminders";
 import styles from "../styles/reminders.module.css";
 
-function ToggleRow({ id, available, checked, onChange }) {
+function ToggleRow({ id, available, checked, busy, onChange }) {
   const { t } = useTranslation();
   const label = t(`reminders.channel.${id}.label`);
 
@@ -19,7 +19,7 @@ function ToggleRow({ id, available, checked, onChange }) {
       </div>
       <Switch
         checked={checked}
-        disabled={!available}
+        disabled={!available || busy}
         label={label}
         onChange={(next) => onChange(id, next)}
       />
@@ -27,7 +27,7 @@ function ToggleRow({ id, available, checked, onChange }) {
   );
 }
 
-export function ReminderPreferencesCard({ preferences, onToggle, onLeadTime }) {
+export function ReminderPreferencesCard({ preferences, saving, onToggle, onLeadTime }) {
   const { t } = useTranslation();
 
   return (
@@ -45,6 +45,7 @@ export function ReminderPreferencesCard({ preferences, onToggle, onLeadTime }) {
             id={channel.id}
             available={channel.available}
             checked={preferences[channel.id]}
+            busy={saving === channel.id}
             onChange={onToggle}
           />
         ))}

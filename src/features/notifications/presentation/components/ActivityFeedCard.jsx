@@ -24,7 +24,7 @@ function FeedRow({ entry, currency }) {
   );
 }
 
-export function ActivityFeedCard({ entries, loading }) {
+export function ActivityFeedCard({ entries, loading, muted }) {
   const { t } = useTranslation();
   const { user } = useAuth();
 
@@ -41,6 +41,12 @@ export function ActivityFeedCard({ entries, loading }) {
             <li key={row} className={styles.feedSkeleton} />
           ))}
         </ul>
+      ) : muted ? (
+        <div className={styles.empty}>
+          <Icon name="reminders" size={22} />
+          <p className={styles.emptyTitle}>{t("reminders.feed.mutedTitle")}</p>
+          <p className={styles.emptyText}>{t("reminders.feed.mutedText")}</p>
+        </div>
       ) : entries.length === 0 ? (
         <div className={styles.empty}>
           <Icon name="reminders" size={22} />

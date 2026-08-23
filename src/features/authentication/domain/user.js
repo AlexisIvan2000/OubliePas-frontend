@@ -13,6 +13,7 @@ export function mapUser(dto) {
     hasCustomAvatar: Boolean(dto.has_custom_avatar),
     hasPassword: Boolean(dto.has_password),
     currency: dto.currency ?? "CAD",
+    reminderEmailEnabled: dto.reminder_email_enabled ?? true,
   };
 }
 

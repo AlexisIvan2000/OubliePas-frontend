@@ -618,7 +618,9 @@
       "sendOn": "Envoi le {date}",
       "dueOn": "échéance {date}",
       "emptyTitle": "Aucun rappel programmé",
-      "emptyText": "Les rappels apparaîtront ici dès qu'un engagement avec alerte approchera de son échéance."
+      "emptyText": "Les rappels apparaîtront ici dès qu'un engagement avec alerte approchera de son échéance.",
+      "mutedTitle": "Les rappels par courriel sont désactivés",
+      "mutedText": "Rien ne partira tant que l'interrupteur ci-contre est éteint. Tes échéances restent suivies dans l'app."
     }
   }
 }

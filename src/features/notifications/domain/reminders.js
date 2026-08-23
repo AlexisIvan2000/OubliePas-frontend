@@ -6,7 +6,7 @@ export const CHANNELS = [
   { id: "push", available: false },
 ];
 
-export const DIGESTS = [{ id: "weekly", available: true }];
+export const DIGESTS = [{ id: "weekly", available: false }];
 
 export const DEFAULT_PREFERENCES = {
   email: true,

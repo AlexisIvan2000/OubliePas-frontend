@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
 
+import { useToast } from "../../../../core/components/Toast/useToast";
+import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
+import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { useCommitments } from "../../../commitments/presentation/providers/useCommitments";
 import { useOccurrences } from "../../../commitments/presentation/providers/useOccurrences";
 import { DEFAULT_PREFERENCES, scheduledReminders } from "../../domain/reminders";
@@ -23,7 +26,10 @@ function isoIn(days) {
 
 export function RemindersPage() {
   const { t } = useTranslation();
-  const [preferences, setPreferences] = useState(DEFAULT_PREFERENCES);
+  const { user, updateProfile } = useAuth();
+  const toast = useToast();
+  const [local, setLocal] = useState(DEFAULT_PREFERENCES);
+  const [saving, setSaving] = useState(null);
   const range = useMemo(() => ({ start: isoToday(), end: isoIn(HORIZON_DAYS) }), []);
 
   const { items: occurrences, loading: loadingOccurrences } = useOccurrences(range);
@@ -36,8 +42,26 @@ export function RemindersPage() {
     [occurrences, commitments],
   );
 
-  const toggle = (id, value) => setPreferences((current) => ({ ...current, [id]: value }));
-  const setLeadTime = (leadTime) => setPreferences((current) => ({ ...current, leadTime }));
+  const emailEnabled = user?.reminderEmailEnabled ?? true;
+  const preferences = { ...local, email: emailEnabled };
+
+  const toggle = async (id, value) => {
+    if (id !== "email") {
+      setLocal((current) => ({ ...current, [id]: value }));
+      return;
+    }
+
+    setSaving(id);
+    try {
+      await updateProfile({ reminder_email_enabled: value });
+    } catch (caught) {
+      toast.push(messageForError(t, caught), "error");
+    } finally {
+      setSaving(null);
+    }
+  };
+
+  const setLeadTime = (leadTime) => setLocal((current) => ({ ...current, leadTime }));
 
   return (
     <div className={styles.page}>
@@ -49,11 +73,13 @@ export function RemindersPage() {
       <div className={styles.grid}>
         <ReminderPreferencesCard
           preferences={preferences}
+          saving={saving}
           onToggle={toggle}
           onLeadTime={setLeadTime}
         />
         <ActivityFeedCard
           entries={entries}
+          muted={!emailEnabled}
           loading={loadingOccurrences || loadingCommitments}
         />
       </div>

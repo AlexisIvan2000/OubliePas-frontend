@@ -618,7 +618,9 @@
       "sendOn": "Sending on {date}",
       "dueOn": "due {date}",
       "emptyTitle": "No reminder scheduled",
-      "emptyText": "Reminders will show up here as soon as a commitment with alerts approaches its due date."
+      "emptyText": "Reminders will show up here as soon as a commitment with alerts approaches its due date.",
+      "mutedTitle": "Email reminders are switched off",
+      "mutedText": "Nothing will be sent while the switch is off. Your due dates are still tracked in the app."
     }
   }
 }
