@@ -179,9 +179,16 @@
 
 .row:hover,
 .occurrence:hover {
+  position: relative;
+  z-index: 1;
   border-color: var(--color-border-strong);
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
+}
+
+.row:has([aria-expanded="true"]) {
+  position: relative;
+  z-index: 2;
 }
 
 .paused {
