@@ -604,8 +604,8 @@
       }
     },
     "lead": {
-      "title": "Prévenir avant l'échéance",
-      "description": "Le délai appliqué à vos nouveaux engagements.",
+      "title": "Délai par défaut pour les nouveaux abonnements",
+      "description": "Chaque abonnement peut ensuite avoir son propre délai.",
       "sameDay": "Le jour même",
       "before": {
         "one": "{count} jour avant",

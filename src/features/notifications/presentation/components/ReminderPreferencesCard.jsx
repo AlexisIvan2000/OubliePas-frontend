@@ -72,6 +72,7 @@ export function ReminderPreferencesCard({ preferences, saving, onToggle, onLeadT
             <Chip
               key={days}
               active={preferences.leadTime === days}
+              disabled={saving === "lead"}
               onClick={() => onLeadTime(days)}
             >
               {days === 0

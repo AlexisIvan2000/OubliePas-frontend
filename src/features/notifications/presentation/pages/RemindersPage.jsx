@@ -7,7 +7,11 @@ import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { useCommitments } from "../../../commitments/presentation/providers/useCommitments";
 import { useOccurrences } from "../../../commitments/presentation/providers/useOccurrences";
-import { DEFAULT_PREFERENCES, scheduledReminders } from "../../domain/reminders";
+import {
+  DEFAULT_LEAD_TIME,
+  DEFAULT_PREFERENCES,
+  scheduledReminders,
+} from "../../domain/reminders";
 import { ActivityFeedCard } from "../components/ActivityFeedCard";
 import { ReminderPreferencesCard } from "../components/ReminderPreferencesCard";
 import styles from "../styles/reminders.module.css";
@@ -43,17 +47,16 @@ export function RemindersPage() {
   );
 
   const emailEnabled = user?.reminderEmailEnabled ?? true;
-  const preferences = { ...local, email: emailEnabled };
+  const preferences = {
+    ...local,
+    email: emailEnabled,
+    leadTime: user?.defaultReminderDays ?? DEFAULT_LEAD_TIME,
+  };
 
-  const toggle = async (id, value) => {
-    if (id !== "email") {
-      setLocal((current) => ({ ...current, [id]: value }));
-      return;
-    }
-
+  const save = async (id, fields) => {
     setSaving(id);
     try {
-      await updateProfile({ reminder_email_enabled: value });
+      await updateProfile(fields);
     } catch (caught) {
       toast.push(messageForError(t, caught), "error");
     } finally {
@@ -61,7 +64,15 @@ export function RemindersPage() {
     }
   };
 
-  const setLeadTime = (leadTime) => setLocal((current) => ({ ...current, leadTime }));
+  const toggle = (id, value) => {
+    if (id !== "email") {
+      setLocal((current) => ({ ...current, [id]: value }));
+      return;
+    }
+    return save(id, { reminder_email_enabled: value });
+  };
+
+  const setLeadTime = (days) => save("lead", { default_reminder_days: days });
 
   return (
     <div className={styles.page}>

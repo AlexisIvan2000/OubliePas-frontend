@@ -37,7 +37,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   const today = useToday();
   const editing = Boolean(commitment);
   const [form, setForm] = useState(() =>
-    commitment ? formFromCommitment(commitment) : emptyForm(type),
+    commitment ? formFromCommitment(commitment) : emptyForm(type, user?.defaultReminderDays),
   );
 
   const save = useAsyncAction((payload) =>

@@ -604,8 +604,8 @@
       }
     },
     "lead": {
-      "title": "Notify before the due date",
-      "description": "The lead time applied to your new commitments.",
+      "title": "Default lead time for new subscriptions",
+      "description": "Each subscription can then carry its own lead time.",
       "sameDay": "Same day",
       "before": {
         "one": "{count} day before",

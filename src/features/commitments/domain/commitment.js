@@ -379,7 +379,9 @@ export function commitmentChanges(payload, commitment) {
   );
 }
 
-export function emptyForm(type) {
+export const DEFAULT_REMINDER_DAYS = 3;
+
+export function emptyForm(type, reminderDaysBefore = DEFAULT_REMINDER_DAYS) {
   return {
     title: "",
     type,
@@ -393,7 +395,7 @@ export function emptyForm(type) {
     trialDays: "",
     trialCustom: false,
     cancellationNoticeDays: "",
-    reminderDaysBefore: 3,
+    reminderDaysBefore,
     isReminderEnabled: true,
     notes: "",
   };
