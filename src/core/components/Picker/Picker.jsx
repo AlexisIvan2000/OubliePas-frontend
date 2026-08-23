@@ -140,6 +140,7 @@ export function Picker({
           styles.trigger,
           variant === "inline" && styles.inline,
           variant === "field" && styles.field,
+          variant === "toolbar" && styles.toolbar,
           invalid && styles.invalid,
           open && styles.triggerOpen,
         )}

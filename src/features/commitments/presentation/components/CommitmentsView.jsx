@@ -5,6 +5,7 @@ import { Button } from "../../../../core/components/Button/Button";
 import { Chip } from "../../../../core/components/Chip/Chip";
 import { ConfirmDialog } from "../../../../core/components/ConfirmDialog/ConfirmDialog";
 import { Icon } from "../../../../core/components/Icon/Icon";
+import { Picker } from "../../../../core/components/Picker/Picker";
 import { SearchField } from "../../../../core/components/SearchField/SearchField";
 import { useToast } from "../../../../core/components/Toast/useToast";
 import { messageForError } from "../../../../core/network/errorMessages";
@@ -67,6 +68,11 @@ export function CommitmentsView({ type }) {
   );
 
   const buckets = useMemo(() => categoryCounts(pool), [pool]);
+
+  const sortOptions = useMemo(
+    () => SORTS.map((value) => ({ value, label: t(`commitments.sort_${value}`) })),
+    [t],
+  );
 
   const visible = useMemo(
     () =>
@@ -177,18 +183,13 @@ export function CommitmentsView({ type }) {
               placeholder={t(meta.searchKey)}
             />
 
-            <select
-              className={styles.sort}
+            <Picker
+              label={t("commitments.sortLabel")}
               value={sort}
-              onChange={(event) => setSort(event.target.value)}
-              aria-label={t("commitments.sortLabel")}
-            >
-              {SORTS.map((value) => (
-                <option key={value} value={value}>
-                  {t(`commitments.sort_${value}`)}
-                </option>
-              ))}
-            </select>
+              options={sortOptions}
+              variant="toolbar"
+              onChange={setSort}
+            />
 
             {archivedCount || showArchived ? (
               <Chip active={showArchived} onClick={() => setShowArchived((current) => !current)}>
