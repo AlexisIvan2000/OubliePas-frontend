@@ -12,8 +12,8 @@ import styles from "./AppShell.module.css";
 const NAV_ITEMS = [
   { to: "/", key: "dashboard", icon: "dashboard", end: true },
   { to: "/abonnements", key: "subscriptions", icon: "subscriptions" },
-  { to: "/calendrier", key: "calendar", icon: "calendar" },
   { to: "/factures", key: "invoices", icon: "invoices" },
+  { to: "/calendrier", key: "calendar", icon: "calendar" },
   { to: "/rappels", key: "reminders", icon: "reminders", soon: true },
   { to: "/reglages", key: "settings", icon: "settings" },
 ];
