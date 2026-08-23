@@ -103,6 +103,8 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   const blocked = form.isTrial && derivedTrial === null && currentTrial === null;
   const firstCharge = form.isTrial ? (derivedTrial ?? currentTrial) : form.startsOn;
   const showEnd = !form.isTrial || editing;
+  const backdated =
+    !form.isTrial && form.frequency === "oneoff" && Boolean(form.startsOn) && form.startsOn < today;
 
   const submit = async (event) => {
     event.preventDefault();
@@ -284,6 +286,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
                 type="date"
                 value={form.startsOn}
                 onChange={set("startsOn")}
+                hint={backdated ? t("form.pastDueDate") : undefined}
                 required
               />
               <TextField

@@ -223,7 +223,8 @@
     "trialRecap": "Trial until {end} — first charge of {amount} on {end}.",
     "trialRecapPlain": "Trial until {end} — first charge on {end}.",
     "trialOver": "This trial is already over. The subscription will be created as active, with no trial-end reminder.",
-    "trialCurrent": "Current trial: until {date}"
+    "trialCurrent": "Current trial: until {date}",
+    "pastDueDate": "This date has passed: the bill will show up as late."
   },
   "frequency": {
     "monthly": "Every month",
