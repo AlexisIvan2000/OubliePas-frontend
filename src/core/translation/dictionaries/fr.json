@@ -665,5 +665,41 @@
     "heaviestTitle": "Les lignes les plus lourdes",
     "heaviestDescription": "Classées par coût annuel, tous types confondus.",
     "heaviestEmpty": "Aucune ligne récurrente active à classer."
+  },
+  "import": {
+    "documentTitle": "Démarrage",
+    "title": "Ajoute ce que tu paies déjà",
+    "pickSubtitle": "Coche ce que tu as. Tu complèteras les montants juste après.",
+    "fillSubtitle": "Pour chaque ligne : combien, et quel jour du mois.",
+    "searchLabel": "Chercher dans la liste",
+    "searchPlaceholder": "Netflix, loyer, assurance…",
+    "noMatch": "Rien ne correspond à « {query} ». Tu pourras l'ajouter à la main.",
+    "escape": "Autre chose — saisir à la main",
+    "fromEmpty": "Ou ajoute plusieurs lignes d'un coup",
+    "back": "Revenir à la sélection",
+    "full": "Vingt-cinq lignes au maximum par import. Tu pourras en ajouter d'autres ensuite.",
+    "continue": {
+      "one": "Continuer avec {count} ligne",
+      "other": "Continuer avec {count} lignes"
+    },
+    "submit": {
+      "one": "Créer la ligne",
+      "other": "Créer les {count} lignes"
+    },
+    "created": {
+      "one": "{count} ligne créée.",
+      "other": "{count} lignes créées."
+    },
+    "fixLines": {
+      "one": "{count} ligne demande une correction.",
+      "other": "{count} lignes demandent une correction."
+    },
+    "dayLabel": "Jour du prélèvement",
+    "dayPlaceholder": "12",
+    "nextCharge": "Prochain : {date}",
+    "amountMissing": "Montant à renseigner",
+    "dayMissing": "Jour entre 1 et 31",
+    "dateMissing": "Date à renseigner",
+    "removeLine": "Retirer {title}"
   }
 }

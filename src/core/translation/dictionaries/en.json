@@ -665,5 +665,41 @@
     "heaviestTitle": "The heaviest lines",
     "heaviestDescription": "Ranked by yearly cost, both types together.",
     "heaviestEmpty": "No active recurring line to rank."
+  },
+  "import": {
+    "documentTitle": "Getting started",
+    "title": "Add what you already pay",
+    "pickSubtitle": "Tick what you have. You will fill in the amounts right after.",
+    "fillSubtitle": "For each line: how much, and which day of the month.",
+    "searchLabel": "Search the list",
+    "searchPlaceholder": "Netflix, rent, insurance…",
+    "noMatch": "Nothing matches “{query}”. You will be able to add it by hand.",
+    "escape": "Something else — add it by hand",
+    "fromEmpty": "Or add several lines at once",
+    "back": "Back to the list",
+    "full": "Twenty-five lines per import at most. You can add more afterwards.",
+    "continue": {
+      "one": "Continue with {count} line",
+      "other": "Continue with {count} lines"
+    },
+    "submit": {
+      "one": "Create the line",
+      "other": "Create the {count} lines"
+    },
+    "created": {
+      "one": "{count} line created.",
+      "other": "{count} lines created."
+    },
+    "fixLines": {
+      "one": "{count} line needs a fix.",
+      "other": "{count} lines need a fix."
+    },
+    "dayLabel": "Day of the charge",
+    "dayPlaceholder": "12",
+    "nextCharge": "Next: {date}",
+    "amountMissing": "Amount required",
+    "dayMissing": "A day between 1 and 31",
+    "dateMissing": "Date required",
+    "removeLine": "Remove {title}"
   }
 }
