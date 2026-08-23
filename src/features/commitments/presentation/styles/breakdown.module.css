@@ -140,6 +140,7 @@
   color: var(--color-text-muted);
 }
 
+.months,
 .ranking {
   display: flex;
   flex-direction: column;
@@ -149,6 +150,7 @@
   list-style: none;
 }
 
+.month,
 .rank {
   display: flex;
   align-items: center;
@@ -157,6 +159,13 @@
   animation-delay: var(--enter-delay, 0ms);
 }
 
+.monthName {
+  flex: 0 0 6.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+}
+
+.monthTrack,
 .rankTrack {
   flex: 1 1 auto;
   height: 0.45rem;
@@ -165,6 +174,7 @@
   overflow: hidden;
 }
 
+.monthBar,
 .rankBar {
   display: block;
   height: 100%;
@@ -177,6 +187,7 @@
   animation-delay: inherit;
 }
 
+.monthValue,
 .rankValue {
   flex: 0 0 auto;
   min-width: 5.5rem;
@@ -184,94 +195,6 @@
   font-size: 0.8125rem;
   font-weight: 550;
   font-variant-numeric: tabular-nums;
-}
-
-.columns {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  gap: 0.75rem;
-  min-height: 11rem;
-  margin: 0;
-  padding: 1.25rem 0 0;
-  list-style: none;
-}
-
-.column {
-  position: relative;
-  display: flex;
-  flex: 1 1 0;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  max-width: 4.5rem;
-  height: 100%;
-}
-
-.columnValue {
-  font-size: 0.75rem;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  color: var(--color-text);
-}
-
-.columnPlot {
-  display: flex;
-  align-items: flex-end;
-  width: 100%;
-  flex: 1 1 auto;
-}
-
-.columnBar {
-  display: block;
-  width: 100%;
-  border-radius: 4px 4px 0 0;
-  background-color: var(--chart-1);
-  animation: rise 560ms cubic-bezier(0.22, 0.9, 0.28, 1) backwards;
-  animation-delay: var(--enter-delay, 0ms);
-  transition: filter 160ms ease;
-}
-
-.column:hover .columnBar {
-  filter: brightness(1.12);
-}
-
-.columnName {
-  font-size: 0.75rem;
-  color: var(--color-text-subtle);
-  white-space: nowrap;
-}
-
-.columnTip {
-  position: absolute;
-  top: -0.35rem;
-  left: 50%;
-  z-index: 2;
-  padding: 0.2rem 0.45rem;
-  border-radius: var(--radius-sm);
-  background-color: var(--color-text);
-  color: var(--color-surface);
-  font-size: 0.7rem;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translate(-50%, 0.2rem);
-  pointer-events: none;
-  transition:
-    opacity 140ms ease,
-    transform 200ms cubic-bezier(0.22, 0.9, 0.28, 1);
-}
-
-.column:hover .columnTip,
-.column:focus-visible .columnTip {
-  opacity: 1;
-  transform: translate(-50%, -0.35rem);
-}
-
-@keyframes rise {
-  from {
-    height: 0;
-  }
 }
 
 .rankIcon {
@@ -316,12 +239,17 @@
   .rankMain {
     flex-basis: 8rem;
   }
+
+  .monthName {
+    flex-basis: 5rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .month,
   .rank,
-  .rankBar,
-  .columnBar {
+  .monthBar,
+  .rankBar {
     animation: none;
   }
 }

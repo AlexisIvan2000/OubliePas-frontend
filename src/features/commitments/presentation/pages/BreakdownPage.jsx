@@ -25,7 +25,6 @@ import {
 import {
   formatMoney,
   formatMonth,
-  formatMonthShort,
   formatPercent,
   parseDate,
 } from "../../domain/formatting";
@@ -173,34 +172,20 @@ export function BreakdownPage() {
           ) : months.length === 0 ? (
             <p className={styles.empty}>{t("breakdown.comingEmpty")}</p>
           ) : (
-            <ol className={styles.columns}>
+            <ul className={styles.months}>
               {months.map((row, index) => (
-                <li
-                  key={row.month}
-                  className={styles.column}
-                  style={{ "--enter-delay": `${index * 70}ms` }}
-                  aria-label={t("breakdown.columnAria", {
-                    month: formatMonth(row.month),
-                    amount: formatMoney(row.total, currency),
-                    count: row.count,
-                  })}
-                >
-                  <span className={styles.columnTip} aria-hidden="true">
-                    {t("breakdown.dueCount", { count: row.count })}
-                  </span>
-                  <span className={styles.columnValue}>
-                    {formatMoney(row.total, currency)}
-                  </span>
-                  <span className={styles.columnPlot} aria-hidden="true">
+                <li key={row.month} className={styles.month} style={{ "--enter-delay": `${index * 60}ms` }}>
+                  <span className={styles.monthName}>{formatMonth(row.month)}</span>
+                  <span className={styles.monthTrack} aria-hidden="true">
                     <span
-                      className={styles.columnBar}
-                      style={{ height: `${peak ? Math.max((row.total / peak) * 100, 3) : 0}%` }}
+                      className={styles.monthBar}
+                      style={{ "--fill": peak ? row.total / peak : 0 }}
                     />
                   </span>
-                  <span className={styles.columnName}>{formatMonthShort(row.month)}</span>
+                  <span className={styles.monthValue}>{formatMoney(row.total, currency)}</span>
                 </li>
               ))}
-            </ol>
+            </ul>
           )}
         </Card>
       </div>

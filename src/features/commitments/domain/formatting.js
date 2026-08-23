@@ -5,7 +5,6 @@ export {
   formatDate,
   formatLongDate,
   formatMonth,
-  formatMonthShort,
   formatMoney,
   formatPercent,
   formatShortDate,
