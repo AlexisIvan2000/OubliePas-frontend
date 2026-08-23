@@ -206,7 +206,8 @@
     "endDate": "End (optional)",
     "endDateHint": "Leave empty if open-ended",
     "remindMe": "Warn me before the due date",
-    "daysBefore": "How many days before"
+    "daysBefore": "How many days before",
+    "amountHint": "The amount actually charged, taxes included, in {currency}."
   },
   "frequency": {
     "monthly": "Every month",
@@ -279,7 +280,15 @@
     "markPaid": "Mark {title} as paid",
     "markPending": "Mark {title} as to pay",
     "late": "overdue",
-    "latePrefix": "overdue — "
+    "latePrefix": "overdue — ",
+    "settle": "Settle {title}",
+    "settleDue": "Due on {date}",
+    "settleAmount": "Amount actually paid",
+    "settleAmountHint": "Adjust it if the amount charged differs from the expected one.",
+    "settleChanged": "Expected amount: {amount}",
+    "settleConfirm": "Mark as paid",
+    "skip": "Not this month",
+    "skipHint": "No payment this time: this due date leaves your totals without counting as late."
   },
   "calendar": {
     "documentTitle": "Calendar",

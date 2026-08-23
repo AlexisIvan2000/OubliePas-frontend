@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { useAuth } from "../../features/authentication/presentation/providers/useAuth";
-import { getSummary, updateOccurrence } from "../../features/commitments/data/commitmentsApi";
+import { getSummary } from "../../features/commitments/data/commitmentsApi";
 import { useResource } from "../network/useResource";
 import { STRIP_DAYS } from "../../features/commitments/domain/calendar";
 import { topCategories } from "../../features/commitments/domain/commitment";
@@ -12,14 +12,15 @@ import {
   UpcomingStripSkeleton,
 } from "../../features/commitments/presentation/components/SummarySkeleton";
 import { SummaryTiles } from "../../features/commitments/presentation/components/SummaryTiles";
+import { SettleDialog } from "../../features/commitments/presentation/components/SettleDialog";
 import { UpcomingStrip } from "../../features/commitments/presentation/components/UpcomingStrip";
 import {
   upcomingRange,
   useOccurrences,
 } from "../../features/commitments/presentation/providers/useOccurrences";
+import { useSettle } from "../../features/commitments/presentation/providers/useSettle";
 import { Alert } from "../components/Alert/Alert";
 import { Card } from "../components/Card/Card";
-import { useToast } from "../components/Toast/useToast";
 import { formatLongDate, parseDate } from "../utils/formatting";
 import { greetingKey, greetingSlot, msUntilNextSlot } from "../utils/greeting";
 import { messageForError } from "../network/errorMessages";
@@ -31,8 +32,6 @@ import styles from "./HomePage.module.css";
 export function HomePage() {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const toast = useToast();
-  const [busyId, setBusyId] = useState(null);
   const [now, setNow] = useState(() => new Date());
 
   useDocumentTitle(t("dashboard.documentTitle"));
@@ -59,20 +58,10 @@ export function HomePage() {
 
   const currency = summary?.currency ?? user?.currency ?? "CAD";
 
-  const toggle = async (occurrence) => {
-    setBusyId(occurrence.id);
-    try {
-      const updated = await updateOccurrence(occurrence.id, {
-        status: occurrence.status === "paid" ? "pending" : "paid",
-      });
-      setItems((current) => current.map((row) => (row.id === updated.id ? updated : row)));
-      reloadSummary();
-    } catch (caught) {
-      toast.push(messageForError(t, caught), "error");
-    } finally {
-      setBusyId(null);
-    }
-  };
+  const settle = useSettle((updated) => {
+    setItems((current) => current.map((row) => (row.id === updated.id ? updated : row)));
+    reloadSummary();
+  });
 
   const failure = error ?? dueError;
 
@@ -103,8 +92,8 @@ export function HomePage() {
               items={items}
               days={STRIP_DAYS}
               currency={currency}
-              busyId={busyId}
-              onToggle={toggle}
+              busyId={settle.busyId}
+              onToggle={settle.pick}
             />
           )}
         </Card>
@@ -124,6 +113,16 @@ export function HomePage() {
           )}
         </Card>
       </div>
+
+      {settle.target ? (
+        <SettleDialog
+          occurrence={settle.target}
+          currency={currency}
+          busy={settle.busyId === settle.target.id}
+          onSettle={settle.settle}
+          onClose={settle.close}
+        />
+      ) : null}
     </>
   );
 }

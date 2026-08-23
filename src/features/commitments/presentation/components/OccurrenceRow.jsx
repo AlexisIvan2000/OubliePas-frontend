@@ -2,6 +2,7 @@ import { Check } from "../../../../core/components/Check/Check";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { categoryLabel, occurrenceStatus } from "../../domain/commitment";
+import { checkLabel } from "../providers/useSettle";
 import { formatMoney, relativeDue } from "../../domain/formatting";
 import styles from "../styles/commitments.module.css";
 
@@ -22,11 +23,10 @@ export function OccurrenceRow({ occurrence, currency, busy, index = 0, onToggle 
     >
       <Check
         paid={paid}
+        skipped={occurrence.status === "skipped"}
         busy={busy}
         onClick={() => onToggle(occurrence)}
-        label={t(paid ? "occurrence.markPending" : "occurrence.markPaid", {
-          title: occurrence.title,
-        })}
+        label={checkLabel(t, occurrence)}
       />
 
       <div className={styles.occurrenceMain}>

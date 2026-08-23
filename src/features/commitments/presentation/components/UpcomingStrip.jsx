@@ -8,6 +8,7 @@ import { cx } from "../../../../core/utils/classNames";
 import { buildStripDays } from "../../domain/calendar";
 import { COMMITMENT_TYPES, categoryLabel } from "../../domain/commitment";
 import { useToday } from "../../../../core/utils/useToday";
+import { checkLabel } from "../providers/useSettle";
 import {
   formatDate,
   formatMoney,
@@ -110,11 +111,10 @@ export function UpcomingStrip({ items, days, currency, busyId, onToggle }) {
                   <Check
                     compact
                     paid={paid}
+                    skipped={event.status === "skipped"}
                     busy={busyId === event.id}
                     onClick={() => onToggle(event)}
-                    label={t(paid ? "occurrence.markPending" : "occurrence.markPaid", {
-                      title: event.title,
-                    })}
+                    label={checkLabel(t, event)}
                   />
 
                   <span className={styles.lineMain}>

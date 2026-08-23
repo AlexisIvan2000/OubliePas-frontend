@@ -33,6 +33,10 @@
   color: var(--color-success-text);
 }
 
+.skipped {
+  color: var(--color-text-subtle);
+}
+
 .mark {
   position: relative;
   display: inline-flex;
@@ -72,4 +76,36 @@
 .paid .tick,
 .paid:hover:not(:disabled) .tick {
   opacity: 1;
+}
+
+.dash {
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  width: 50%;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0;
+  transform: translateY(-50%) scaleX(0);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+}
+
+.skipped .circle {
+  opacity: 0.35;
+}
+
+.skipped .dash {
+  opacity: 1;
+  transform: translateY(-50%) scaleX(1);
+}
+
+.skipped:hover:not(:disabled) .circle {
+  opacity: 0.35;
+}
+
+.skipped:hover:not(:disabled) .tick {
+  opacity: 0;
 }

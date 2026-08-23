@@ -8,6 +8,7 @@ import { TextField } from "../../../../core/components/TextField/TextField";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useAsyncAction } from "../../../../core/utils/useAsyncAction";
+import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { createCommitment, updateCommitment } from "../../data/commitmentsApi";
 import { catalogLabel, findSuggestions } from "../../domain/catalog";
 import {
@@ -23,6 +24,7 @@ import styles from "../styles/commitmentForm.module.css";
 
 export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const editing = Boolean(commitment);
   const [form, setForm] = useState(() =>
     commitment ? formFromCommitment(commitment) : emptyForm(type),
@@ -118,6 +120,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
               value={form.amount}
               onChange={set("amount")}
               placeholder={t("form.amountPlaceholder")}
+              hint={t("form.amountHint", { currency: user?.currency ?? "CAD" })}
               required
             />
             <SelectField

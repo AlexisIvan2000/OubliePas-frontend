@@ -206,7 +206,8 @@
     "endDate": "Fin (facultatif)",
     "endDateHint": "Laissez vide si sans terme",
     "remindMe": "Me prévenir avant l'échéance",
-    "daysBefore": "Combien de jours avant"
+    "daysBefore": "Combien de jours avant",
+    "amountHint": "Le montant réellement prélevé, taxes incluses, en {currency}."
   },
   "frequency": {
     "monthly": "Tous les mois",
@@ -279,7 +280,15 @@
     "markPaid": "Marquer {title} comme payé",
     "markPending": "Marquer {title} comme à payer",
     "late": "en retard",
-    "latePrefix": "en retard — "
+    "latePrefix": "en retard — ",
+    "settle": "Régler {title}",
+    "settleDue": "Échéance du {date}",
+    "settleAmount": "Montant réellement payé",
+    "settleAmountHint": "Ajuste-le si la somme prélevée diffère du montant prévu.",
+    "settleChanged": "Montant prévu : {amount}",
+    "settleConfirm": "Marquer payé",
+    "skip": "Pas ce mois-ci",
+    "skipHint": "Aucun paiement cette fois : cette échéance sort de tes totaux sans compter comme un retard."
   },
   "calendar": {
     "documentTitle": "Calendrier",
