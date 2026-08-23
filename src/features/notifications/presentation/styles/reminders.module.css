@@ -227,3 +227,8 @@
     animation: none;
   }
 }
+.feedLead {
+  color: var(--color-text);
+  font-weight: 550;
+  white-space: nowrap;
+}

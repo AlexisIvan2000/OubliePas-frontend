@@ -16,7 +16,12 @@ function FeedRow({ entry, currency }) {
         <span className={styles.feedTitle}>{entry.title}</span>
         <span className={styles.feedMeta}>
           {t("reminders.feed.sendOn", { date: formatShortDate(entry.sendDate) })} &middot;{" "}
-          {t("reminders.feed.dueOn", { date: relativeDue(t, entry.dueDate) })}
+          <span className={styles.feedLead}>
+            {entry.daysBefore === 0
+              ? t("reminders.feed.sameDay")
+              : t("reminders.lead.before", { count: entry.daysBefore })}
+          </span>{" "}
+          &middot; {t("reminders.feed.dueOn", { date: relativeDue(t, entry.dueDate) })}
         </span>
       </div>
       <span className={styles.feedAmount}>{formatMoney(entry.amount, currency)}</span>

@@ -614,13 +614,14 @@
     },
     "feed": {
       "title": "Fil d'activité",
-      "description": "Les rappels programmés et ceux déjà envoyés.",
+      "description": "Les rappels programmés, avec le délai propre à chaque engagement.",
       "sendOn": "Envoi le {date}",
       "dueOn": "échéance {date}",
       "emptyTitle": "Aucun rappel programmé",
       "emptyText": "Les rappels apparaîtront ici dès qu'un engagement avec alerte approchera de son échéance.",
       "mutedTitle": "Les rappels par courriel sont désactivés",
-      "mutedText": "Rien ne partira tant que l'interrupteur ci-contre est éteint. Tes échéances restent suivies dans l'app."
+      "mutedText": "Rien ne partira tant que l'interrupteur ci-contre est éteint. Tes échéances restent suivies dans l'app.",
+      "sameDay": "le jour même"
     }
   }
 }
