@@ -103,6 +103,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   const blocked = form.isTrial && derivedTrial === null && currentTrial === null;
   const firstCharge = form.isTrial ? (derivedTrial ?? currentTrial) : form.startsOn;
   const showEnd = !form.isTrial || editing;
+  const showTrial = type === "subscription" || Boolean(currentTrial);
   const backdated =
     !form.isTrial && form.frequency === "oneoff" && Boolean(form.startsOn) && form.startsOn < today;
 
@@ -198,6 +199,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
             options={categories}
           />
 
+          {showTrial ? (
           <div className={styles.reminder}>
             <label className={styles.toggle}>
               <input type="checkbox" checked={form.isTrial} onChange={toggleTrial} />
@@ -267,6 +269,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
               </>
             ) : null}
           </div>
+          ) : null}
 
           {form.isTrial ? (
             showEnd ? (
