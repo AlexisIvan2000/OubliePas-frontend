@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { useAuth } from "../../features/authentication/presentation/providers/useAuth";
 import { getSummary } from "../../features/commitments/data/commitmentsApi";
@@ -21,6 +22,7 @@ import {
 import { useSettle } from "../../features/commitments/presentation/providers/useSettle";
 import { Alert } from "../components/Alert/Alert";
 import { Card } from "../components/Card/Card";
+import { Icon } from "../components/Icon/Icon";
 import { formatLongDate, parseDate } from "../utils/formatting";
 import { greetingKey, greetingSlot, msUntilNextSlot } from "../utils/greeting";
 import { messageForError } from "../network/errorMessages";
@@ -111,6 +113,13 @@ export function HomePage() {
           ) : (
             <CategoryDonutSkeleton />
           )}
+
+          <div className={styles.cardFooter}>
+            <Link to="/repartition" className={styles.seeMore}>
+              {t("dashboard.seeBreakdown")}
+              <Icon name="next" size={14} />
+            </Link>
+          </div>
         </Card>
       </div>
 

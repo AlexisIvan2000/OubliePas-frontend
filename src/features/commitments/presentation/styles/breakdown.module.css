@@ -1,0 +1,255 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  align-self: flex-start;
+  margin-bottom: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 550;
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.title {
+  margin: 0;
+  font-size: 2.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  align-items: start;
+  gap: 1.75rem;
+}
+
+.loading,
+.empty {
+  margin: 0;
+  padding: 1.25rem 0;
+  font-size: 0.875rem;
+  color: var(--color-text-subtle);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem 0.4rem;
+  text-align: left;
+  font-weight: 400;
+}
+
+.table thead th {
+  font-size: 0.7rem;
+  font-weight: 550;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table tbody th {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table tbody tr:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.table tfoot th,
+.table tfoot td {
+  padding-top: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.figureValue {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.figureLabel {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.note {
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.months,
+.ranking {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.month,
+.rank {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: global(riseIn) 340ms cubic-bezier(0.22, 0.9, 0.28, 1) backwards;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+.monthName {
+  flex: 0 0 6.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+}
+
+.monthTrack,
+.rankTrack {
+  flex: 1 1 auto;
+  height: 0.45rem;
+  border-radius: 0.25rem;
+  background-color: var(--color-surface-hover);
+  overflow: hidden;
+}
+
+.monthBar,
+.rankBar {
+  display: block;
+  height: 100%;
+  width: calc(var(--fill, 0) * 100%);
+  min-width: 2px;
+  border-radius: inherit;
+  background-color: var(--chart-1);
+  transform-origin: left center;
+  animation: grow 520ms cubic-bezier(0.22, 0.9, 0.28, 1) backwards;
+  animation-delay: inherit;
+}
+
+.monthValue,
+.rankValue {
+  flex: 0 0 auto;
+  min-width: 5.5rem;
+  text-align: right;
+  font-size: 0.8125rem;
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
+
+.rankIcon {
+  flex: none;
+  color: var(--color-text-subtle);
+}
+
+.rankMain {
+  display: flex;
+  flex: 0 0 11rem;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rankTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rankMeta {
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+}
+
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media (max-width: 60rem) {
+  .columns,
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 34rem) {
+  .rankMain {
+    flex-basis: 8rem;
+  }
+
+  .monthName {
+    flex-basis: 5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .month,
+  .rank,
+  .monthBar,
+  .rankBar {
+    animation: none;
+  }
+}

@@ -104,7 +104,8 @@
     "categoriesCenter": "Ce mois-ci",
     "categoriesEmpty": "Aucune dépense enregistrée ce mois-ci.",
     "categoriesAria": "Répartition des dépenses par catégorie : {legend}",
-    "categoryRest": "Autres catégories"
+    "categoryRest": "Autres catégories",
+    "seeBreakdown": "Voir la répartition"
   },
   "commitments": {
     "subscriptionsTitle": "Abonnements",
@@ -630,5 +631,39 @@
       "previous": "Page précédente",
       "next": "Page suivante"
     }
+  },
+  "breakdown": {
+    "documentTitle": "Répartition",
+    "title": "Répartition",
+    "subtitle": "À quoi tu t'engages, et ce que ça pèse.",
+    "back": "Tableau de bord",
+    "monthTitle": "{month}",
+    "monthDescription": "Toutes les catégories, pas seulement les cinq premières.",
+    "monthEmpty": "Aucune échéance ce mois-ci.",
+    "columnCategory": "Catégorie",
+    "columnCount": "Lignes",
+    "columnAmount": "Montant",
+    "columnShare": "Part",
+    "total": "Total",
+    "rateTitle": "Ce que tu t'engages à payer",
+    "rateDescription": "Calculé sur tes lignes actives et récurrentes, indépendamment du mois.",
+    "rateEmpty": "Aucune ligne récurrente active pour l'instant.",
+    "rateNote": {
+      "one": "Sur {count} ligne récurrente.",
+      "other": "Sur {count} lignes récurrentes."
+    },
+    "rateOneoff": {
+      "one": "{count} ligne ponctuelle est exclue du calcul.",
+      "other": "{count} lignes ponctuelles sont exclues du calcul."
+    },
+    "perYear": "Par an",
+    "perMonth": "Par mois",
+    "perYearValue": "{amount} / an",
+    "comingTitle": "Ce qui arrive",
+    "comingDescription": "Les échéances déjà calculées, mois par mois.",
+    "comingEmpty": "Rien n'est encore programmé.",
+    "heaviestTitle": "Les lignes les plus lourdes",
+    "heaviestDescription": "Classées par coût annuel, tous types confondus.",
+    "heaviestEmpty": "Aucune ligne récurrente active à classer."
   }
 }

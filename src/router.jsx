@@ -6,6 +6,7 @@ import { TermsPage } from "./core/pages/legal/TermsPage";
 import { NotFoundPage } from "./core/pages/NotFoundPage";
 import { RootLayout } from "./core/pages/RootLayout";
 import { RemindersPage } from "./features/notifications/presentation/pages/RemindersPage";
+import { BreakdownPage } from "./features/commitments/presentation/pages/BreakdownPage";
 import { CalendarPage } from "./features/commitments/presentation/pages/CalendarPage";
 import { InvoicesPage } from "./features/commitments/presentation/pages/InvoicesPage";
 import { SubscriptionsPage } from "./features/commitments/presentation/pages/SubscriptionsPage";
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
           { path: "/reglages", element: <ProfilePage /> },
           { path: "/abonnements", element: <SubscriptionsPage /> },
           { path: "/calendrier", element: <CalendarPage /> },
+          { path: "/repartition", element: <BreakdownPage /> },
           { path: "/factures", element: <InvoicesPage /> },
           { path: "/rappels", element: <RemindersPage /> },
         ],

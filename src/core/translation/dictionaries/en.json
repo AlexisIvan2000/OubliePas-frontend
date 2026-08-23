@@ -104,7 +104,8 @@
     "categoriesCenter": "This month",
     "categoriesEmpty": "No spending recorded this month.",
     "categoriesAria": "Spending broken down by category: {legend}",
-    "categoryRest": "Other categories"
+    "categoryRest": "Other categories",
+    "seeBreakdown": "See the breakdown"
   },
   "commitments": {
     "subscriptionsTitle": "Subscriptions",
@@ -630,5 +631,39 @@
       "previous": "Previous page",
       "next": "Next page"
     }
+  },
+  "breakdown": {
+    "documentTitle": "Breakdown",
+    "title": "Breakdown",
+    "subtitle": "What you are committed to, and what it weighs.",
+    "back": "Dashboard",
+    "monthTitle": "{month}",
+    "monthDescription": "Every category, not just the top five.",
+    "monthEmpty": "Nothing due this month.",
+    "columnCategory": "Category",
+    "columnCount": "Lines",
+    "columnAmount": "Amount",
+    "columnShare": "Share",
+    "total": "Total",
+    "rateTitle": "What you are committed to",
+    "rateDescription": "Worked out from your active recurring lines, whatever the month.",
+    "rateEmpty": "No active recurring line yet.",
+    "rateNote": {
+      "one": "Across {count} recurring line.",
+      "other": "Across {count} recurring lines."
+    },
+    "rateOneoff": {
+      "one": "{count} one-off line is left out of the total.",
+      "other": "{count} one-off lines are left out of the total."
+    },
+    "perYear": "Per year",
+    "perMonth": "Per month",
+    "perYearValue": "{amount} / year",
+    "comingTitle": "What is coming",
+    "comingDescription": "The due dates already worked out, month by month.",
+    "comingEmpty": "Nothing scheduled yet.",
+    "heaviestTitle": "The heaviest lines",
+    "heaviestDescription": "Ranked by yearly cost, both types together.",
+    "heaviestEmpty": "No active recurring line to rank."
   }
 }
