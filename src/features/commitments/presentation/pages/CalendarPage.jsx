@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { Alert } from "../../../../core/components/Alert/Alert";
+import { Chip } from "../../../../core/components/Chip/Chip";
 import { Icon } from "../../../../core/components/Icon/Icon";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
@@ -8,6 +9,7 @@ import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
 import { useToday } from "../../../../core/utils/useToday";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { buildMonthCells } from "../../domain/calendar";
+import { CALENDAR_FILTERS, filterByType } from "../../domain/commitment";
 import { formatMoney, formatMonth, parseDate } from "../../domain/formatting";
 import { MonthGrid } from "../components/MonthGrid";
 import { MonthGridSkeleton } from "../components/MonthGridSkeleton";
@@ -18,16 +20,25 @@ import { useSettle } from "../providers/useSettle";
 import styles from "../styles/calendar.module.css";
 import listStyles from "../styles/commitments.module.css";
 
+const EMPTY_SUMMARY = {
+  all: "calendar.nothingThisMonth",
+  subscription: "calendar.noSubscriptions",
+  invoice: "calendar.noInvoices",
+};
+
 export function CalendarPage() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [cursor, setCursor] = useState(() => new Date());
+  const [kind, setKind] = useState("all");
   const today = useToday();
 
   useDocumentTitle(t("calendar.documentTitle"));
 
   const range = useMemo(() => monthRange(cursor), [cursor]);
-  const { items, loading, error, setItems } = useOccurrences(range);
+  const { items: all, loading, error, setItems } = useOccurrences(range);
+
+  const items = useMemo(() => filterByType(all, kind), [all, kind]);
 
   const currency = user?.currency ?? "CAD";
   const monthLabel = formatMonth(range.start.slice(0, 7));
@@ -65,11 +76,24 @@ export function CalendarPage() {
                     count: items.length,
                     amount: formatMoney(remaining, currency),
                   })
-                : t("calendar.nothingThisMonth")}
+                : t(EMPTY_SUMMARY[kind])}
           </div>
         </div>
 
-        <div className={styles.nav}>
+        <div className={styles.tools}>
+          <div className={styles.filters} role="group" aria-label={t("calendar.filterLabel")}>
+            {CALENDAR_FILTERS.map((filter) => (
+              <Chip
+                key={filter.id}
+                active={kind === filter.id}
+                onClick={() => setKind(filter.id)}
+              >
+                {t(filter.labelKey)}
+              </Chip>
+            ))}
+          </div>
+
+          <div className={styles.nav}>
           <button
             type="button"
             className={styles.navButton}
@@ -86,6 +110,7 @@ export function CalendarPage() {
           >
             <Icon name="next" size={16} />
           </button>
+          </div>
         </div>
       </header>
 

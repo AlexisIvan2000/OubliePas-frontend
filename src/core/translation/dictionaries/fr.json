@@ -331,7 +331,11 @@
     "legendSubscription": "Abonnement",
     "legendInvoice": "Facture",
     "legendPaid": "Payé",
-    "legendHint": "Cliquez une pastille pour marquer payé."
+    "legendHint": "Cliquez une pastille pour marquer payé.",
+    "filterLabel": "Filtrer par type",
+    "filterAll": "Tout",
+    "noSubscriptions": "Aucun abonnement ce mois-ci",
+    "noInvoices": "Aucune facture ce mois-ci"
   },
   "auth": {
     "loginTitle": "Rien ne vous échappe ce mois-ci.",

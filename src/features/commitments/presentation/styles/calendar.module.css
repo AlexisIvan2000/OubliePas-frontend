@@ -246,3 +246,16 @@
     display: none;
   }
 }
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.filters {
+  display: flex;
+  gap: 0.375rem;
+}

@@ -29,6 +29,16 @@ export const COMMITMENT_TYPES = {
   },
 };
 
+export const CALENDAR_FILTERS = [
+  { id: "all", labelKey: "calendar.filterAll" },
+  { id: "subscription", labelKey: "commitments.subscriptionsTitle" },
+  { id: "invoice", labelKey: "commitments.invoicesTitle" },
+];
+
+export function filterByType(occurrences, kind) {
+  return kind === "all" ? occurrences : occurrences.filter((row) => row.type === kind);
+}
+
 export const FREQUENCY_CODES = ["monthly", "weekly", "quarterly", "yearly", "oneoff"];
 
 export function frequencyOptions(t) {

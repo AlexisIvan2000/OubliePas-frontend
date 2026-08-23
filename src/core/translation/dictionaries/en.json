@@ -331,7 +331,11 @@
     "legendSubscription": "Subscription",
     "legendInvoice": "Bill",
     "legendPaid": "Paid",
-    "legendHint": "Click a chip to mark it paid."
+    "legendHint": "Click a chip to mark it paid.",
+    "filterLabel": "Filter by type",
+    "filterAll": "All",
+    "noSubscriptions": "No subscription this month",
+    "noInvoices": "No bill this month"
   },
   "auth": {
     "loginTitle": "Nothing slips past you this month.",
