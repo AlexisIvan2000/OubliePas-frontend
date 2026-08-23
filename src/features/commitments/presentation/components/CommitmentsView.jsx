@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import { Alert } from "../../../../core/components/Alert/Alert";
 import { Button } from "../../../../core/components/Button/Button";
 import { Chip } from "../../../../core/components/Chip/Chip";
-import { Link } from "react-router-dom";
 import { ConfirmDialog } from "../../../../core/components/ConfirmDialog/ConfirmDialog";
 import { Icon } from "../../../../core/components/Icon/Icon";
 import { Picker } from "../../../../core/components/Picker/Picker";
@@ -273,18 +272,13 @@ export function CommitmentsView({ type }) {
           onAction={() => setShowArchived(true)}
         />
       ) : (
-        <>
-          <EmptyState
-            icon={meta.icon}
-            title={t(meta.emptyTitleKey)}
-            message={t(meta.emptyBodyKey)}
-            actionLabel={t(meta.addKey)}
-            onAction={openCreate}
-          />
-          <p className={styles.importHint}>
-            <Link to="/demarrage">{t("import.fromEmpty")}</Link>
-          </p>
-        </>
+        <EmptyState
+          icon={meta.icon}
+          title={t(meta.emptyTitleKey)}
+          message={t(meta.emptyBodyKey)}
+          actionLabel={t(meta.addKey)}
+          onAction={openCreate}
+        />
       )}
 
       {formOpen ? (

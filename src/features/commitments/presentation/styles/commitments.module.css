@@ -437,15 +437,3 @@
   background-color: var(--color-invoice-soft);
   color: var(--color-invoice-text);
 }
-
-.importHint {
-  margin: -0.5rem 0 0;
-  font-size: 0.875rem;
-  text-align: center;
-  color: var(--color-text-muted);
-}
-
-.importHint a {
-  color: var(--color-link);
-  font-weight: 550;
-}

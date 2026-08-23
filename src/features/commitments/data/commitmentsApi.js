@@ -24,11 +24,6 @@ export async function createCommitment(payload) {
   return toCommitment(await http.post(COMMITMENT_ENDPOINTS.root, payload, { auth: true }));
 }
 
-export async function createCommitments(items) {
-  const rows = await http.post(COMMITMENT_ENDPOINTS.batch, { items }, { auth: true });
-  return rows.map(toCommitment);
-}
-
 export async function updateCommitment(id, payload) {
   return toCommitment(await http.patch(COMMITMENT_ENDPOINTS.one(id), payload, { auth: true }));
 }

@@ -8,7 +8,6 @@ import { RootLayout } from "./core/pages/RootLayout";
 import { RemindersPage } from "./features/notifications/presentation/pages/RemindersPage";
 import { BreakdownPage } from "./features/commitments/presentation/pages/BreakdownPage";
 import { CalendarPage } from "./features/commitments/presentation/pages/CalendarPage";
-import { ImportPage } from "./features/commitments/presentation/pages/ImportPage";
 import { InvoicesPage } from "./features/commitments/presentation/pages/InvoicesPage";
 import { SubscriptionsPage } from "./features/commitments/presentation/pages/SubscriptionsPage";
 import { GuestLayout } from "./features/authentication/presentation/components/GuestLayout";
@@ -46,7 +45,6 @@ export const router = createBrowserRouter([
           { path: "/abonnements", element: <SubscriptionsPage /> },
           { path: "/calendrier", element: <CalendarPage /> },
           { path: "/repartition", element: <BreakdownPage /> },
-          { path: "/demarrage", element: <ImportPage /> },
           { path: "/factures", element: <InvoicesPage /> },
           { path: "/rappels", element: <RemindersPage /> },
         ],
