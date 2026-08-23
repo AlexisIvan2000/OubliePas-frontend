@@ -49,10 +49,7 @@ export function PreferenceToggles({ className }) {
       <button
         type="button"
         className={styles.theme}
-        onClick={(event) => {
-          const box = event.currentTarget.getBoundingClientRect();
-          setTheme(next, { x: box.left + box.width / 2, y: box.top + box.height / 2 });
-        }}
+        onClick={() => setTheme(next)}
         aria-label={label}
         title={label}
       >

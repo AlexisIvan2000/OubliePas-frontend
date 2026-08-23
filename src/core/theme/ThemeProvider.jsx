@@ -25,7 +25,7 @@ export function ThemeProvider({ children }) {
   }, [resolved]);
 
   const changeTheme = useCallback(
-    (code, origin) => {
+    (code) => {
       if (!isSupported(code) || code === theme) {
         return;
       }
@@ -33,7 +33,7 @@ export function ThemeProvider({ children }) {
       revealTheme(() => {
         applyTheme(code === "system" ? system : code);
         flushSync(() => setTheme(code));
-      }, origin);
+      });
     },
     [theme, system],
   );
