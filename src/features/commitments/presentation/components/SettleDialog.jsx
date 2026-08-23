@@ -6,6 +6,7 @@ import { TextField } from "../../../../core/components/TextField/TextField";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { useDismiss } from "../../../../core/utils/useDismiss";
+import { useScrollLock } from "../../../../core/utils/useScrollLock";
 import { categoryLabel } from "../../domain/commitment";
 import { formatDate, formatMoney } from "../../domain/formatting";
 import styles from "../styles/settle.module.css";
@@ -15,6 +16,8 @@ export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) 
   const [amount, setAmount] = useState(() => String(occurrence.amount));
   const { leaving, dismiss } = useDismiss();
   const close = () => dismiss(onClose);
+
+  useScrollLock();
 
   useEffect(() => {
     const handler = (event) => event.key === "Escape" && dismiss(onClose);

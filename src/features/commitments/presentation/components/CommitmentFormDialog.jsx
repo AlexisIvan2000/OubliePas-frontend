@@ -9,6 +9,7 @@ import { TextField } from "../../../../core/components/TextField/TextField";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { cx } from "../../../../core/utils/classNames";
 import { useDismiss } from "../../../../core/utils/useDismiss";
+import { useScrollLock } from "../../../../core/utils/useScrollLock";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useAsyncAction } from "../../../../core/utils/useAsyncAction";
 import { useToday } from "../../../../core/utils/useToday";
@@ -38,6 +39,8 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   const today = useToday();
   const { leaving, dismiss } = useDismiss();
   const close = () => dismiss(onClose);
+
+  useScrollLock();
   const editing = Boolean(commitment);
   const [form, setForm] = useState(() =>
     commitment ? formFromCommitment(commitment) : emptyForm(type, user?.defaultReminderDays),

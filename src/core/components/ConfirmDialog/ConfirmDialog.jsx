@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { cx } from "../../utils/classNames";
 import { useDismiss } from "../../utils/useDismiss";
+import { useScrollLock } from "../../utils/useScrollLock";
 import { Button } from "../Button/Button";
 import styles from "./ConfirmDialog.module.css";
 
@@ -16,6 +17,8 @@ export function ConfirmDialog({
 }) {
   const confirmRef = useRef(null);
   const { leaving, dismiss } = useDismiss();
+
+  useScrollLock(open);
 
   useEffect(() => {
     if (!open) {
