@@ -50,10 +50,10 @@
   "landing": {
     "sampleRent": "Loyer",
     "sampleInsurance": "Assurance auto",
-    "documentTitle": "Oubliepas — ne manquez plus une échéance",
+    "documentTitle": "OubliePas — ne manquez plus une échéance",
     "eyebrow": "Suivi d'abonnements et de charges fixes",
     "title": "Vous saurez toujours ce qui va être prélevé.",
-    "subtitle": "Oubliepas réunit vos abonnements et vos factures récurrentes au même endroit, calcule ce qu'ils vous coûtent chaque mois et vous prévient avant l'échéance. Rien à payer depuis l'application : elle suit, elle affiche, elle rappelle.",
+    "subtitle": "OubliePas réunit vos abonnements et vos factures récurrentes au même endroit, calcule ce qu'ils vous coûtent chaque mois et vous prévient avant l'échéance. Rien à payer depuis l'application : elle suit, elle affiche, elle rappelle.",
     "noAccount": "Pas encore de compte ?",
     "footnote": "Aucune connexion bancaire. Vous saisissez ce que vous suivez, rien d'autre.",
     "previewLabel": "Ce mois-ci",
@@ -582,7 +582,7 @@
   "reminders": {
     "title": "Rappels",
     "subtitle": "Les alertes envoyées avant chaque prélèvement.",
-    "documentTitle": "Rappels · Oubliepas",
+    "documentTitle": "Rappels · OubliePas",
     "preferences": {
       "title": "Préférences",
       "description": "Comment et quand vous souhaitez être prévenu."

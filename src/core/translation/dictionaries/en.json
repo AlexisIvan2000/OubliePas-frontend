@@ -50,10 +50,10 @@
   "landing": {
     "sampleRent": "Rent",
     "sampleInsurance": "Car insurance",
-    "documentTitle": "Oubliepas — never miss a payment again",
+    "documentTitle": "OubliePas — never miss a payment again",
     "eyebrow": "Subscription and fixed-cost tracking",
     "title": "You'll always know what's about to be charged.",
-    "subtitle": "Oubliepas brings your subscriptions and recurring bills together, works out what they cost you each month and warns you before the due date. Nothing is paid from the app: it tracks, it shows, it reminds.",
+    "subtitle": "OubliePas brings your subscriptions and recurring bills together, works out what they cost you each month and warns you before the due date. Nothing is paid from the app: it tracks, it shows, it reminds.",
     "noAccount": "No account yet?",
     "footnote": "No bank connection. You enter what you track, nothing else.",
     "previewLabel": "This month",
@@ -582,7 +582,7 @@
   "reminders": {
     "title": "Reminders",
     "subtitle": "The alerts sent before each payment.",
-    "documentTitle": "Reminders · Oubliepas",
+    "documentTitle": "Reminders · OubliePas",
     "preferences": {
       "title": "Preferences",
       "description": "How and when you want to be notified."

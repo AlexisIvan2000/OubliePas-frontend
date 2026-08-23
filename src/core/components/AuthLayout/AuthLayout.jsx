@@ -10,7 +10,7 @@ export function AuthLayout({ title, subtitle, children, footer, footnote, aside 
         <div className={styles.topbar}>
           <Link to="/" className={styles.brand}>
             <img className={styles.logo} src="/assets/logo.png" alt="" />
-            <span className={styles.wordmark}>Oubliepas</span>
+            <span className={styles.wordmark}>OubliePas</span>
           </Link>
           <PreferenceToggles />
         </div>

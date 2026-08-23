@@ -42,7 +42,7 @@ export function LandingPage() {
       <header className={styles.topbar}>
         <div className={styles.brand}>
           <img className={styles.logo} src="/assets/logo.png" alt="" />
-          <span className={styles.wordmark}>Oubliepas</span>
+          <span className={styles.wordmark}>OubliePas</span>
         </div>
         <div className={styles.topActions}>
           <PreferenceToggles />
@@ -120,7 +120,7 @@ export function LandingPage() {
       </main>
 
       <footer className={styles.footer}>
-        <span className={styles.footerBrand}>Oubliepas</span>
+        <span className={styles.footerBrand}>OubliePas</span>
         <nav className={styles.footerLinks} aria-label={t("legal.footerAria")}>
           <Link to="/conditions">{t("legal.terms")}</Link>
           <Link to="/confidentialite">{t("legal.privacy")}</Link>

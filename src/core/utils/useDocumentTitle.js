@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const SUFFIX = "Oubliepas";
+const SUFFIX = "OubliePas";
 
 export function useDocumentTitle(title) {
   useEffect(() => {

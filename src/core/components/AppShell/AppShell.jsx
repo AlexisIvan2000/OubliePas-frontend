@@ -27,7 +27,7 @@ export function AppShell({ children }) {
       <aside className={styles.sidebar}>
         <NavLink to="/" className={styles.brand}>
           <img className={styles.logo} src="/assets/logo.png" alt="" />
-          <span className={styles.wordmark}>Oubliepas</span>
+          <span className={styles.wordmark}>OubliePas</span>
         </NavLink>
 
         <nav className={styles.nav}>

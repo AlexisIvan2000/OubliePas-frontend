@@ -1,5 +1,5 @@
 export const LEGAL = {
-  entity: "Oubliepas",
+  entity: "OubliePas",
   contactEmail: "support@oubliepas.com",
   jurisdiction: "Québec (Canada)",
   jurisdictionEn: "Quebec, Canada",
