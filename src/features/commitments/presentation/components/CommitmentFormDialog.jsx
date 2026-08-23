@@ -2,29 +2,39 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Alert } from "../../../../core/components/Alert/Alert";
 import { Button } from "../../../../core/components/Button/Button";
+import { Chip } from "../../../../core/components/Chip/Chip";
 import { SelectField } from "../../../../core/components/SelectField/SelectField";
 import { Suggest } from "../../../../core/components/Suggest/Suggest";
 import { TextField } from "../../../../core/components/TextField/TextField";
 import { messageForError } from "../../../../core/network/errorMessages";
+import { cx } from "../../../../core/utils/classNames";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useAsyncAction } from "../../../../core/utils/useAsyncAction";
+import { useToday } from "../../../../core/utils/useToday";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { createCommitment, updateCommitment } from "../../data/commitmentsApi";
 import { catalogLabel, findSuggestions } from "../../domain/catalog";
 import {
   COMMITMENT_TYPES,
+  MAX_NOTICE_DAYS,
+  MAX_TRIAL_DAYS,
+  TRIAL_PRESETS,
   categoryLabel,
   categoryOptions,
+  commitmentChanges,
   emptyForm,
   formFromCommitment,
   frequencyOptions,
   toCommitmentPayload,
+  trialEndFrom,
 } from "../../domain/commitment";
+import { formatDate, formatMoney } from "../../domain/formatting";
 import styles from "../styles/commitmentForm.module.css";
 
 export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const today = useToday();
   const editing = Boolean(commitment);
   const [form, setForm] = useState(() =>
     commitment ? formFromCommitment(commitment) : emptyForm(type),
@@ -61,16 +71,61 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
     setForm((current) => ({ ...current, [field]: value }));
   };
 
+  const option = (field, fallback) => (event) => {
+    const on = event.target.checked;
+    setForm((current) => ({ ...current, [field]: on ? fallback(current) : "" }));
+  };
+
+  const toggleTrial = (event) => {
+    const on = event.target.checked;
+    setForm((current) => ({
+      ...current,
+      isTrial: on,
+      trialStartsOn: on && !editing ? today : "",
+      trialDays: on ? current.trialDays : "",
+      trialCustom: on ? current.trialCustom : false,
+    }));
+  };
+
+  const pickPreset = (days) => () =>
+    setForm((current) => ({ ...current, trialDays: String(days), trialCustom: false }));
+
+  const pickCustom = () => setForm((current) => ({ ...current, trialCustom: true }));
+
+  const meta = COMMITMENT_TYPES[type];
+  const currency = user?.currency ?? "CAD";
+  const currentTrial = commitment?.trialEndsOn ?? null;
+  const derivedTrial = form.isTrial
+    ? trialEndFrom(form.trialStartsOn, form.trialDays)
+    : null;
+  const trialOver = derivedTrial !== null && derivedTrial <= today;
+  const blocked = form.isTrial && derivedTrial === null && currentTrial === null;
+
   const submit = async (event) => {
     event.preventDefault();
-    const result = await save.run(toCommitmentPayload(form));
+    const payload = toCommitmentPayload(form, { currentTrialEnd: currentTrial });
+
+    if (editing) {
+      const changes = commitmentChanges(payload, commitment);
+      if (!Object.keys(changes).length) {
+        onClose();
+        return;
+      }
+      const result = await save.run(changes);
+      if (result.ok) {
+        onSaved(result.data);
+        onClose();
+      }
+      return;
+    }
+
+    const result = await save.run(payload);
     if (result.ok) {
       onSaved(result.data);
       onClose();
     }
   };
 
-  const meta = COMMITMENT_TYPES[type];
   const heading = editing
     ? t("form.editTitle", { title: form.title || t(meta.labelKey) })
     : t(meta.formTitleKey);
@@ -138,14 +193,77 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
             options={categories}
           />
 
-          <div className={styles.pair}>
-            <TextField
-              label={t("form.firstDueDate")}
-              type="date"
-              value={form.startsOn}
-              onChange={set("startsOn")}
-              required
-            />
+          <div className={styles.reminder}>
+            <label className={styles.toggle}>
+              <input type="checkbox" checked={form.isTrial} onChange={toggleTrial} />
+              <span>{t("form.isTrial")}</span>
+            </label>
+
+            {form.isTrial ? (
+              <>
+                <TextField
+                  label={t("form.trialStartsOn")}
+                  type="date"
+                  value={form.trialStartsOn}
+                  onChange={set("trialStartsOn")}
+                  required={!editing}
+                />
+
+                <div
+                  className={styles.presets}
+                  role="group"
+                  aria-label={t("form.trialDuration")}
+                >
+                  <span className={styles.presetsLabel}>{t("form.trialDuration")}</span>
+                  <div className={styles.presetRow}>
+                    {TRIAL_PRESETS.map((days) => (
+                      <Chip
+                        key={days}
+                        active={!form.trialCustom && form.trialDays === String(days)}
+                        onClick={pickPreset(days)}
+                      >
+                        {t("form.trialPreset", { count: days })}
+                      </Chip>
+                    ))}
+                    <Chip active={form.trialCustom} onClick={pickCustom}>
+                      {t("form.trialOther")}
+                    </Chip>
+                  </div>
+                </div>
+
+                {form.trialCustom ? (
+                  <TextField
+                    label={t("form.trialCustomDays")}
+                    type="number"
+                    min="1"
+                    max={String(MAX_TRIAL_DAYS)}
+                    value={form.trialDays}
+                    onChange={set("trialDays")}
+                    className={styles.days}
+                  />
+                ) : null}
+
+                {derivedTrial ? (
+                  <p className={cx(styles.recap, trialOver && styles.recapWarning)}>
+                    {trialOver
+                      ? t("form.trialOver")
+                      : t(form.amount ? "form.trialRecap" : "form.trialRecapPlain", {
+                          end: formatDate(derivedTrial),
+                          amount: form.amount ? formatMoney(form.amount, currency) : "",
+                        })}
+                  </p>
+                ) : currentTrial ? (
+                  <p className={styles.recap}>
+                    {t("form.trialCurrent", { date: formatDate(currentTrial) })}
+                  </p>
+                ) : null}
+
+                <p className={styles.recapHint}>{t("form.trialHint")}</p>
+              </>
+            ) : null}
+          </div>
+
+          {form.isTrial ? (
             <TextField
               label={t("form.endDate")}
               type="date"
@@ -153,6 +271,47 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
               onChange={set("endsOn")}
               hint={t("form.endDateHint")}
             />
+          ) : (
+            <div className={styles.pair}>
+              <TextField
+                label={t("form.firstDueDate")}
+                type="date"
+                value={form.startsOn}
+                onChange={set("startsOn")}
+                required
+              />
+              <TextField
+                label={t("form.endDate")}
+                type="date"
+                value={form.endsOn}
+                onChange={set("endsOn")}
+                hint={t("form.endDateHint")}
+              />
+            </div>
+          )}
+
+          <div className={styles.reminder}>
+            <label className={styles.toggle}>
+              <input
+                type="checkbox"
+                checked={form.cancellationNoticeDays !== ""}
+                onChange={option("cancellationNoticeDays", () => 30)}
+              />
+              <span>{t("form.hasNotice")}</span>
+            </label>
+
+            {form.cancellationNoticeDays !== "" ? (
+              <TextField
+                label={t("form.noticeDays")}
+                type="number"
+                min="1"
+                max={String(MAX_NOTICE_DAYS)}
+                value={form.cancellationNoticeDays}
+                onChange={set("cancellationNoticeDays")}
+                hint={t("form.noticeHint")}
+                className={styles.days}
+              />
+            ) : null}
           </div>
 
           <div className={styles.reminder}>
@@ -182,7 +341,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
             <Button variant="secondary" onClick={onClose} disabled={save.loading}>
               {t("common.cancel")}
             </Button>
-            <Button type="submit" loading={save.loading}>
+            <Button type="submit" loading={save.loading} disabled={blocked}>
               {editing ? t("common.save") : t("common.add")}
             </Button>
           </div>

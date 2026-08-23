@@ -6,6 +6,7 @@ import {
   ANNUAL_FACTOR,
   FREQUENCY_SHORT_KEYS,
   STATUS_TAG_KEYS,
+  actionDeadline,
   categoryLabel,
   statusActions,
 } from "../../domain/commitment";
@@ -15,12 +16,14 @@ import styles from "../styles/commitments.module.css";
 export function CommitmentRow({
   commitment,
   currency,
+  today,
   index = 0,
   onEdit,
   onDelete,
   onStatusChange,
 }) {
   const { t } = useTranslation();
+  const deadline = actionDeadline(commitment, today);
   const dimmed = commitment.status !== "active";
   const tagKey = STATUS_TAG_KEYS[commitment.status];
   const factor = ANNUAL_FACTOR[commitment.frequency];
@@ -47,6 +50,14 @@ export function CommitmentRow({
           {commitment.title}
           {tagKey ? <span className={styles.pausedTag}>{t(tagKey)}</span> : null}
         </div>
+        {deadline ? (
+          <div className={cx(styles.deadline, styles[deadline.reason])}>
+            <Icon name="reminders" size={13} />
+            {t(`commitments.${deadline.reason}Deadline`, {
+              date: formatDate(deadline.date),
+            })}
+          </div>
+        ) : null}
         <div className={styles.rowMeta}>
           <span>{categoryLabel(t, commitment.category)}</span>
           <span className={styles.dot} aria-hidden="true" />

@@ -182,7 +182,9 @@
     "addSubscription": "Add a subscription",
     "addInvoice": "Add a bill",
     "noResultsTitle": "No result for “{query}”",
-    "noResultsBody": "Try another name or another category."
+    "noResultsBody": "Try another name or another category.",
+    "trialDeadline": "Trial until {date}",
+    "cancellationDeadline": "Cancel before {date}"
   },
   "form": {
     "suggestHint": "Suggestions — type freely if your service is not listed.",
@@ -207,7 +209,21 @@
     "endDateHint": "Leave empty if open-ended",
     "remindMe": "Warn me before the due date",
     "daysBefore": "How many days before",
-    "amountHint": "The amount actually charged, taxes included, in {currency}."
+    "amountHint": "The amount actually charged, taxes included, in {currency}.",
+    "isTrial": "This is a free trial",
+    "trialHint": "We warn you before the first charge, at least 3 days ahead.",
+    "hasNotice": "This contract requires notice to cancel",
+    "noticeDays": "Days of notice",
+    "noticeHint": "We warn you before the cancellation deadline, not just before the charge. 60 days at most.",
+    "trialStartsOn": "Trial starts on",
+    "trialDuration": "Trial length",
+    "trialPreset": "{count} days",
+    "trialOther": "Other",
+    "trialCustomDays": "Trial days",
+    "trialRecap": "Trial until {end} — first charge of {amount} on {end}.",
+    "trialRecapPlain": "Trial until {end} — first charge on {end}.",
+    "trialOver": "This trial is already over. The subscription will be created as active, with no trial-end reminder.",
+    "trialCurrent": "Current trial: until {date}"
   },
   "frequency": {
     "monthly": "Every month",

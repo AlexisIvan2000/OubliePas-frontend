@@ -90,3 +90,43 @@
     grid-template-columns: 1fr;
   }
 }
+.presets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.presetsLabel {
+  font-size: 0.8125rem;
+  font-weight: 550;
+  color: var(--color-text-muted);
+}
+
+.presetRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.recap {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.recapWarning {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger-text);
+  font-weight: 550;
+}
+
+.recapHint {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}

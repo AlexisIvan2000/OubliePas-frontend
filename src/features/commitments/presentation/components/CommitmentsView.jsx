@@ -239,6 +239,7 @@ export function CommitmentsView({ type }) {
               key={commitment.id}
               commitment={commitment}
               currency={currency}
+              today={today}
               index={index}
               onEdit={openEdit}
               onDelete={setPendingDelete}

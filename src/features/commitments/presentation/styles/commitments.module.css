@@ -425,3 +425,24 @@
     max-width: none;
   }
 }
+.deadline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.25rem 0 0.1rem;
+  padding: 0.1rem 0.45rem 0.1rem 0.35rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.trial {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent-deep);
+}
+
+.cancellation {
+  background-color: var(--color-invoice-soft);
+  color: var(--color-invoice-text);
+}

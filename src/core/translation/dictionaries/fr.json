@@ -182,7 +182,9 @@
     "addSubscription": "Ajouter un abonnement",
     "addInvoice": "Ajouter une facture",
     "noResultsTitle": "Aucun résultat pour « {query} »",
-    "noResultsBody": "Essayez un autre nom ou une autre catégorie."
+    "noResultsBody": "Essayez un autre nom ou une autre catégorie.",
+    "trialDeadline": "Essai jusqu'au {date}",
+    "cancellationDeadline": "Annuler avant le {date}"
   },
   "form": {
     "suggestHint": "Suggestions — tapez librement si votre service n’y est pas.",
@@ -207,7 +209,21 @@
     "endDateHint": "Laissez vide si sans terme",
     "remindMe": "Me prévenir avant l'échéance",
     "daysBefore": "Combien de jours avant",
-    "amountHint": "Le montant réellement prélevé, taxes incluses, en {currency}."
+    "amountHint": "Le montant réellement prélevé, taxes incluses, en {currency}.",
+    "isTrial": "C'est un essai gratuit",
+    "trialHint": "On te prévient avant la première facturation, au moins 3 jours à l'avance.",
+    "hasNotice": "Ce contrat demande un préavis d'annulation",
+    "noticeDays": "Jours de préavis",
+    "noticeHint": "On te prévient avant la date limite pour annuler, pas seulement avant le prélèvement. 60 jours au maximum.",
+    "trialStartsOn": "Début de l'essai",
+    "trialDuration": "Durée de l'essai",
+    "trialPreset": "{count} j",
+    "trialOther": "Autre",
+    "trialCustomDays": "Jours d'essai",
+    "trialRecap": "Essai jusqu'au {end} — premier prélèvement de {amount} le {end}.",
+    "trialRecapPlain": "Essai jusqu'au {end} — premier prélèvement le {end}.",
+    "trialOver": "Cet essai est déjà terminé. L'abonnement sera créé comme actif, sans rappel de fin d'essai.",
+    "trialCurrent": "Essai actuel : jusqu'au {date}"
   },
   "frequency": {
     "monthly": "Tous les mois",

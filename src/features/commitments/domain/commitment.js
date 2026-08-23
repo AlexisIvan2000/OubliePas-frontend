@@ -1,3 +1,5 @@
+import { parseDate } from "./formatting";
+
 export const COMMITMENT_TYPES = {
   subscription: {
     icon: "subscriptions",
@@ -162,6 +164,38 @@ export function sliceLabel(t, slice) {
 
 
 
+export const MAX_NOTICE_DAYS = 60;
+
+function isoShift(iso, days) {
+  const date = parseDate(iso);
+  date.setDate(date.getDate() + days);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
+    date.getDate(),
+  ).padStart(2, "0")}`;
+}
+
+export const TRIAL_PRESETS = [3, 7, 14, 30];
+export const MAX_TRIAL_DAYS = 365;
+
+export function trialEndFrom(startsOn, days) {
+  const count = Number(days);
+  if (!startsOn || !Number.isInteger(count) || count < 1 || count > MAX_TRIAL_DAYS) {
+    return null;
+  }
+  return isoShift(startsOn, count);
+}
+
+export function actionDeadline(commitment, today) {
+  if (commitment.trialEndsOn && commitment.trialEndsOn >= today) {
+    return { reason: "trial", date: commitment.trialEndsOn };
+  }
+  if (commitment.cancellationNoticeDays && commitment.nextDueDate) {
+    const date = isoShift(commitment.nextDueDate, -commitment.cancellationNoticeDays);
+    return date >= today ? { reason: "cancellation", date } : null;
+  }
+  return null;
+}
+
 export const STATUS_TAG_KEYS = {
   paused: "commitments.paused",
   archived: "commitments.archived",
@@ -245,6 +279,8 @@ export function toCommitment(raw) {
     frequency: raw.frequency,
     startsOn: raw.starts_on,
     endsOn: raw.ends_on,
+    trialEndsOn: raw.trial_ends_on,
+    cancellationNoticeDays: raw.cancellation_notice_days,
     reminderDaysBefore: raw.reminder_days_before,
     isReminderEnabled: raw.is_reminder_enabled,
     status: raw.status,
@@ -287,22 +323,60 @@ export function toSummary(raw) {
   };
 }
 
-export function toCommitmentPayload(form) {
+export function toCommitmentPayload(form, { currentTrialEnd = null } = {}) {
+  const derived = form.isTrial ? trialEndFrom(form.trialStartsOn, form.trialDays) : null;
+
   const payload = {
     title: form.title.trim(),
     type: form.type,
     category: form.category,
     amount: form.amount,
     frequency: form.frequency,
-    starts_on: form.startsOn,
+    starts_on: derived ?? form.startsOn,
     reminder_days_before: Number(form.reminderDaysBefore),
     is_reminder_enabled: form.isReminderEnabled,
   };
 
   payload.ends_on = form.endsOn ? form.endsOn : null;
+  payload.trial_ends_on = form.isTrial ? (derived ?? currentTrialEnd) : null;
+  payload.cancellation_notice_days =
+    form.cancellationNoticeDays === "" ? null : Number(form.cancellationNoticeDays);
   payload.notes = form.notes?.trim() ? form.notes.trim() : null;
 
   return payload;
+}
+
+const PAYLOAD_SOURCES = {
+  title: "title",
+  type: "type",
+  category: "category",
+  amount: "amount",
+  frequency: "frequency",
+  starts_on: "startsOn",
+  ends_on: "endsOn",
+  trial_ends_on: "trialEndsOn",
+  cancellation_notice_days: "cancellationNoticeDays",
+  reminder_days_before: "reminderDaysBefore",
+  is_reminder_enabled: "isReminderEnabled",
+  notes: "notes",
+};
+
+function unchanged(left, right) {
+  if (left === null || left === undefined || right === null || right === undefined) {
+    return (left ?? null) === (right ?? null);
+  }
+  if (typeof left === "number" || typeof right === "number") {
+    return Number(left) === Number(right);
+  }
+  return left === right;
+}
+
+export function commitmentChanges(payload, commitment) {
+  return Object.fromEntries(
+    Object.entries(payload).filter(
+      ([field, value]) => !unchanged(value, commitment[PAYLOAD_SOURCES[field]]),
+    ),
+  );
 }
 
 export function emptyForm(type) {
@@ -314,6 +388,11 @@ export function emptyForm(type) {
     frequency: "monthly",
     startsOn: new Date().toISOString().slice(0, 10),
     endsOn: "",
+    isTrial: false,
+    trialStartsOn: "",
+    trialDays: "",
+    trialCustom: false,
+    cancellationNoticeDays: "",
     reminderDaysBefore: 3,
     isReminderEnabled: true,
     notes: "",
@@ -329,6 +408,11 @@ export function formFromCommitment(commitment) {
     frequency: commitment.frequency,
     startsOn: commitment.startsOn,
     endsOn: commitment.endsOn ?? "",
+    isTrial: Boolean(commitment.trialEndsOn),
+    trialStartsOn: "",
+    trialDays: "",
+    trialCustom: false,
+    cancellationNoticeDays: commitment.cancellationNoticeDays ?? "",
     reminderDaysBefore: commitment.reminderDaysBefore,
     isReminderEnabled: commitment.isReminderEnabled,
     notes: commitment.notes ?? "",
