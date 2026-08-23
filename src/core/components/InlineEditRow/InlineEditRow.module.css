@@ -107,3 +107,8 @@
     gap: 1rem;
   }
 }
+
+.picker {
+  justify-self: end;
+  margin-right: -0.5rem;
+}

@@ -8,7 +8,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  min-width: 7.5rem;
   padding: 0.4rem 0.6rem 0.4rem 0.7rem;
   border: 1px solid var(--color-border);
   border-radius: 0.6rem;
@@ -34,6 +33,18 @@
 
 .triggerOpen {
   border-color: var(--color-link);
+}
+
+.inline {
+  padding: 0.3125rem 0.4rem 0.3125rem 0.5rem;
+  border-color: transparent;
+  background: transparent;
+}
+
+.inline:hover:not(:disabled),
+.inline.triggerOpen {
+  border-color: var(--color-border);
+  background-color: var(--color-accent-soft);
 }
 
 .value {

@@ -128,6 +128,8 @@ export function InlineSelectRow({ label, value, options, onChange }) {
         value={value ?? ""}
         options={options}
         disabled={saving}
+        variant="inline"
+        className={styles.picker}
         onChange={handleChange}
         trailing={saving ? <Spinner size={14} /> : undefined}
       />

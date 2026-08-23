@@ -7,7 +7,16 @@ import styles from "./Picker.module.css";
 
 const TYPEAHEAD_RESET = 700;
 
-export function Picker({ label, value, options, disabled, trailing, onChange }) {
+export function Picker({
+  label,
+  value,
+  options,
+  disabled,
+  trailing,
+  variant,
+  className,
+  onChange,
+}) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
   const triggerRef = useRef(null);
@@ -115,11 +124,15 @@ export function Picker({ label, value, options, disabled, trailing, onChange }) 
   };
 
   return (
-    <div className={styles.wrap}>
+    <div className={cx(styles.wrap, className)}>
       <button
         ref={triggerRef}
         type="button"
-        className={cx(styles.trigger, open && styles.triggerOpen)}
+        className={cx(
+          styles.trigger,
+          variant === "inline" && styles.inline,
+          open && styles.triggerOpen,
+        )}
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
