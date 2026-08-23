@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import { fullName, initials } from "../../../features/authentication/domain/user";
 import { useAuth } from "../../../features/authentication/presentation/providers/useAuth";
@@ -21,6 +21,7 @@ const NAV_ITEMS = [
 export function AppShell({ children }) {
   const { user, logout } = useAuth();
   const { t } = useTranslation();
+  const { pathname } = useLocation();
 
   return (
     <div className={styles.shell}>
@@ -69,7 +70,9 @@ export function AppShell({ children }) {
         </div>
       </aside>
 
-      <main className={styles.content}>{children}</main>
+      <main key={pathname} className={styles.content}>
+        {children}
+      </main>
     </div>
   );
 }
