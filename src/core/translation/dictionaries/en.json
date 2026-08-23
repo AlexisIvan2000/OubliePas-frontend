@@ -621,7 +621,12 @@
       "emptyText": "Reminders will show up here as soon as a subscription or bill with alerts approaches its due date.",
       "mutedTitle": "Email reminders are switched off",
       "mutedText": "Nothing will be sent while the switch is off. Your due dates are still tracked in the app.",
-      "sameDay": "on the day"
+      "sameDay": "on the day",
+      "showMore": {
+        "one": "Show the next one",
+        "other": "Show the next {count}"
+      },
+      "showLess": "Fold back"
     }
   }
 }

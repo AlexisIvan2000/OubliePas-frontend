@@ -621,7 +621,12 @@
       "emptyText": "Les rappels apparaîtront ici dès qu'un abonnement ou une facture avec alerte approchera de son échéance.",
       "mutedTitle": "Les rappels par courriel sont désactivés",
       "mutedText": "Rien ne partira tant que l'interrupteur ci-contre est éteint. Tes échéances restent suivies dans l'app.",
-      "sameDay": "le jour même"
+      "sameDay": "le jour même",
+      "showMore": {
+        "one": "Voir le suivant",
+        "other": "Voir les {count} suivants"
+      },
+      "showLess": "Replier"
     }
   }
 }

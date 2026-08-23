@@ -1,14 +1,20 @@
+import { useId, useState } from "react";
+
 import { Icon } from "../../../../core/components/Icon/Icon";
 import { useTranslation } from "../../../../core/translation/useTranslation";
+import { cx } from "../../../../core/utils/classNames";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { formatMoney, formatShortDate, relativeDue } from "../../../commitments/domain/formatting";
 import styles from "../styles/reminders.module.css";
 
-function FeedRow({ entry, currency }) {
+function FeedRow({ entry, currency, index = 0, folded = false }) {
   const { t } = useTranslation();
 
   return (
-    <li className={styles.feedRow}>
+    <li
+      className={cx(styles.feedRow, folded && styles.feedRowFolded)}
+      style={folded ? { "--fold-delay": `${index * 45}ms` } : undefined}
+    >
       <span className={styles.feedIcon}>
         <Icon name="reminders" size={15} />
       </span>
@@ -29,9 +35,17 @@ function FeedRow({ entry, currency }) {
   );
 }
 
+const VISIBLE = 4;
+
 export function ActivityFeedCard({ entries, loading, muted }) {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const [open, setOpen] = useState(false);
+  const foldId = useId();
+
+  const currency = user?.currency ?? "CAD";
+  const head = entries.slice(0, VISIBLE);
+  const folded = entries.slice(VISIBLE);
 
   return (
     <section className={styles.card}>
@@ -59,11 +73,48 @@ export function ActivityFeedCard({ entries, loading, muted }) {
           <p className={styles.emptyText}>{t("reminders.feed.emptyText")}</p>
         </div>
       ) : (
-        <ul className={styles.feed}>
-          {entries.map((entry) => (
-            <FeedRow key={entry.id} entry={entry} currency={user?.currency ?? "CAD"} />
-          ))}
-        </ul>
+        <>
+          <ul className={styles.feed}>
+            {head.map((entry) => (
+              <FeedRow key={entry.id} entry={entry} currency={currency} />
+            ))}
+          </ul>
+
+          {folded.length ? (
+            <>
+              <div
+                id={foldId}
+                className={cx(styles.fold, open && styles.unfolded)}
+                aria-hidden={!open}
+              >
+                <ul className={cx(styles.feed, styles.foldInner)}>
+                  {folded.map((entry, index) => (
+                    <FeedRow
+                      key={entry.id}
+                      entry={entry}
+                      currency={currency}
+                      index={index}
+                      folded
+                    />
+                  ))}
+                </ul>
+              </div>
+
+              <button
+                type="button"
+                className={styles.foldToggle}
+                aria-expanded={open}
+                aria-controls={foldId}
+                onClick={() => setOpen((current) => !current)}
+              >
+                <Icon name="next" size={15} className={styles.foldChevron} />
+                {open
+                  ? t("reminders.feed.showLess")
+                  : t("reminders.feed.showMore", { count: folded.length })}
+              </button>
+            </>
+          ) : null}
+        </>
       )}
     </section>
   );

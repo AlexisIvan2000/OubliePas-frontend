@@ -232,3 +232,57 @@
   font-weight: 550;
   white-space: nowrap;
 }
+
+.fold {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 340ms cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+
+.unfolded {
+  grid-template-rows: 1fr;
+}
+
+.foldInner {
+  overflow: hidden;
+  perspective: 700px;
+}
+
+.feedRowFolded {
+  transform-origin: top center;
+  opacity: 0;
+  transform: rotateX(-72deg);
+  transition:
+    opacity 240ms ease,
+    transform 340ms cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+
+.unfolded .feedRowFolded {
+  opacity: 1;
+  transform: none;
+  transition-delay: var(--fold-delay, 0ms);
+}
+
+.foldToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  padding: 0.3rem 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 550;
+  color: var(--color-link);
+  cursor: pointer;
+}
+
+.foldChevron {
+  transform: rotate(90deg);
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.foldToggle[aria-expanded="true"] .foldChevron {
+  transform: rotate(-90deg);
+}
