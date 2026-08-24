@@ -115,8 +115,6 @@
     "loading": "Chargement du document"
   },
   "landing": {
-    "sampleRent": "Loyer",
-    "sampleInsurance": "Assurance auto",
     "documentTitle": "OubliePas, ne manquez plus une échéance",
     "eyebrow": "Suivi d'abonnements et de charges fixes",
     "title": "Vous saurez toujours ce qui va être prélevé.",
@@ -125,7 +123,6 @@
     "footnote": "Aucune connexion bancaire. Vous saisissez ce que vous suivez, rien d'autre.",
     "bandLabel": "Tout ce que tu peux suivre",
     "bandAria": "Quelques services et factures reconnus par OubliePas",
-    "previewLabel": "Ce mois-ci",
     "tagline": "Suivi de dépenses récurrentes",
     "pillars": {
       "togetherTitle": "Abonnements et factures ensemble",

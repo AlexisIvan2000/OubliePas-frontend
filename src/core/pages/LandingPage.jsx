@@ -6,7 +6,6 @@ import { useTranslation } from "../translation/useTranslation";
 import { BrandMarquee } from "../components/BrandMarquee/BrandMarquee";
 import { Icon } from "../components/Icon/Icon";
 import { PreferenceToggles } from "../components/PreferenceToggles/PreferenceToggles";
-import { formatMoney, formatShortDate } from "../utils/formatting";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
 import { useReveal } from "../utils/useReveal";
 import { LEGAL } from "./legal/legalConfig";
@@ -18,23 +17,6 @@ const PILLARS = [
   { icon: "calendar", key: "calendar" },
   { icon: "reminders", key: "reminders", soon: true },
 ];
-
-const PREVIEW = [
-  { id: "rent", labelKey: "landing.sampleRent", day: "2026-08-01", amount: 1250, tone: "invoice" },
-  { id: "netflix", title: "Netflix", day: "2026-08-02", amount: 18.99, tone: "subscription" },
-  {
-    id: "insurance",
-    labelKey: "landing.sampleInsurance",
-    day: "2026-08-13",
-    amount: 142,
-    tone: "invoice",
-  },
-];
-
-const PREVIEW_TOTAL = 1410.99;
-const PREVIEW_SUBSCRIPTIONS = 18.99;
-const PREVIEW_INVOICES = 1392;
-const PREVIEW_CURRENCY = "CAD";
 
 export function LandingPage() {
   const { t } = useTranslation();
@@ -89,35 +71,24 @@ export function LandingPage() {
           </div>
 
           <aside
-            className={cx(styles.preview, styles.rise)}
+            className={cx(styles.mockup, styles.rise)}
             style={{ "--rise": "260ms" }}
             aria-label={t("a11y.appPreview")}
           >
-            <span className={styles.sheen} aria-hidden="true" />
-            <div className={styles.previewLabel}>{t("landing.previewLabel")}</div>
-            <div className={styles.previewTotal}>{formatMoney(PREVIEW_TOTAL, PREVIEW_CURRENCY)}</div>
-            <div className={styles.previewSplit}>
-              <span>
-                <Icon name="subscriptions" size={13} /> {formatMoney(PREVIEW_SUBSCRIPTIONS, PREVIEW_CURRENCY)}
-              </span>
-              <span>
-                <Icon name="invoices" size={13} /> {formatMoney(PREVIEW_INVOICES, PREVIEW_CURRENCY)}
-              </span>
+            <div className={styles.lid}>
+              <div className={styles.screen}>
+                <img
+                  className={styles.shot}
+                  src="/assets/hero-dashboard.png"
+                  width="1918"
+                  height="907"
+                  alt=""
+                  fetchPriority="high"
+                />
+              </div>
             </div>
-
-            <div className={styles.previewDivider} />
-
-            <div className={styles.previewRows}>
-              {PREVIEW.map((row) => (
-                <div className={styles.previewRow} key={row.id}>
-                  <span className={`${styles.dot} ${styles[row.tone]}`} />
-                  <span className={styles.rowTitle}>
-                    {row.labelKey ? t(row.labelKey) : row.title}
-                  </span>
-                  <span className={styles.rowWhen}>{formatShortDate(row.day)}</span>
-                  <span className={styles.rowAmount}>{formatMoney(row.amount, PREVIEW_CURRENCY)}</span>
-                </div>
-              ))}
+            <div className={styles.base} aria-hidden="true">
+              <span className={styles.notch} />
             </div>
           </aside>
         </section>

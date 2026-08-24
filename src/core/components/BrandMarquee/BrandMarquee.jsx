@@ -1,28 +1,33 @@
 import { useMemo } from "react";
 
-import { CATALOG } from "../../../features/commitments/domain/catalog";
-import { brandLogo } from "../../../features/commitments/domain/brandLogos";
-import { categoryTint, monogram } from "../../../features/commitments/domain/commitment";
 import styles from "./BrandMarquee.module.css";
 
-const PER_LANE = 14;
+const FOLDER = "/assets/logos";
 
-function named(entries) {
-  return entries.filter((entry) => typeof entry.name === "string");
-}
+const LOGOS = [
+  { name: "Netflix", file: "netflix-logo-icon.svg" },
+  { name: "Spotify", file: "spotify-2.svg" },
+  { name: "Disney+", file: "disney-wbackground.svg" },
+  { name: "Prime Video", file: "prime-video-1.svg" },
+  { name: "Apple TV+", file: "apple-tv.svg" },
+  { name: "Apple Music", file: "apple-music.svg" },
+  { name: "YouTube", file: "youtube-icon-5.svg" },
+  { name: "iCloud", file: "icloud.svg" },
+  { name: "Google One", file: "google-one.svg" },
+  { name: "Microsoft 365", file: "Microsoft-365.svg" },
+  { name: "Adobe Acrobat", file: "adobe-acrobat-reader-icon-2020-.svg" },
+  { name: "Claude", file: "claude-logo.svg" },
+  { name: "ChatGPT", file: "openai-2.svg" },
+  { name: "Shopify", file: "shopify.svg" },
+  { name: "GoDaddy", file: "godaddy.svg" },
+  { name: "Bell", file: "bell-canada.svg" },
+  { name: "Rogers", file: "rogers-logo.svg" },
+];
 
 function lanes() {
-  const pool = named(CATALOG.subscription).concat(named(CATALOG.invoice));
-  const spread = [];
-
-  for (let step = 0; spread.length < PER_LANE * 2 && step < pool.length; step += 1) {
-    const entry = pool[(step * 7) % pool.length];
-    if (!spread.some((kept) => kept.id === entry.id)) {
-      spread.push(entry);
-    }
-  }
-
-  return [spread.slice(0, PER_LANE), spread.slice(PER_LANE, PER_LANE * 2)];
+  const first = LOGOS.filter((entry, index) => index % 2 === 0);
+  const second = LOGOS.filter((entry, index) => index % 2 === 1);
+  return [first, second];
 }
 
 function Lane({ entries, reverse }) {
@@ -31,23 +36,19 @@ function Lane({ entries, reverse }) {
   return (
     <div className={styles.lane}>
       <div className={reverse ? `${styles.track} ${styles.reverse}` : styles.track}>
-        {doubled.map((entry, index) => {
-          const logo = brandLogo(entry.name);
-          return (
-            <span className={styles.chip} key={`${entry.id}-${index}`}>
-              {logo ? (
-                <span className={`${styles.mark} ${styles.logoMark}`}>
-                  <img className={styles.logo} src={logo} alt="" loading="lazy" />
-                </span>
-              ) : (
-                <span className={styles.mark} style={{ "--tint": categoryTint(entry.category) }}>
-                  {monogram(entry.name)}
-                </span>
-              )}
-              <span className={styles.name}>{entry.name}</span>
+        {doubled.map((entry, index) => (
+          <span className={styles.chip} key={`${entry.file}-${index}`}>
+            <span className={`${styles.mark} ${styles.logoMark}`}>
+              <img
+                className={styles.logo}
+                src={`${FOLDER}/${entry.file}`}
+                alt=""
+                loading="lazy"
+              />
             </span>
-          );
-        })}
+            <span className={styles.name}>{entry.name}</span>
+          </span>
+        ))}
       </div>
     </div>
   );

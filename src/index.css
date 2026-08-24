@@ -420,15 +420,6 @@ a:hover {
   }
 }
 
-@keyframes sheen {
-  from {
-    transform: translate3d(-120%, 0, 0);
-  }
-  to {
-    transform: translate3d(220%, 0, 0);
-  }
-}
-
 @keyframes pageEnter {
   from {
     opacity: 0;
