@@ -185,7 +185,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
 
           <div className={styles.pair}>
             <TextField
-              label={t("form.amount")}
+              label={t(form.isTrial ? "form.amountTrial" : "form.amount")}
               type="number"
               inputMode="decimal"
               step="0.01"
@@ -193,11 +193,13 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
               value={form.amount}
               onChange={set("amount")}
               placeholder={t("form.amountPlaceholder")}
-              hint={t("form.amountHint", { currency: user?.currency ?? "CAD" })}
+              hint={t(form.isTrial ? "form.amountTrialHint" : "form.amountHint", {
+                currency: user?.currency ?? "CAD",
+              })}
               required
             />
             <PickerField
-              label={t("form.frequency")}
+              label={t(form.isTrial ? "form.frequencyTrial" : "form.frequency")}
               value={form.frequency}
               onChange={choose("frequency")}
               options={frequencies}

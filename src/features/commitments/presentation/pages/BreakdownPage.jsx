@@ -68,6 +68,7 @@ export function BreakdownPage() {
   const rate = useMemo(() => runRate(commitments.filter((c) => c.status === "active")), [commitments]);
   const top = useMemo(() => heaviest(commitments), [commitments]);
   const peak = Math.max(...months.map((row) => row.total), 0);
+  const inTrial = (item) => Boolean(item.trialEndsOn) && item.trialEndsOn > today;
 
   const busy = loading || loadingCommitments;
 
@@ -202,7 +203,12 @@ export function BreakdownPage() {
                 <Icon name={COMMITMENT_TYPES[item.type].icon} size={15} className={styles.rankIcon} />
                 <span className={styles.rankMain}>
                   <span className={styles.rankTitle}>{item.title}</span>
-                  <span className={styles.rankMeta}>{categoryLabel(t, item.category)}</span>
+                  <span className={styles.rankMeta}>
+                    <span className={styles.rankMetaText}>{categoryLabel(t, item.category)}</span>
+                    {inTrial(item) ? (
+                      <span className={styles.trialTag}>{t("breakdown.trialTag")}</span>
+                    ) : null}
+                  </span>
                 </span>
                 <span className={styles.rankTrack} aria-hidden="true">
                   <span className={styles.rankBar} style={{ "--fill": item.share }} />

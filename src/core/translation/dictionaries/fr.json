@@ -39,18 +39,18 @@
     "sectionTitle": "Documents",
     "termsHint": "Ce que vous acceptez en utilisant {entity}.",
     "privacyHint": "Ce qui est collecté, pourquoi et pour combien de temps.",
-    "terms": "Conditions d’utilisation",
+    "terms": "Conditions d'utilisation",
     "privacy": "Politique de confidentialité",
     "contact": "Nous écrire",
     "footerAria": "Pages légales",
     "updated": "Mise à jour le {date}",
-    "backHome": "Retour à l’accueil",
+    "backHome": "Retour à l'accueil",
     "loading": "Chargement du document"
   },
   "landing": {
     "sampleRent": "Loyer",
     "sampleInsurance": "Assurance auto",
-    "documentTitle": "OubliePas — ne manquez plus une échéance",
+    "documentTitle": "OubliePas, ne manquez plus une échéance",
     "eyebrow": "Suivi d'abonnements et de charges fixes",
     "title": "Vous saurez toujours ce qui va être prélevé.",
     "subtitle": "OubliePas réunit vos abonnements et vos factures récurrentes au même endroit, calcule ce qu'ils vous coûtent chaque mois et vous prévient avant l'échéance. Rien à payer depuis l'application : elle suit, elle affiche, elle rappelle.",
@@ -165,7 +165,7 @@
       "one": "Une ligne archivée",
       "other": "{count} lignes archivées"
     },
-    "onlyArchivedBody": "Rien d’actif ici pour le moment. Vos lignes archivées sont conservées avec leur historique.",
+    "onlyArchivedBody": "Rien d'actif ici pour le moment. Vos lignes archivées sont conservées avec leur historique.",
     "revealArchived": "Afficher les archives",
     "noDueDate": "aucune échéance",
     "reminderDays": "{count} j avant",
@@ -188,7 +188,7 @@
     "cancellationDeadline": "Annuler avant le {date}"
   },
   "form": {
-    "suggestHint": "Suggestions — tapez librement si votre service n’y est pas.",
+    "suggestHint": "Tapez librement si votre service n'est pas dans les suggestions.",
     "suggestCount": {
       "one": "{count} suggestion",
       "other": "{count} suggestions"
@@ -202,8 +202,10 @@
     "namePlaceholderSubscription": "Netflix",
     "namePlaceholderInvoice": "Loyer",
     "amount": "Montant",
+    "amountTrial": "Montant après l'essai",
     "amountPlaceholder": "0,00",
     "frequency": "Fréquence",
+    "frequencyTrial": "Fréquence après l'essai",
     "category": "Catégorie",
     "firstDueDate": "Première échéance",
     "endDate": "Fin (facultatif)",
@@ -211,6 +213,7 @@
     "remindMe": "Me prévenir avant l'échéance",
     "daysBefore": "Combien de jours avant",
     "amountHint": "Le montant réellement prélevé, taxes incluses, en {currency}.",
+    "amountTrialHint": "Ce qui sera prélevé à la fin de l'essai, taxes incluses, en {currency}.",
     "isTrial": "C'est un essai gratuit",
     "trialHint": "On te prévient avant la première facturation, au moins 3 jours à l'avance.",
     "hasNotice": "Ce contrat demande un préavis d'annulation",
@@ -221,8 +224,8 @@
     "trialPreset": "{count} j",
     "trialOther": "Autre",
     "trialCustomDays": "Jours d'essai",
-    "trialRecap": "Essai jusqu'au {end} — premier prélèvement de {amount} le {end}.",
-    "trialRecapPlain": "Essai jusqu'au {end} — premier prélèvement le {end}.",
+    "trialRecap": "Essai jusqu'au {end}. Premier prélèvement de {amount} le {end}.",
+    "trialRecapPlain": "Essai jusqu'au {end}. Premier prélèvement le {end}.",
     "trialOver": "Cet essai est déjà terminé. La création se fera sans rappel de fin d'essai.",
     "trialCurrent": "Essai actuel : jusqu'au {date}",
     "pastDueDate": "Cette date est passée : la facture apparaîtra comme en retard."
@@ -298,7 +301,7 @@
     "markPaid": "Marquer {title} comme payé",
     "markPending": "Marquer {title} comme à payer",
     "late": "en retard",
-    "latePrefix": "en retard — ",
+    "latePrefix": "en retard, ",
     "settle": "Régler {title}",
     "settleDue": "Échéance du {date}",
     "settleAmount": "Montant réellement payé",
@@ -663,6 +666,7 @@
     "comingDescription": "Les échéances déjà calculées, mois par mois.",
     "comingEmpty": "Rien n'est encore programmé.",
     "heaviestTitle": "Les lignes les plus lourdes",
+    "trialTag": "Essai",
     "heaviestDescription": "Classées par coût annuel, tous types confondus.",
     "heaviestEmpty": "Aucune ligne récurrente active à classer."
   }

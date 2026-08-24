@@ -218,8 +218,29 @@
 }
 
 .rankMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
   font-size: 0.75rem;
   color: var(--color-text-subtle);
+}
+
+.rankMetaText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trialTag {
+  flex: none;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent-deep);
+  font-size: 0.6875rem;
+  font-weight: 550;
+  letter-spacing: 0.01em;
 }
 
 @keyframes grow {

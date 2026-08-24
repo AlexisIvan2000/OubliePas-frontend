@@ -50,7 +50,7 @@
   "landing": {
     "sampleRent": "Rent",
     "sampleInsurance": "Car insurance",
-    "documentTitle": "OubliePas — never miss a payment again",
+    "documentTitle": "OubliePas, never miss a payment again",
     "eyebrow": "Subscription and fixed-cost tracking",
     "title": "You'll always know what's about to be charged.",
     "subtitle": "OubliePas brings your subscriptions and recurring bills together, works out what they cost you each month and warns you before the due date. Nothing is paid from the app: it tracks, it shows, it reminds.",
@@ -188,7 +188,7 @@
     "cancellationDeadline": "Cancel before {date}"
   },
   "form": {
-    "suggestHint": "Suggestions — type freely if your service is not listed.",
+    "suggestHint": "Type freely if your service is not in the suggestions.",
     "suggestCount": {
       "one": "{count} suggestion",
       "other": "{count} suggestions"
@@ -202,8 +202,10 @@
     "namePlaceholderSubscription": "Netflix",
     "namePlaceholderInvoice": "Rent",
     "amount": "Amount",
+    "amountTrial": "Amount after the trial",
     "amountPlaceholder": "0.00",
     "frequency": "Frequency",
+    "frequencyTrial": "Frequency after the trial",
     "category": "Category",
     "firstDueDate": "First due date",
     "endDate": "End (optional)",
@@ -211,6 +213,7 @@
     "remindMe": "Warn me before the due date",
     "daysBefore": "How many days before",
     "amountHint": "The amount actually charged, taxes included, in {currency}.",
+    "amountTrialHint": "What will be charged when the trial ends, taxes included, in {currency}.",
     "isTrial": "This is a free trial",
     "trialHint": "We warn you before the first charge, at least 3 days ahead.",
     "hasNotice": "This contract requires notice to cancel",
@@ -221,8 +224,8 @@
     "trialPreset": "{count} days",
     "trialOther": "Other",
     "trialCustomDays": "Trial days",
-    "trialRecap": "Trial until {end} — first charge of {amount} on {end}.",
-    "trialRecapPlain": "Trial until {end} — first charge on {end}.",
+    "trialRecap": "Trial until {end}. First charge of {amount} on {end}.",
+    "trialRecapPlain": "Trial until {end}. First charge on {end}.",
     "trialOver": "This trial is already over. It will be created without a trial-end reminder.",
     "trialCurrent": "Current trial: until {date}",
     "pastDueDate": "This date has passed: the bill will show up as late."
@@ -298,7 +301,7 @@
     "markPaid": "Mark {title} as paid",
     "markPending": "Mark {title} as to pay",
     "late": "overdue",
-    "latePrefix": "overdue — ",
+    "latePrefix": "overdue, ",
     "settle": "Settle {title}",
     "settleDue": "Due on {date}",
     "settleAmount": "Amount actually paid",
@@ -663,6 +666,7 @@
     "comingDescription": "The due dates already worked out, month by month.",
     "comingEmpty": "Nothing scheduled yet.",
     "heaviestTitle": "The heaviest lines",
+    "trialTag": "Trial",
     "heaviestDescription": "Ranked by yearly cost, both types together.",
     "heaviestEmpty": "No active recurring line to rank."
   }
