@@ -50,6 +50,14 @@ export function SupportSection() {
   return (
     <SettingsSection title={t("legal.supportTitle")} description={t("legal.supportHint")}>
       <div className={styles.legalLinks}>
+        <Link to="/faq" className={styles.legalLink}>
+          <span className={styles.legalMain}>
+            <span className={styles.legalLabel}>{t("faq.settingsTitle")}</span>
+            <span className={styles.legalHint}>{t("faq.settingsHint")}</span>
+          </span>
+          <Icon name="next" size={16} />
+        </Link>
+
         <a href={`mailto:${LEGAL.contactEmail}`} className={styles.legalLink}>
           <span className={styles.legalMain}>
             <span className={styles.legalLabel}>{t("legal.contact")}</span>
@@ -58,6 +66,7 @@ export function SupportSection() {
           <Icon name="next" size={16} />
         </a>
       </div>
+
     </SettingsSection>
   );
 }

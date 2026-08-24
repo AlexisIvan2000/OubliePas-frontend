@@ -81,7 +81,7 @@
 .input {
   width: 100%;
   min-width: 0;
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-control-border);
   border-radius: var(--radius-sm);
   background-color: var(--color-surface);
   padding: 0.3125rem 0.5rem;

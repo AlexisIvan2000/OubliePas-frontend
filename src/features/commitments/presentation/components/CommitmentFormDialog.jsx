@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Alert } from "../../../../core/components/Alert/Alert";
 import { Button } from "../../../../core/components/Button/Button";
 import { Chip } from "../../../../core/components/Chip/Chip";
+import { DateField } from "../../../../core/components/DateField/DateField";
 import { PickerField } from "../../../../core/components/Picker/PickerField";
 import { Suggest } from "../../../../core/components/Suggest/Suggest";
 import { TextField } from "../../../../core/components/TextField/TextField";
@@ -222,11 +223,10 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
 
             {form.isTrial ? (
               <>
-                <TextField
+                <DateField
                   label={t("form.trialStartsOn")}
-                  type="date"
                   value={form.trialStartsOn}
-                  onChange={set("trialStartsOn")}
+                  onChange={choose("trialStartsOn")}
                   required={!editing}
                 />
 
@@ -287,30 +287,27 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
 
           {form.isTrial ? (
             showEnd ? (
-              <TextField
+              <DateField
                 label={t("form.endDate")}
-                type="date"
                 value={form.endsOn}
-                onChange={set("endsOn")}
+                onChange={choose("endsOn")}
                 min={firstCharge ?? undefined}
                 hint={t("form.endDateHint")}
               />
             ) : null
           ) : (
             <div className={styles.pair}>
-              <TextField
+              <DateField
                 label={t("form.firstDueDate")}
-                type="date"
                 value={form.startsOn}
-                onChange={set("startsOn")}
+                onChange={choose("startsOn")}
                 hint={backdated ? t("form.pastDueDate") : undefined}
                 required
               />
-              <TextField
+              <DateField
                 label={t("form.endDate")}
-                type="date"
                 value={form.endsOn}
-                onChange={set("endsOn")}
+                onChange={choose("endsOn")}
                 min={firstCharge ?? undefined}
                 hint={t("form.endDateHint")}
               />

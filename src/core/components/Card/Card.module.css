@@ -1,19 +1,43 @@
 .card {
+  position: relative;
   padding: 1.5rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background-color: var(--color-surface);
   box-shadow: var(--shadow-md);
+  animation: global(driftIn) var(--dur-slow) var(--ease-out) backwards;
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
 }
 
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-text) 12%, transparent),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.card:hover {
+  border-color: var(--color-border-strong);
+}
 .header {
   margin-bottom: 1.125rem;
 }
 
 .title {
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: 1.0625rem;
   font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .description {

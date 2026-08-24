@@ -1,4 +1,5 @@
 import { Chip } from "../../../../core/components/Chip/Chip";
+import { cx } from "../../../../core/utils/classNames";
 import { Switch } from "../../../../core/components/Switch/Switch";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { CHANNELS, DIGESTS, LEAD_TIMES } from "../../domain/reminders";
@@ -9,7 +10,13 @@ function ToggleRow({ id, available, checked, busy, onChange }) {
   const label = t(`reminders.channel.${id}.label`);
 
   return (
-    <div className={styles.toggleRow}>
+    <div
+      className={cx(
+        styles.toggleRow,
+        available && checked && styles.toggleOn,
+        available ? null : styles.toggleOff,
+      )}
+    >
       <div className={styles.toggleText}>
         <span className={styles.toggleLabel}>
           {label}

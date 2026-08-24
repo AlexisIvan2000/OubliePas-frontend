@@ -39,7 +39,7 @@
   background-color: var(--color-surface);
   box-shadow: var(--shadow-lg);
   transform-origin: top right;
-  animation: menuIn 180ms cubic-bezier(0.34, 1.32, 0.5, 1);
+  animation: menuIn 180ms var(--ease-spring);
 }
 
 .item {
@@ -77,7 +77,7 @@
 }
 
 .leaving {
-  animation: menuOut 130ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  animation: menuOut 130ms var(--ease-in) forwards;
 }
 
 @keyframes menuIn {

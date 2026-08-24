@@ -10,6 +10,64 @@
     "yes": "Oui",
     "no": "Non"
   },
+  "date": {
+    "choose": "Choisir une date",
+    "today": "Aujourd'hui",
+    "clear": "Effacer",
+    "previousMonth": "Mois précédent",
+    "nextMonth": "Mois suivant"
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "documentTitle": "Questions fréquentes",
+    "backToSettings": "Retour aux réglages",
+    "backHome": "Retour à l'accueil",
+    "lede": "Ce qu'il faut savoir sur le suivi et les rappels.",
+    "settingsTitle": "Questions fréquentes",
+    "settingsHint": "Les réponses aux dix questions les plus courantes.",
+    "items": {
+      "types": {
+        "q": "Quelle différence entre un abonnement et une facture ?",
+        "a": "Un abonnement se renouvelle tout seul au même montant : Netflix, Spotify, une salle de sport. Une facture est une échéance à payer, ponctuelle ou récurrente : un loyer, l'électricité, un impôt. Les deux se suivent de la même façon, mais seuls les abonnements peuvent porter un essai gratuit."
+      },
+      "when": {
+        "q": "Quand est-ce que je reçois un rappel ?",
+        "a": "Trois jours avant l'échéance par défaut. Tu peux régler ce délai de 0 à 30 jours sur chaque ligne, et changer la valeur par défaut des nouvelles lignes depuis la page Rappels. Les messages partent une fois par jour, à midi UTC."
+      },
+      "howMany": {
+        "q": "Ça fait combien de mails par jour ?",
+        "a": "Un par type au maximum, et ils sont groupés. Toutes tes échéances à venir tiennent dans un seul message, tous tes retards dans un autre. Si tu as huit abonnements qui tombent le même jour, tu reçois un mail, pas huit."
+      },
+      "trial": {
+        "q": "Comment marche un essai gratuit ?",
+        "a": "Tu indiques la date de début et la durée, OubliePas calcule la fin, qui devient la date du premier prélèvement. Le montant que tu saisis est celui d'après l'essai, pas ce que tu paies pendant. Tu es prévenu au moins trois jours avant le premier débit, même si ton délai de rappel habituel est plus court."
+      },
+      "notice": {
+        "q": "C'est quoi le préavis d'annulation ?",
+        "a": "Certains contrats, assurance, salle de sport ou forfait mobile, exigent de résilier un certain nombre de jours à l'avance, jusqu'à soixante. OubliePas te prévient avant que cette fenêtre se referme, et non avant l'échéance : le jour où il devient trop tard pour résilier arrive bien avant le prélèvement."
+      },
+      "late": {
+        "q": "J'ai oublié de marquer une échéance comme payée ?",
+        "a": "Trois jours après la date, un seul message te demande si c'est payé, sauté, ou vraiment oublié. Une relance, pas dix : passé trente jours après l'échéance, OubliePas se tait."
+      },
+      "skip": {
+        "q": "Comment sauter un mois sans supprimer la ligne ?",
+        "a": "Choisis « Pas ce mois-ci » sur l'échéance. Elle sort des totaux du mois et ne déclenche aucun rappel, mais l'abonnement continue normalement le mois suivant."
+      },
+      "horizon": {
+        "q": "Pourquoi le calendrier s'arrête-t-il quelque part ?",
+        "a": "Les échéances sont calculées quatre-vingt-dix jours à l'avance. La fenêtre avance d'un jour chaque jour, donc tu as toujours environ trois mois devant toi sans jamais accumuler des années d'échéances théoriques."
+      },
+      "mute": {
+        "q": "Comment couper tous les mails d'un coup ?",
+        "a": "Un interrupteur sur la page Rappels éteint les trois familles à la fois : les rappels d'échéance, les relances de retard et les alertes de fin d'essai. Les réglages de chaque ligne sont conservés et repartent tels quels quand tu le rallumes."
+      },
+      "delete": {
+        "q": "Comment supprimer mon compte et mes données ?",
+        "a": "Depuis Réglages, en bas de la page. Il faut confirmer avec ton mot de passe, ou en saisissant ton adresse si tu t'es inscrit avec Google. La suppression est immédiate et définitive : abonnements, factures, historique et photo partent avec."
+      }
+    }
+  },
   "relative": {
     "today": "aujourd'hui",
     "tomorrow": "demain",
@@ -25,13 +83,22 @@
   },
   "nav": {
     "dashboard": "Tableau de bord",
+    "group": {
+      "tracking": "Suivi",
+      "account": "Compte"
+    },
     "subscriptions": "Abonnements",
     "calendar": "Calendrier",
     "invoices": "Factures",
+    "breakdown": "Répartition",
     "reminders": "Rappels",
     "settings": "Réglages",
     "soon": "bientôt",
-    "signOut": "Déconnexion"
+    "signOut": "Déconnexion",
+    "lateCount": {
+      "one": "{count} échéance en retard",
+      "other": "{count} échéances en retard"
+    }
   },
   "legal": {
     "supportTitle": "Assistance",
@@ -56,6 +123,8 @@
     "subtitle": "OubliePas réunit vos abonnements et vos factures récurrentes au même endroit, calcule ce qu'ils vous coûtent chaque mois et vous prévient avant l'échéance. Rien à payer depuis l'application : elle suit, elle affiche, elle rappelle.",
     "noAccount": "Pas encore de compte ?",
     "footnote": "Aucune connexion bancaire. Vous saisissez ce que vous suivez, rien d'autre.",
+    "bandLabel": "Tout ce que tu peux suivre",
+    "bandAria": "Quelques services et factures reconnus par OubliePas",
     "previewLabel": "Ce mois-ci",
     "tagline": "Suivi de dépenses récurrentes",
     "pillars": {

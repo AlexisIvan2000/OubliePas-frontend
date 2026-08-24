@@ -40,7 +40,7 @@
 
 .secondary {
   background-color: transparent;
-  border-color: var(--color-border-strong);
+  border-color: var(--color-control-border);
   color: var(--color-text);
 }
 

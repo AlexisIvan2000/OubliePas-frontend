@@ -2,12 +2,15 @@ import { Icon } from "../../../../core/components/Icon/Icon";
 import { Menu } from "../../../../core/components/Menu/Menu";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
+import { brandLogo } from "../../domain/brandLogos";
 import {
   ANNUAL_FACTOR,
   FREQUENCY_SHORT_KEYS,
   STATUS_TAG_KEYS,
   actionDeadline,
   categoryLabel,
+  categoryTint,
+  monogram,
   statusActions,
 } from "../../domain/commitment";
 import { formatDate, formatMoney, relativeDue } from "../../domain/formatting";
@@ -23,6 +26,7 @@ export function CommitmentRow({
   onStatusChange,
 }) {
   const { t } = useTranslation();
+  const logo = brandLogo(commitment.title);
   const deadline = actionDeadline(commitment, today);
   const dimmed = commitment.status !== "active";
   const tagKey = STATUS_TAG_KEYS[commitment.status];
@@ -45,6 +49,20 @@ export function CommitmentRow({
       className={cx(styles.row, styles.enter, dimmed && styles.paused)}
       style={{ "--enter-delay": `${Math.min(index, 12) * 40}ms` }}
     >
+      {logo ? (
+        <span className={cx(styles.monogram, styles.logoMark)} aria-hidden="true">
+          <img className={styles.logo} src={logo} alt="" loading="lazy" />
+        </span>
+      ) : (
+        <span
+          className={styles.monogram}
+          style={{ "--tint": categoryTint(commitment.category) }}
+          aria-hidden="true"
+        >
+          {monogram(commitment.title)}
+        </span>
+      )}
+
       <div className={styles.rowMain}>
         <div className={styles.rowTitle}>
           {commitment.title}

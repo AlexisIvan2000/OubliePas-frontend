@@ -17,7 +17,7 @@
   background-color: var(--color-surface);
   color: var(--color-text-subtle);
   cursor: pointer;
-  animation: global(fade) 0.3s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+  animation: global(fade) 0.3s var(--ease-out) backwards;
   animation-delay: var(--enter-delay, 0ms);
   transition:
     border-color 140ms ease,
@@ -98,7 +98,7 @@
   height: calc(var(--fill, 0) * 100%);
   border-radius: 0.25rem;
   background-color: var(--chart-1);
-  transition: height 220ms cubic-bezier(0.22, 0.8, 0.3, 1);
+  transition: height 220ms var(--ease-out);
 }
 
 .settled .bar {
@@ -109,7 +109,7 @@
   margin-top: 1rem;
   padding-top: 0.875rem;
   border-top: 1px solid var(--color-border);
-  animation: global(fade) 0.28s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+  animation: global(fade) 0.28s var(--ease-out) both;
 }
 
 .panelHead {
@@ -146,7 +146,7 @@
   align-items: center;
   gap: 0.625rem;
   padding: 0.4375rem 0;
-  animation: global(fade) 0.3s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+  animation: global(fade) 0.3s var(--ease-out) backwards;
   animation-delay: var(--enter-delay, 0ms);
 }
 

@@ -1,5 +1,6 @@
 .wrapper {
-  animation: global(fade) 0.25s ease;
+  position: relative;
+  isolation: isolate;
   min-height: 100dvh;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
@@ -102,4 +103,31 @@
   .aside {
     display: none;
   }
+}
+
+.aura {
+  position: absolute;
+  inset: -14vh -8vw auto;
+  height: 70vh;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  background:
+    radial-gradient(36% 44% at 18% 26%, color-mix(in srgb, var(--chart-1) 24%, transparent), transparent 70%),
+    radial-gradient(32% 40% at 68% 18%, color-mix(in srgb, var(--chart-5) 18%, transparent), transparent 70%);
+  filter: blur(46px);
+  animation: global(auraDrift) 30s var(--ease-in-out) infinite;
+}
+
+.rise {
+  animation: global(driftIn) var(--dur-reveal) var(--ease-out) backwards;
+  animation-delay: var(--rise, 0ms);
+}
+
+.fields {
+  display: block;
+}
+
+.asideRise {
+  animation: global(driftInSide) 820ms var(--ease-out) 120ms backwards;
 }

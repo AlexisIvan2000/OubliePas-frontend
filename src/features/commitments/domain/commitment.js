@@ -58,6 +58,64 @@ export const CATEGORIES = {
   invoice: ["housing", "energy", "internet", "insurance", "transport", "taxes", "other"],
 };
 
+const CATEGORY_TINTS = {
+  entertainment: "1",
+  music: "2",
+  software: "3",
+  storage: "4",
+  fitness: "5",
+  news: "1",
+  housing: "1",
+  energy: "2",
+  internet: "3",
+  insurance: "4",
+  transport: "5",
+  taxes: "1",
+  other: "rest",
+};
+
+const TINT_SLOTS = ["1", "2", "3", "4", "5"];
+
+export function categoryTint(category) {
+  return `var(--chart-${CATEGORY_TINTS[category] ?? "rest"})`;
+}
+
+const TINT_ORDER = Object.keys(CATEGORY_TINTS);
+
+export function assignTints(categories) {
+  const taken = new Set();
+  const chosen = new Map();
+
+  // L'attribution suit l'ordre fixe du catalogue, jamais l'ordre des montants :
+  // sinon deux categories qui visent la meme teinte echangeraient leurs couleurs
+  // d'un mois a l'autre selon laquelle a le plus gros total.
+  const ordered = [...new Set(categories)].sort(
+    (left, right) => TINT_ORDER.indexOf(left) - TINT_ORDER.indexOf(right),
+  );
+
+  ordered.forEach((category) => {
+    const preferred = CATEGORY_TINTS[category];
+    const slot =
+      preferred && preferred !== "rest" && !taken.has(preferred)
+        ? preferred
+        : TINT_SLOTS.find((candidate) => !taken.has(candidate));
+
+    if (slot) {
+      taken.add(slot);
+      chosen.set(category, `var(--chart-${slot})`);
+    } else {
+      chosen.set(category, "var(--chart-rest)");
+    }
+  });
+
+  return chosen;
+}
+
+export function monogram(title) {
+  const first = [...(title ?? "").trim()].find((glyph) => /\p{L}|\p{N}/u.test(glyph));
+  return (first ?? "?").toLocaleUpperCase();
+}
+
 export function categoryOptions(t, type) {
   return CATEGORIES[type].map((value) => ({ value, label: t(`category.${value}`) }));
 }
@@ -125,28 +183,22 @@ export function nextUp(commitments) {
   )[0] ?? null;
 }
 
-export const CHART_COLORS = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
-];
-
 export const REST_SLICE = "rest";
-export const MAX_SLICES = CHART_COLORS.length;
+export const MAX_SLICES = TINT_SLOTS.length;
 
 export function topCategories(rows, max = MAX_SLICES) {
   const sorted = [...rows].sort((left, right) => Number(right.total) - Number(left.total));
   const head = sorted.slice(0, max);
   const tail = sorted.slice(max);
 
-  const slices = head.map((row, index) => ({
+  const tints = assignTints(head.map((row) => row.category));
+
+  const slices = head.map((row) => ({
     key: row.category,
     category: row.category,
     total: Number(row.total),
     count: row.count,
-    color: CHART_COLORS[index],
+    color: tints.get(row.category),
   }));
 
   if (tail.length) {

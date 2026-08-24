@@ -147,6 +147,7 @@
 }
 
 .preview {
+  position: relative;
   padding: 1.75rem;
   border-radius: var(--radius-lg);
   background-color: var(--color-panel);
@@ -374,4 +375,93 @@
     grid-template-columns: 1fr;
     padding-bottom: 3.5rem;
   }
+}
+
+.aura {
+  position: fixed;
+  inset: -20vh -10vw auto;
+  height: 78vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  background:
+    radial-gradient(38% 46% at 22% 30%, color-mix(in srgb, var(--chart-1) 26%, transparent), transparent 70%),
+    radial-gradient(34% 40% at 74% 22%, color-mix(in srgb, var(--chart-5) 20%, transparent), transparent 70%),
+    radial-gradient(30% 38% at 52% 62%, color-mix(in srgb, var(--chart-3) 16%, transparent), transparent 70%);
+  filter: blur(42px);
+  animation: global(auraDrift) 26s var(--ease-in-out) infinite;
+}
+
+.page > *:not(.aura) {
+  position: relative;
+  z-index: 1;
+}
+
+.rise {
+  animation: global(driftIn) var(--dur-reveal) var(--ease-out) backwards;
+  animation-delay: var(--rise, 0ms);
+}
+
+.sheen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 38%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    color-mix(in srgb, var(--color-surface) 70%, transparent),
+    transparent
+  );
+  animation: global(sheen) 5.5s var(--ease-in-out) 1.1s infinite;
+}
+
+.band {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 3.5rem 0 1rem;
+  opacity: 0;
+  transform: translate3d(0, 1.5rem, 0);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-out);
+}
+
+.bandShown {
+  opacity: 1;
+  transform: none;
+}
+
+.bandLabel {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.pillar {
+  opacity: 0;
+  transform: translate3d(0, 1.75rem, 0) scale(0.98);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-spring);
+  transition-delay: var(--rise, 0ms);
+}
+
+.pillarShown {
+  opacity: 1;
+  transform: none;
 }

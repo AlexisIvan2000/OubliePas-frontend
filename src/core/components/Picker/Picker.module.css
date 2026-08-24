@@ -22,7 +22,7 @@
 }
 
 .trigger:hover:not(:disabled) {
-  border-color: var(--color-border-strong);
+  border-color: var(--color-control-border-hover);
   background-color: var(--color-surface-hover);
 }
 
@@ -39,7 +39,7 @@
   width: 100%;
   height: 2.875rem;
   padding: 0 0.9375rem 0 0.875rem;
-  border-color: var(--color-border-strong);
+  border-color: var(--color-control-border);
   border-radius: var(--radius-md);
   font-size: 0.9375rem;
 }
@@ -93,7 +93,7 @@
 
 .chevron {
   color: var(--color-text-subtle);
-  transition: transform 260ms cubic-bezier(0.34, 1.5, 0.5, 1);
+  transition: transform 260ms var(--ease-spring);
 }
 
 .triggerOpen .chevron {
@@ -115,7 +115,7 @@
   background-color: var(--color-surface);
   box-shadow: var(--shadow-lg);
   transform-origin: top right;
-  animation: listIn 190ms cubic-bezier(0.34, 1.32, 0.5, 1);
+  animation: listIn 190ms var(--ease-spring);
 }
 
 .up {
@@ -126,7 +126,7 @@
 }
 
 .leaving {
-  animation: listOut 130ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  animation: listOut 130ms var(--ease-in) forwards;
 }
 
 .up.leaving {
@@ -144,7 +144,7 @@
   font-size: 0.8125rem;
   white-space: nowrap;
   cursor: pointer;
-  animation: optionIn 240ms cubic-bezier(0.22, 0.9, 0.28, 1) backwards;
+  animation: optionIn 240ms var(--ease-out) backwards;
   animation-delay: var(--enter-delay, 0ms);
 }
 

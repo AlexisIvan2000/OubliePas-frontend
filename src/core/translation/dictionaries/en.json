@@ -10,6 +10,64 @@
     "yes": "Yes",
     "no": "No"
   },
+  "date": {
+    "choose": "Pick a date",
+    "today": "Today",
+    "clear": "Clear",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "documentTitle": "Frequently asked questions",
+    "backToSettings": "Back to settings",
+    "backHome": "Back to home",
+    "lede": "What you need to know about tracking and reminders.",
+    "settingsTitle": "Frequently asked questions",
+    "settingsHint": "Answers to the ten most common questions.",
+    "items": {
+      "types": {
+        "q": "What is the difference between a subscription and a bill?",
+        "a": "A subscription renews on its own for the same amount: Netflix, Spotify, a gym. A bill is a payment due, one-off or recurring: rent, electricity, taxes. Both are tracked the same way, but only subscriptions can carry a free trial."
+      },
+      "when": {
+        "q": "When do I get a reminder?",
+        "a": "Three days before the due date by default. You can set that from 0 to 30 days on each line, and change the default for new lines from the Reminders page. Messages go out once a day, at noon UTC."
+      },
+      "howMany": {
+        "q": "How many emails is that per day?",
+        "a": "One per kind at most, and they are grouped. Every upcoming payment fits in a single message, every overdue one in another. Eight subscriptions falling on the same day means one email, not eight."
+      },
+      "trial": {
+        "q": "How does a free trial work?",
+        "a": "You give the start date and the length, OubliePas works out the end, which becomes the date of the first charge. The amount you enter is what you pay after the trial, not during it. You are warned at least three days before that first charge, even if your usual lead time is shorter."
+      },
+      "notice": {
+        "q": "What is a cancellation notice?",
+        "a": "Some contracts, insurance, gyms or phone plans, require you to cancel a set number of days ahead, up to sixty. OubliePas warns you before that window closes, not before the due date: the day it becomes too late to cancel comes well before the charge."
+      },
+      "late": {
+        "q": "What if I forget to mark a payment as paid?",
+        "a": "Three days after the date, a single message asks whether it was paid, skipped, or genuinely forgotten. One nudge, not ten: past thirty days after the due date, OubliePas goes quiet."
+      },
+      "skip": {
+        "q": "How do I skip a month without deleting the line?",
+        "a": "Pick “Not this month” on the payment. It drops out of the month's totals and triggers no reminder, while the subscription carries on as usual the following month."
+      },
+      "horizon": {
+        "q": "Why does the calendar stop somewhere?",
+        "a": "Payments are worked out ninety days ahead. The window moves forward one day at a time, so you always have roughly three months in front of you without ever piling up years of theoretical payments."
+      },
+      "mute": {
+        "q": "How do I turn every email off at once?",
+        "a": "One switch on the Reminders page turns off all three kinds together: due-date reminders, overdue nudges and end-of-trial warnings. Each line keeps its own settings and picks them straight back up when you switch it on again."
+      },
+      "delete": {
+        "q": "How do I delete my account and my data?",
+        "a": "From Settings, at the bottom of the page. You confirm with your password, or by typing your email address if you signed up with Google. Deletion is immediate and permanent: subscriptions, bills, history and picture all go with it."
+      }
+    }
+  },
   "relative": {
     "today": "today",
     "tomorrow": "tomorrow",
@@ -25,13 +83,22 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "group": {
+      "tracking": "Tracking",
+      "account": "Account"
+    },
     "subscriptions": "Subscriptions",
     "calendar": "Calendar",
     "invoices": "Bills",
+    "breakdown": "Breakdown",
     "reminders": "Reminders",
     "settings": "Settings",
     "soon": "soon",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "lateCount": {
+      "one": "{count} overdue payment",
+      "other": "{count} overdue payments"
+    }
   },
   "legal": {
     "supportTitle": "Support",
@@ -56,6 +123,8 @@
     "subtitle": "OubliePas brings your subscriptions and recurring bills together, works out what they cost you each month and warns you before the due date. Nothing is paid from the app: it tracks, it shows, it reminds.",
     "noAccount": "No account yet?",
     "footnote": "No bank connection. You enter what you track, nothing else.",
+    "bandLabel": "Everything you can track",
+    "bandAria": "A few services and bills OubliePas recognises",
     "previewLabel": "This month",
     "tagline": "Recurring expense tracking",
     "pillars": {

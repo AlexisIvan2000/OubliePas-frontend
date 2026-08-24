@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 
+import { cx } from "../utils/classNames";
+
 import { useTranslation } from "../translation/useTranslation";
+import { BrandMarquee } from "../components/BrandMarquee/BrandMarquee";
 import { Icon } from "../components/Icon/Icon";
 import { PreferenceToggles } from "../components/PreferenceToggles/PreferenceToggles";
 import { formatMoney, formatShortDate } from "../utils/formatting";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
+import { useReveal } from "../utils/useReveal";
 import { LEGAL } from "./legal/legalConfig";
 import styles from "./LandingPage.module.css";
 
@@ -34,11 +38,14 @@ const PREVIEW_CURRENCY = "CAD";
 
 export function LandingPage() {
   const { t } = useTranslation();
+  const [bandRef, bandShown] = useReveal();
+  const [pillarsRef, pillarsShown] = useReveal();
 
   useDocumentTitle(t("landing.documentTitle"));
 
   return (
     <div className={styles.page}>
+      <div className={styles.aura} aria-hidden="true" />
       <header className={styles.topbar}>
         <div className={styles.brand}>
           <img className={styles.logo} src="/assets/logo.png" alt="" />
@@ -55,11 +62,17 @@ export function LandingPage() {
       <main>
         <section className={styles.hero}>
           <div className={styles.heroText}>
-            <p className={styles.eyebrow}>{t("landing.eyebrow")}</p>
-            <h1 className={styles.title}>{t("landing.title")}</h1>
-            <p className={styles.subtitle}>{t("landing.subtitle")}</p>
+            <p className={cx(styles.eyebrow, styles.rise)} style={{ "--rise": "0ms" }}>
+              {t("landing.eyebrow")}
+            </p>
+            <h1 className={cx(styles.title, styles.rise)} style={{ "--rise": "90ms" }}>
+              {t("landing.title")}
+            </h1>
+            <p className={cx(styles.subtitle, styles.rise)} style={{ "--rise": "180ms" }}>
+              {t("landing.subtitle")}
+            </p>
 
-            <div className={styles.actions}>
+            <div className={cx(styles.actions, styles.rise)} style={{ "--rise": "270ms" }}>
               <Link to="/connexion" className={styles.primary}>
                 {t("auth.signIn")}
                 <Icon name="next" size={16} />
@@ -70,10 +83,17 @@ export function LandingPage() {
               </span>
             </div>
 
-            <p className={styles.footnote}>{t("landing.footnote")}</p>
+            <p className={cx(styles.footnote, styles.rise)} style={{ "--rise": "360ms" }}>
+              {t("landing.footnote")}
+            </p>
           </div>
 
-          <aside className={styles.preview} aria-label={t("a11y.appPreview")}>
+          <aside
+            className={cx(styles.preview, styles.rise)}
+            style={{ "--rise": "260ms" }}
+            aria-label={t("a11y.appPreview")}
+          >
+            <span className={styles.sheen} aria-hidden="true" />
             <div className={styles.previewLabel}>{t("landing.previewLabel")}</div>
             <div className={styles.previewTotal}>{formatMoney(PREVIEW_TOTAL, PREVIEW_CURRENCY)}</div>
             <div className={styles.previewSplit}>
@@ -102,9 +122,22 @@ export function LandingPage() {
           </aside>
         </section>
 
-        <section className={styles.pillars}>
-          {PILLARS.map((pillar) => (
-            <article className={styles.pillar} key={pillar.key}>
+        <section
+          ref={bandRef}
+          className={cx(styles.band, bandShown && styles.bandShown)}
+          aria-hidden={bandShown ? undefined : "true"}
+        >
+          <p className={styles.bandLabel}>{t("landing.bandLabel")}</p>
+          <BrandMarquee label={t("landing.bandAria")} />
+        </section>
+
+        <section ref={pillarsRef} className={styles.pillars}>
+          {PILLARS.map((pillar, index) => (
+            <article
+              className={cx(styles.pillar, pillarsShown && styles.pillarShown)}
+              style={{ "--rise": `${index * 90}ms` }}
+              key={pillar.key}
+            >
               <span className={styles.pillarIcon}>
                 <Icon name={pillar.icon} size={20} />
               </span>
@@ -122,6 +155,7 @@ export function LandingPage() {
       <footer className={styles.footer}>
         <span className={styles.footerBrand}>OubliePas</span>
         <nav className={styles.footerLinks} aria-label={t("legal.footerAria")}>
+          <Link to="/faq">{t("faq.settingsTitle")}</Link>
           <Link to="/conditions">{t("legal.terms")}</Link>
           <Link to="/confidentialite">{t("legal.privacy")}</Link>
           <a href={`mailto:${LEGAL.contactEmail}`}>{t("legal.contact")}</a>

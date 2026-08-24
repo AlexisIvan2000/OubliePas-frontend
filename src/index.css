@@ -1,6 +1,15 @@
 :root {
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
+  --ease-out: cubic-bezier(0.22, 0.9, 0.28, 1);
+  --ease-spring: cubic-bezier(0.34, 1.32, 0.46, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 460ms;
+  --dur-reveal: 700ms;
+
   --radius-sm: 0.5rem;
   --radius-md: 0.625rem;
   --radius-lg: 1rem;
@@ -12,15 +21,18 @@
 
   --color-bg: #f1f5f9;
   --color-surface: #ffffff;
+  --color-logo-plate: #ffffff;
   --color-surface-hover: #f7fafc;
   --color-row-hover: #f1f5f9;
   --color-border: #dde6ee;
   --color-border-strong: #cfdbe5;
+  --color-control-border: #7699b5;
+  --color-control-border-hover: #5780a1;
   --color-track: #e7eef4;
 
   --color-text: #0f2233;
   --color-text-muted: #5c7285;
-  --color-text-subtle: #8699a8;
+  --color-text-subtle: #5d7181;
 
   --color-accent: #0f2233;
   --color-accent-hover: #1b3a54;
@@ -36,7 +48,7 @@
   --color-danger-hover: #b93636;
   --color-danger-soft: #fceeec;
   --color-danger-border: #f0c6c2;
-  --color-danger-text: #d14343;
+  --color-danger-text: #cd3333;
   --color-danger-contrast: #ffffff;
   --color-danger-ring: rgba(209, 67, 67, 0.16);
 
@@ -53,16 +65,16 @@
   --color-warning-border-strong: #e0c48b;
   --color-warning-text: #8a6520;
 
-  --color-success-text: #1f8a70;
+  --color-success-text: #1c7d65;
   --color-success-soft: #eaf6f2;
   --color-success-border: #bfe3d8;
 
   --chart-1: #2a78d6;
   --chart-2: #eb6834;
-  --chart-3: #1baf7a;
-  --chart-4: #eda100;
-  --chart-5: #e87ba4;
-  --chart-rest: #8699a8;
+  --chart-3: #1aa774;
+  --chart-4: #c68700;
+  --chart-5: #e56a99;
+  --chart-rest: #5d7181;
 
   --color-nav-text: #52708a;
   --color-chip-soft: #c9d8e3;
@@ -87,10 +99,13 @@
 
   --color-bg: #0b1620;
   --color-surface: #12212e;
+  --color-logo-plate: #f4f7fa;
   --color-surface-hover: #182a39;
   --color-row-hover: #1a2c3c;
   --color-border: #23394b;
   --color-border-strong: #2f4a60;
+  --color-control-border: #466e8f;
+  --color-control-border-hover: #5a88ae;
   --color-track: #1d3243;
 
   --color-text: #e6eef5;
@@ -323,11 +338,11 @@ a:hover {
   }
 }
 ::view-transition-old(root) {
-  animation: fadeAway 140ms ease both;
+  animation: pageLeave 180ms var(--ease-out) both;
 }
 
 ::view-transition-new(root) {
-  animation: fade 220ms ease both;
+  animation: pageEnter 420ms var(--ease-out) both;
 }
 
 @keyframes fadeAway {
@@ -355,5 +370,140 @@ a:hover {
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none !important;
+  }
+}
+
+@keyframes driftIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0) scale(0.985);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes driftInSide {
+  from {
+    opacity: 0;
+    transform: translate3d(-1.5rem, 0, 0);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes auraDrift {
+  0% {
+    transform: translate3d(-4%, -2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, 3%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-4%, -2%, 0) scale(1);
+  }
+}
+
+@keyframes sheen {
+  from {
+    transform: translate3d(-120%, 0, 0);
+  }
+  to {
+    transform: translate3d(220%, 0, 0);
+  }
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.75rem, 0) scale(0.994);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pageLeave {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -0.35rem, 0) scale(0.998);
+  }
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.5rem, 0) scale(0.965);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translate3d(1.5rem, 0.5rem, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(1.25rem, 0, 0) scale(0.97);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.07);
+  }
+}
+
+@keyframes halo {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(1.035);
   }
 }

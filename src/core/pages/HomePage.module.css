@@ -81,7 +81,7 @@
   font-weight: 550;
   color: var(--color-link);
   text-decoration: none;
-  transition: gap 200ms cubic-bezier(0.22, 0.9, 0.28, 1);
+  transition: gap 200ms var(--ease-out);
 }
 
 .seeMore:hover {

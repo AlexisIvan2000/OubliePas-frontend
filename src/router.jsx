@@ -7,6 +7,7 @@ import { NotFoundPage } from "./core/pages/NotFoundPage";
 import { RootLayout } from "./core/pages/RootLayout";
 import { RemindersPage } from "./features/notifications/presentation/pages/RemindersPage";
 import { BreakdownPage } from "./features/commitments/presentation/pages/BreakdownPage";
+import { FaqPage } from "./core/pages/FaqPage";
 import { CalendarPage } from "./features/commitments/presentation/pages/CalendarPage";
 import { InvoicesPage } from "./features/commitments/presentation/pages/InvoicesPage";
 import { SubscriptionsPage } from "./features/commitments/presentation/pages/SubscriptionsPage";
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <HomeRoute /> },
       { path: "/conditions", element: <TermsPage /> },
+      { path: "/faq", element: <FaqPage /> },
       { path: "/confidentialite", element: <PrivacyPage /> },
       {
         element: <GuestLayout />,

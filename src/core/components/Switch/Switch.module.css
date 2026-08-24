@@ -4,7 +4,7 @@
   width: 2.5rem;
   height: 1.375rem;
   padding: 0;
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-control-border);
   border-radius: 999px;
   background-color: var(--color-surface-hover);
   cursor: pointer;
@@ -23,7 +23,7 @@
   background-color: var(--color-surface);
   box-shadow: var(--shadow-sm);
   transform: translateY(-50%);
-  transition: transform 160ms cubic-bezier(0.22, 0.8, 0.3, 1);
+  transition: transform 160ms var(--ease-out);
 }
 
 .on {

@@ -78,6 +78,7 @@
 }
 
 .cell {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
@@ -88,22 +89,39 @@
   border-radius: 0.75rem;
   background-color: var(--color-surface-hover);
   transition:
-    border-color 160ms ease,
-    background-color 160ms ease;
+    border-color var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-spring);
 }
 
 .cell:hover {
-  border-color: var(--color-border-strong);
+  border-color: var(--color-control-border);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  z-index: 1;
 }
 
 .enter {
-  animation: global(fade) 0.3s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+  animation: global(driftIn) var(--dur-slow) var(--ease-out) backwards;
   animation-delay: var(--enter-delay, 0ms);
 }
 
 .today {
   border-color: var(--color-link);
   background-color: var(--color-today-soft);
+}
+
+.today::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid var(--color-link);
+  opacity: 0.5;
+  pointer-events: none;
+  animation: global(halo) 2.8s var(--ease-in-out) infinite;
 }
 
 .dayNumber {
@@ -145,7 +163,7 @@
 .event {
   transition:
     filter 140ms ease,
-    transform 140ms cubic-bezier(0.22, 0.8, 0.3, 1);
+    transform 140ms var(--ease-out);
 }
 
 .event:hover:not(:disabled) {
@@ -180,7 +198,7 @@
 .paid {
   background-color: var(--color-paid-soft);
   color: var(--color-accent-deep);
-  animation: global(checkPop) 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: global(checkPop) 0.28s var(--ease-spring);
   text-decoration: line-through;
   text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
 }
