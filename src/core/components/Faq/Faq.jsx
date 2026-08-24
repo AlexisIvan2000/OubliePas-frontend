@@ -6,7 +6,7 @@ import { Icon } from "../Icon/Icon";
 import styles from "./Faq.module.css";
 import { FAQ_IDS } from "./faqItems";
 
-const STEP_VH = 38;
+const STEP_VH = 26;
 
 function useScrollStep(count, enabled) {
   const ref = useRef(null);
