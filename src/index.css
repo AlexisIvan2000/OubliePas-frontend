@@ -65,6 +65,8 @@
   --color-warning-border-strong: #e0c48b;
   --color-warning-text: #8a6520;
 
+  --color-success: #1c7d65;
+  --color-success-contrast: #ffffff;
   --color-success-text: #1c7d65;
   --color-success-soft: #eaf6f2;
   --color-success-border: #bfe3d8;
@@ -143,6 +145,8 @@
   --color-warning-border-strong: #5c4a1c;
   --color-warning-text: #e3ab5c;
 
+  --color-success: #4fc4a5;
+  --color-success-contrast: #0d2b24;
   --color-success-text: #4fc4a5;
   --color-success-soft: #12302a;
   --color-success-border: #1e4a41;

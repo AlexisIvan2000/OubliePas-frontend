@@ -31,6 +31,11 @@
   pointer-events: none;
 }
 
+.success {
+  background-color: var(--color-success);
+  color: var(--color-success-contrast);
+}
+
 .error {
   background-color: var(--color-danger);
   color: var(--color-danger-contrast);

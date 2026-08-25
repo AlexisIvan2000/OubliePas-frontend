@@ -75,6 +75,7 @@ export function ToastProvider({ children }) {
             key={toast.id}
             className={cx(
               styles.toast,
+              toast.variant === "success" && styles.success,
               toast.variant === "error" && styles.error,
               toast.leaving && styles.leaving,
             )}
