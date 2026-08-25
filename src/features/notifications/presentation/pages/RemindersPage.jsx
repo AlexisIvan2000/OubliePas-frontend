@@ -10,6 +10,7 @@ import { useOccurrences } from "../../../commitments/presentation/providers/useO
 import {
   DEFAULT_LEAD_TIME,
   DEFAULT_PREFERENCES,
+  FAMILIES,
   scheduledReminders,
 } from "../../domain/reminders";
 import { ActivityFeedCard } from "../components/ActivityFeedCard";
@@ -50,6 +51,9 @@ export function RemindersPage() {
   const preferences = {
     ...local,
     email: emailEnabled,
+    notice: user?.reminderNoticeEnabled ?? true,
+    overdue: user?.reminderOverdueEnabled ?? true,
+    action: user?.reminderActionEnabled ?? true,
     leadTime: user?.defaultReminderDays ?? DEFAULT_LEAD_TIME,
   };
 
@@ -65,11 +69,15 @@ export function RemindersPage() {
   };
 
   const toggle = (id, value) => {
-    if (id !== "email") {
-      setLocal((current) => ({ ...current, [id]: value }));
-      return;
+    if (id === "email") {
+      return save(id, { reminder_email_enabled: value });
     }
-    return save(id, { reminder_email_enabled: value });
+    const family = FAMILIES.find((entry) => entry.id === id);
+    if (family) {
+      return save(id, { [family.field]: value });
+    }
+    setLocal((current) => ({ ...current, [id]: value }));
+    return undefined;
   };
 
   const setLeadTime = (days) => save("lead", { default_reminder_days: days });

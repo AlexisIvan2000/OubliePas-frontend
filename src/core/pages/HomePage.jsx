@@ -2,11 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../../features/authentication/presentation/providers/useAuth";
-import { getSummary } from "../../features/commitments/data/commitmentsApi";
+import {
+  getSummary,
+  listLateOccurrences,
+} from "../../features/commitments/data/commitmentsApi";
 import { useResource } from "../network/useResource";
 import { STRIP_DAYS } from "../../features/commitments/domain/calendar";
 import { topCategories } from "../../features/commitments/domain/commitment";
 import { CategoryDonut } from "../../features/commitments/presentation/components/CategoryDonut";
+import { LateBanner } from "../../features/commitments/presentation/components/LateBanner";
 import {
   CategoryDonutSkeleton,
   SummaryTilesSkeleton,
@@ -44,6 +48,8 @@ export function HomePage() {
     revalidate: reloadSummary,
   } = useResource("summary", getSummary);
 
+  const { data: late, setData: setLate } = useResource("late", listLateOccurrences);
+
   const today = useToday();
   const range = useMemo(() => upcomingRange(parseDate(today), STRIP_DAYS), [today]);
   const { items, loading, error: dueError, setItems } = useOccurrences(range);
@@ -62,6 +68,11 @@ export function HomePage() {
 
   const settle = useSettle((updated) => {
     setItems((current) => current.map((row) => (row.id === updated.id ? updated : row)));
+    setLate((current) =>
+      (current ?? [])
+        .map((row) => (row.id === updated.id ? updated : row))
+        .filter((row) => row.status === "pending"),
+    );
     reloadSummary();
   });
 
@@ -79,6 +90,13 @@ export function HomePage() {
       </div>
 
       {failure ? <Alert variant="error">{messageForError(t, failure)}</Alert> : null}
+
+      <LateBanner
+        items={late ?? []}
+        currency={currency}
+        busyId={settle.busyId}
+        onToggle={settle.pick}
+      />
 
       {summary ? <SummaryTiles summary={summary} /> : <SummaryTilesSkeleton />}
 

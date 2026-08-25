@@ -163,6 +163,15 @@
       "one": "{count} line tracked",
       "other": "{count} lines tracked"
     },
+    "lateTitle": {
+      "one": "{count} past payment is not marked",
+      "other": "{count} past payments are not marked"
+    },
+    "lateHint": "Tell us whether they were paid, skipped, or simply forgotten.",
+    "lateMore": {
+      "one": "And {count} more, in the calendar.",
+      "other": "And {count} more, in the calendar."
+    },
     "upcomingEmpty": "Nothing to pay in the next {days} days.",
     "upcomingEmptySubscriptions": "subscriptions",
     "upcomingEmptyInvoices": "bills",
@@ -677,6 +686,24 @@
       "weekly": {
         "label": "Weekly digest",
         "description": "A recap of the week, every Monday."
+      }
+    },
+    "families": {
+      "title": "Reminder types",
+      "description": "Choose what you want to receive by email."
+    },
+    "family": {
+      "notice": {
+        "label": "Before the due date",
+        "description": "The reminder sent a few days before the charge."
+      },
+      "overdue": {
+        "label": "Past due",
+        "description": "One nudge three days later, if nothing was marked as paid."
+      },
+      "action": {
+        "label": "Trial end and notice period",
+        "description": "The warning before the first charge or the cancellation deadline."
       }
     },
     "lead": {

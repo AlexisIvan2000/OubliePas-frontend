@@ -163,6 +163,15 @@
       "one": "{count} ligne suivie",
       "other": "{count} lignes suivies"
     },
+    "lateTitle": {
+      "one": "{count} échéance passée n'est pas marquée",
+      "other": "{count} échéances passées ne sont pas marquées"
+    },
+    "lateHint": "Indiquez si elles ont été payées, sautées, ou simplement oubliées.",
+    "lateMore": {
+      "one": "Et {count} autre, visible dans le calendrier.",
+      "other": "Et {count} autres, visibles dans le calendrier."
+    },
     "upcomingEmpty": "Rien à payer dans les {days} prochains jours.",
     "upcomingEmptySubscriptions": "abonnements",
     "upcomingEmptyInvoices": "factures",
@@ -677,6 +686,24 @@
       "weekly": {
         "label": "Résumé hebdomadaire",
         "description": "Un récapitulatif de la semaine, chaque lundi."
+      }
+    },
+    "families": {
+      "title": "Types de rappels",
+      "description": "Choisissez ce que vous voulez recevoir par email."
+    },
+    "family": {
+      "notice": {
+        "label": "Avant l'échéance",
+        "description": "Le rappel envoyé quelques jours avant le prélèvement."
+      },
+      "overdue": {
+        "label": "Échéance passée",
+        "description": "Une relance trois jours après, si rien n'a été marqué comme payé."
+      },
+      "action": {
+        "label": "Fin d'essai et préavis",
+        "description": "L'alerte avant le premier prélèvement ou la fin du délai de résiliation."
       }
     },
     "lead": {

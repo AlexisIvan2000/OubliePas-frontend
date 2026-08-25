@@ -40,6 +40,11 @@ export async function listOccurrences({ start, end, status } = {}) {
   return rows.map(toOccurrence);
 }
 
+export async function listLateOccurrences() {
+  const rows = await http.get(COMMITMENT_ENDPOINTS.lateOccurrences, { auth: true });
+  return rows.map(toOccurrence);
+}
+
 export async function updateOccurrence(id, payload) {
   return toOccurrence(
     await http.patch(COMMITMENT_ENDPOINTS.occurrence(id), payload, { auth: true }),

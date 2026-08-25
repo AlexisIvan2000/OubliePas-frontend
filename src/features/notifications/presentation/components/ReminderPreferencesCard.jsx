@@ -2,31 +2,31 @@ import { Chip } from "../../../../core/components/Chip/Chip";
 import { cx } from "../../../../core/utils/classNames";
 import { Switch } from "../../../../core/components/Switch/Switch";
 import { useTranslation } from "../../../../core/translation/useTranslation";
-import { CHANNELS, DIGESTS, LEAD_TIMES } from "../../domain/reminders";
+import { CHANNELS, DIGESTS, FAMILIES, LEAD_TIMES } from "../../domain/reminders";
 import styles from "../styles/reminders.module.css";
 
-function ToggleRow({ id, available, checked, busy, onChange }) {
+function ToggleRow({ id, group = "channel", soon = false, disabled = false, checked, onChange }) {
   const { t } = useTranslation();
-  const label = t(`reminders.channel.${id}.label`);
+  const label = t(`reminders.${group}.${id}.label`);
 
   return (
     <div
       className={cx(
         styles.toggleRow,
-        available && checked && styles.toggleOn,
-        available ? null : styles.toggleOff,
+        !disabled && checked && styles.toggleOn,
+        disabled && styles.toggleOff,
       )}
     >
       <div className={styles.toggleText}>
         <span className={styles.toggleLabel}>
           {label}
-          {available ? null : <span className={styles.soon}>{t("nav.soon")}</span>}
+          {soon ? <span className={styles.soon}>{t("nav.soon")}</span> : null}
         </span>
-        <span className={styles.toggleHint}>{t(`reminders.channel.${id}.description`)}</span>
+        <span className={styles.toggleHint}>{t(`reminders.${group}.${id}.description`)}</span>
       </div>
       <Switch
         checked={checked}
-        disabled={!available || busy}
+        disabled={disabled}
         label={label}
         onChange={(next) => onChange(id, next)}
       />
@@ -50,9 +50,24 @@ export function ReminderPreferencesCard({ preferences, saving, onToggle, onLeadT
           <ToggleRow
             key={channel.id}
             id={channel.id}
-            available={channel.available}
+            soon={!channel.available}
+            disabled={!channel.available || saving === channel.id}
             checked={preferences[channel.id]}
-            busy={saving === channel.id}
+            onChange={onToggle}
+          />
+        ))}
+      </div>
+
+      <div className={styles.group}>
+        <h3 className={styles.groupTitle}>{t("reminders.families.title")}</h3>
+        <p className={styles.groupHint}>{t("reminders.families.description")}</p>
+        {FAMILIES.map((family) => (
+          <ToggleRow
+            key={family.id}
+            id={family.id}
+            group="family"
+            disabled={!preferences.email || saving === family.id}
+            checked={preferences[family.id]}
             onChange={onToggle}
           />
         ))}
@@ -64,7 +79,8 @@ export function ReminderPreferencesCard({ preferences, saving, onToggle, onLeadT
           <ToggleRow
             key={digest.id}
             id={digest.id}
-            available={digest.available}
+            soon={!digest.available}
+            disabled={!digest.available}
             checked={preferences[digest.id]}
             onChange={onToggle}
           />

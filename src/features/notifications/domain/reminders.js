@@ -8,10 +8,19 @@ export const CHANNELS = [
 
 export const DIGESTS = [{ id: "weekly", available: false }];
 
+export const FAMILIES = [
+  { id: "notice", field: "reminder_notice_enabled" },
+  { id: "overdue", field: "reminder_overdue_enabled" },
+  { id: "action", field: "reminder_action_enabled" },
+];
+
 export const DEFAULT_PREFERENCES = {
   email: true,
   push: false,
   weekly: false,
+  notice: true,
+  overdue: true,
+  action: true,
   leadTime: DEFAULT_LEAD_TIME,
 };
 
