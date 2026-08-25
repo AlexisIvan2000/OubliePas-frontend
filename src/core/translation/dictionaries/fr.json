@@ -56,7 +56,7 @@
       },
       "horizon": {
         "q": "Pourquoi le calendrier s'arrête-t-il quelque part ?",
-        "a": "Les échéances sont calculées quatre-vingt-dix jours à l'avance. La fenêtre avance d'un jour chaque jour, donc tu as toujours environ trois mois devant toi sans jamais accumuler des années d'échéances théoriques."
+        "a": "Les échéances sont calculées environ trois mois à l'avance, et toujours au moins jusqu'à la suivante : un abonnement annuel garde donc sa date affichée même si le prélèvement est dans dix mois. La fenêtre avance d'un jour chaque jour, sans jamais accumuler des années d'échéances théoriques."
       },
       "mute": {
         "q": "Comment couper tous les mails d'un coup ?",
@@ -305,7 +305,9 @@
     "trialRecapPlain": "Essai jusqu'au {end}. Premier prélèvement le {end}.",
     "trialOver": "Cet essai est déjà terminé. La création se fera sans rappel de fin d'essai.",
     "trialCurrent": "Essai actuel : jusqu'au {date}",
-    "pastDueDate": "Cette date est passée : la facture apparaîtra comme en retard."
+    "pastDueDate": "Cette date est passée : la facture apparaîtra comme en retard.",
+    "pastStartDate": "Cette date est passée : les échéances antérieures ne sont pas créées, le suivi commencera au {date}.",
+    "pastStartNothing": "Cette date est passée et la date de fin arrive avant la prochaine échéance : rien ne sera suivi."
   },
   "frequency": {
     "monthly": "Tous les mois",

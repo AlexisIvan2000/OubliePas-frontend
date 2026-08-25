@@ -236,6 +236,42 @@ function isoShift(iso, days) {
   ).padStart(2, "0")}`;
 }
 
+const MONTHS_BY_FREQUENCY = { monthly: 1, quarterly: 3, yearly: 12 };
+const MAX_STEPS = 600;
+
+function pad(value) {
+  return String(value).padStart(2, "0");
+}
+
+function addMonths(iso, months) {
+  const [year, month, day] = iso.split("-").map(Number);
+  const total = month - 1 + months;
+  const targetYear = year + Math.floor(total / 12);
+  const targetMonth = (total % 12) + 1;
+  const lastDay = new Date(Date.UTC(targetYear, targetMonth, 0)).getUTCDate();
+  return `${targetYear}-${pad(targetMonth)}-${pad(Math.min(day, lastDay))}`;
+}
+
+// Reproduit le plancher du back : a la creation, aucune echeance anterieure a
+// aujourd'hui n'est generee. Sert a annoncer la vraie premiere date suivie.
+export function firstTrackedDate(startsOn, frequency, today) {
+  if (!startsOn || !today) {
+    return null;
+  }
+  if (frequency === "oneoff" || startsOn >= today) {
+    return startsOn;
+  }
+  const months = MONTHS_BY_FREQUENCY[frequency];
+  for (let step = 1; step <= MAX_STEPS; step += 1) {
+    const due =
+      frequency === "weekly" ? isoShift(startsOn, step * 7) : addMonths(startsOn, step * months);
+    if (due >= today) {
+      return due;
+    }
+  }
+  return null;
+}
+
 export const TRIAL_PRESETS = [3, 7, 14, 30];
 export const MAX_TRIAL_DAYS = 365;
 

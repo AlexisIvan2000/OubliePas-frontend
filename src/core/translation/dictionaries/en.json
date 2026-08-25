@@ -56,7 +56,7 @@
       },
       "horizon": {
         "q": "Why does the calendar stop somewhere?",
-        "a": "Payments are worked out ninety days ahead. The window moves forward one day at a time, so you always have roughly three months in front of you without ever piling up years of theoretical payments."
+        "a": "Payments are worked out about three months ahead, and always at least as far as the next one: a yearly subscription therefore keeps its date on screen even when the charge is ten months away. The window moves forward one day at a time, without ever piling up years of theoretical payments."
       },
       "mute": {
         "q": "How do I turn every email off at once?",
@@ -305,7 +305,9 @@
     "trialRecapPlain": "Trial until {end}. First charge on {end}.",
     "trialOver": "This trial is already over. It will be created without a trial-end reminder.",
     "trialCurrent": "Current trial: until {date}",
-    "pastDueDate": "This date has passed: the bill will show up as late."
+    "pastDueDate": "This date has passed: the bill will show up as late.",
+    "pastStartDate": "This date has passed: earlier payments are not created, tracking will start on {date}.",
+    "pastStartNothing": "This date has passed and the end date comes before the next payment: nothing will be tracked."
   },
   "frequency": {
     "monthly": "Every month",

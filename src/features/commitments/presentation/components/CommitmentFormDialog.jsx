@@ -26,6 +26,7 @@ import {
   categoryOptions,
   commitmentChanges,
   emptyForm,
+  firstTrackedDate,
   formFromCommitment,
   frequencyOptions,
   toCommitmentPayload,
@@ -114,8 +115,26 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   const firstCharge = form.isTrial ? (derivedTrial ?? currentTrial) : form.startsOn;
   const showEnd = !form.isTrial || editing;
   const showTrial = type === "subscription" || Boolean(currentTrial);
-  const backdated =
-    !form.isTrial && form.frequency === "oneoff" && Boolean(form.startsOn) && form.startsOn < today;
+  const past = !form.isTrial && Boolean(form.startsOn) && form.startsOn < today;
+  const backdated = past && form.frequency === "oneoff";
+  const firstTracked = past && !backdated
+    ? firstTrackedDate(form.startsOn, form.frequency, today)
+    : null;
+  const nothingTracked =
+    firstTracked !== null && Boolean(form.endsOn) && firstTracked > form.endsOn;
+
+  const startHint = () => {
+    if (backdated) {
+      return t("form.pastDueDate");
+    }
+    if (nothingTracked) {
+      return t("form.pastStartNothing");
+    }
+    if (firstTracked) {
+      return t("form.pastStartDate", { date: formatDate(firstTracked) });
+    }
+    return undefined;
+  };
 
   const submit = async (event) => {
     event.preventDefault();
@@ -301,7 +320,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
                 label={t("form.firstDueDate")}
                 value={form.startsOn}
                 onChange={choose("startsOn")}
-                hint={backdated ? t("form.pastDueDate") : undefined}
+                hint={startHint()}
                 required
               />
               <DateField
