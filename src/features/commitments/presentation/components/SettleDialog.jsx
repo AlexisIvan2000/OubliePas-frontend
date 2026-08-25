@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
 
 import { Button } from "../../../../core/components/Button/Button";
+import { DateField } from "../../../../core/components/DateField/DateField";
 import { Icon } from "../../../../core/components/Icon/Icon";
 import { TextField } from "../../../../core/components/TextField/TextField";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { useDismiss } from "../../../../core/utils/useDismiss";
 import { useScrollLock } from "../../../../core/utils/useScrollLock";
+import { useToday } from "../../../../core/utils/useToday";
 import { categoryLabel } from "../../domain/commitment";
 import { formatDate, formatMoney } from "../../domain/formatting";
 import styles from "../styles/settle.module.css";
 
 export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) {
   const { t } = useTranslation();
+  const today = useToday();
   const [amount, setAmount] = useState(() => String(occurrence.amount));
+  const [paidOn, setPaidOn] = useState(() => occurrence.paidOn ?? today);
   const { leaving, dismiss } = useDismiss();
   const close = () => dismiss(onClose);
 
@@ -27,14 +31,15 @@ export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) 
 
   const value = Number(amount);
   const changed = value !== Number(occurrence.amount);
-  const valid = Number.isFinite(value) && value > 0;
+  const validDate = Boolean(paidOn) && paidOn <= today;
+  const valid = Number.isFinite(value) && value > 0 && validDate;
 
   const submit = (event) => {
     event.preventDefault();
     if (!valid || busy) {
       return;
     }
-    onSettle("paid", changed ? amount : undefined);
+    onSettle("paid", changed ? amount : undefined, paidOn);
   };
 
   return (
@@ -75,6 +80,19 @@ export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) 
             }
             required
             autoFocus
+          />
+
+          <DateField
+            label={t("occurrence.settlePaidOn")}
+            value={paidOn}
+            onChange={setPaidOn}
+            max={today}
+            hint={
+              paidOn && paidOn < occurrence.dueDate
+                ? t("occurrence.settlePaidEarly")
+                : t("occurrence.settlePaidOnHint")
+            }
+            required
           />
 
           <div className={styles.actions}>

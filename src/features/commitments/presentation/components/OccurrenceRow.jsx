@@ -3,7 +3,7 @@ import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { categoryLabel, occurrenceStatus } from "../../domain/commitment";
 import { checkLabel } from "../providers/useSettle";
-import { formatMoney, relativeDue } from "../../domain/formatting";
+import { formatDate, formatMoney, relativeDue } from "../../domain/formatting";
 import styles from "../styles/commitments.module.css";
 
 export function OccurrenceRow({ occurrence, currency, busy, index = 0, onToggle }) {
@@ -34,10 +34,14 @@ export function OccurrenceRow({ occurrence, currency, busy, index = 0, onToggle 
         <div className={styles.occurrenceMeta}>
           <span>{categoryLabel(t, occurrence.category)}</span>
           <span className={styles.dot} aria-hidden="true" />
-          <span className={cx(occurrence.isLate && styles.lateText)}>
-            {occurrence.isLate ? t("occurrence.latePrefix") : ""}
-            {relativeDue(t, occurrence.dueDate)}
-          </span>
+          {paid && occurrence.paidOn ? (
+            <span>{t("occurrence.paidOn", { date: formatDate(occurrence.paidOn) })}</span>
+          ) : (
+            <span className={cx(occurrence.isLate && styles.lateText)}>
+              {occurrence.isLate ? t("occurrence.latePrefix") : ""}
+              {relativeDue(t, occurrence.dueDate)}
+            </span>
+          )}
         </div>
       </div>
 

@@ -32,11 +32,12 @@ export function useSettle(onUpdated) {
     apply(occurrence, { status: "pending" });
   };
 
-  const settle = async (status, amount) => {
-    const done = await apply(
-      target,
-      amount === undefined ? { status } : { status, amount },
-    );
+  const settle = async (status, amount, paidOn) => {
+    const done = await apply(target, {
+      status,
+      ...(amount === undefined ? {} : { amount }),
+      ...(paidOn === undefined ? {} : { paid_on: paidOn }),
+    });
     if (done) {
       setTarget(null);
     }

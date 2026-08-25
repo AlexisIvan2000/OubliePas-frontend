@@ -26,6 +26,7 @@ export function CommitmentRow({
 }) {
   const { t } = useTranslation();
   const deadline = actionDeadline(commitment, today);
+  const due = commitment.lateDueDate ?? commitment.nextDueDate;
   const dimmed = commitment.status !== "active";
   const tagKey = STATUS_TAG_KEYS[commitment.status];
   const factor = ANNUAL_FACTOR[commitment.frequency];
@@ -85,10 +86,15 @@ export function CommitmentRow({
       </div>
 
       <div className={styles.rowDue}>
-        {commitment.nextDueDate ? (
+        {due ? (
           <>
-            <div className={styles.dueDate}>{formatDate(commitment.nextDueDate)}</div>
-            <div className={styles.dueRelative}>{relativeDue(t, commitment.nextDueDate)}</div>
+            <div className={cx(styles.dueDate, commitment.lateDueDate && styles.lateText)}>
+              {formatDate(due)}
+            </div>
+            <div className={cx(styles.dueRelative, commitment.lateDueDate && styles.lateText)}>
+              {commitment.lateDueDate ? t("occurrence.latePrefix") : ""}
+              {relativeDue(t, due)}
+            </div>
           </>
         ) : (
           <div className={styles.dueRelative}>{t("commitments.noDueDate")}</div>

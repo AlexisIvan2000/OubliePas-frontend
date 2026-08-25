@@ -384,6 +384,7 @@ export function toCommitment(raw) {
     status: raw.status,
     notes: raw.notes,
     nextDueDate: raw.next_due_date,
+    lateDueDate: raw.late_due_date ?? null,
     createdAt: raw.created_at,
   };
 }
@@ -399,6 +400,7 @@ export function toOccurrence(raw) {
     amount: raw.amount,
     status: raw.status,
     paidAt: raw.paid_at,
+    paidOn: raw.paid_on ?? null,
     isLate: raw.is_late,
   };
 }
