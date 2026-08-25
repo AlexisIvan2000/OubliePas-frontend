@@ -22,6 +22,7 @@ export function LandingPage() {
   const { t } = useTranslation();
   const [bandRef, bandShown] = useReveal();
   const [pillarsRef, pillarsShown] = useReveal();
+  const [faqRef, faqShown] = useReveal();
 
   useDocumentTitle(t("landing.documentTitle"));
 
@@ -121,12 +122,18 @@ export function LandingPage() {
           ))}
         </section>
 
+        <section ref={faqRef} className={cx(styles.faqCta, faqShown && styles.faqCtaShown)}>
+          <p className={styles.faqPrompt}>{t("landing.faqPrompt")}</p>
+          <Link to="/faq" className={styles.faqLink}>
+            {t("landing.faqLink")}
+            <Icon name="next" size={15} />
+          </Link>
+        </section>
       </main>
 
       <footer className={styles.footer}>
         <span className={styles.footerBrand}>OubliePas</span>
         <nav className={styles.footerLinks} aria-label={t("legal.footerAria")}>
-          <Link to="/faq">{t("faq.settingsTitle")}</Link>
           <Link to="/conditions">{t("legal.terms")}</Link>
           <Link to="/confidentialite">{t("legal.privacy")}</Link>
           <a href={`mailto:${LEGAL.contactEmail}`}>{t("legal.contact")}</a>

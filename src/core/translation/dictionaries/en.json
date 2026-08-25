@@ -121,6 +121,8 @@
     "subtitle": "OubliePas brings your subscriptions and recurring bills together, works out what they cost you each month and warns you before the due date. Nothing is paid from the app: it tracks, it shows, it reminds.",
     "noAccount": "No account yet?",
     "footnote": "No bank connection. You enter what you track, nothing else.",
+    "faqPrompt": "A question about tracking or reminders?",
+    "faqLink": "See the FAQ",
     "bandLabel": "Everything you can track",
     "bandAria": "A few services and bills OubliePas recognises",
     "tagline": "Recurring expense tracking",

@@ -121,6 +121,8 @@
     "subtitle": "OubliePas réunit vos abonnements et vos factures récurrentes au même endroit, calcule ce qu'ils vous coûtent chaque mois et vous prévient avant l'échéance. Rien à payer depuis l'application : elle suit, elle affiche, elle rappelle.",
     "noAccount": "Pas encore de compte ?",
     "footnote": "Aucune connexion bancaire. Vous saisissez ce que vous suivez, rien d'autre.",
+    "faqPrompt": "Une question sur le suivi ou les rappels ?",
+    "faqLink": "Voir la FAQ",
     "bandLabel": "Tout ce que tu peux suivre",
     "bandAria": "Quelques services et factures reconnus par OubliePas",
     "tagline": "Suivi de dépenses récurrentes",
