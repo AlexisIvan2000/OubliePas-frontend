@@ -8,7 +8,8 @@
     "loading": "Chargement…",
     "none": "Aucun",
     "yes": "Oui",
-    "no": "Non"
+    "no": "Non",
+    "undo": "Annuler"
   },
   "date": {
     "choose": "Choisir une date",
@@ -248,9 +249,50 @@
     "reminderDays": "{count} j avant",
     "editAria": "Modifier {title}",
     "deleteAria": "Supprimer {title}",
-    "deleteTitle": "Supprimer {title} ?",
-    "deleteMessage": "Toutes les échéances liées, passées comme à venir, seront effacées. Cette action est définitive.",
     "deleted": "{title} a été supprimé.",
+    "wipe": {
+      "one": "Tout supprimer ({count})",
+      "other": "Tout supprimer ({count})"
+    },
+    "wipeMessage": "Ils restent récupérables 30 jours, avec leur historique de paiements. Passé ce délai, la suppression est définitive.",
+    "wipeSubscriptionsTitle": {
+      "one": "Supprimer l'abonnement ?",
+      "other": "Supprimer les {count} abonnements ?"
+    },
+    "wipeInvoicesTitle": {
+      "one": "Supprimer la facture ?",
+      "other": "Supprimer les {count} factures ?"
+    },
+    "wipeSubscriptionsDone": {
+      "one": "{count} abonnement supprimé",
+      "other": "{count} abonnements supprimés"
+    },
+    "wipeInvoicesDone": {
+      "one": "{count} facture supprimée",
+      "other": "{count} factures supprimées"
+    },
+    "showTrash": {
+      "one": "Corbeille ({count})",
+      "other": "Corbeille ({count})"
+    },
+    "trashTitle": {
+      "one": "{count} ligne supprimée",
+      "other": "{count} lignes supprimées"
+    },
+    "trashHint": "Elles gardent leur historique et reviennent intactes si vous les restaurez.",
+    "trashRestore": "Restaurer",
+    "trashEmpty": "Vider la corbeille",
+    "trashCountdown": {
+      "one": "Effacée demain",
+      "other": "Effacée dans {count} jours"
+    },
+    "trashLastDay": "Effacée aujourd'hui",
+    "restored": "{title} a été restauré.",
+    "purgeTitle": {
+      "one": "Effacer définitivement cette ligne ?",
+      "other": "Effacer définitivement ces {count} lignes ?"
+    },
+    "purgeMessage": "Cette fois c'est sans retour : les échéances et l'historique de paiements partent avec.",
     "created": "{title} a été ajouté.",
     "updated": "{title} a été mis à jour.",
     "emptySubscriptionsTitle": "Aucun abonnement pour l'instant",

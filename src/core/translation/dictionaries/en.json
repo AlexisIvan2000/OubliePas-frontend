@@ -8,7 +8,8 @@
     "loading": "Loading…",
     "none": "None",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "undo": "Undo"
   },
   "date": {
     "choose": "Pick a date",
@@ -248,9 +249,50 @@
     "reminderDays": "{count} d before",
     "editAria": "Edit {title}",
     "deleteAria": "Delete {title}",
-    "deleteTitle": "Delete {title}?",
-    "deleteMessage": "Every linked due date, past and upcoming, will be erased. This cannot be undone.",
     "deleted": "{title} has been deleted.",
+    "wipe": {
+      "one": "Delete all ({count})",
+      "other": "Delete all ({count})"
+    },
+    "wipeMessage": "They stay recoverable for 30 days, payment history included. After that, deletion is permanent.",
+    "wipeSubscriptionsTitle": {
+      "one": "Delete the subscription?",
+      "other": "Delete all {count} subscriptions?"
+    },
+    "wipeInvoicesTitle": {
+      "one": "Delete the bill?",
+      "other": "Delete all {count} bills?"
+    },
+    "wipeSubscriptionsDone": {
+      "one": "{count} subscription deleted",
+      "other": "{count} subscriptions deleted"
+    },
+    "wipeInvoicesDone": {
+      "one": "{count} bill deleted",
+      "other": "{count} bills deleted"
+    },
+    "showTrash": {
+      "one": "Trash ({count})",
+      "other": "Trash ({count})"
+    },
+    "trashTitle": {
+      "one": "{count} deleted line",
+      "other": "{count} deleted lines"
+    },
+    "trashHint": "They keep their history and come back untouched if you restore them.",
+    "trashRestore": "Restore",
+    "trashEmpty": "Empty the trash",
+    "trashCountdown": {
+      "one": "Erased tomorrow",
+      "other": "Erased in {count} days"
+    },
+    "trashLastDay": "Erased today",
+    "restored": "{title} was restored.",
+    "purgeTitle": {
+      "one": "Erase this line for good?",
+      "other": "Erase these {count} lines for good?"
+    },
+    "purgeMessage": "There is no coming back from this one: payments and history go with it.",
     "created": "{title} has been added.",
     "updated": "{title} has been updated.",
     "emptySubscriptionsTitle": "No subscription yet",

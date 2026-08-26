@@ -90,6 +90,7 @@
   --color-panel-border: #24485f;
   --color-panel-text: #f1f5f9;
   --color-panel-muted: #8aa6ba;
+  --color-panel-link: #8ab8ec;
 
   color-scheme: light;
 }
@@ -421,6 +422,15 @@ a:hover {
   }
   100% {
     transform: translate3d(-4%, -2%, 0) scale(1);
+  }
+}
+
+@keyframes undoTimer {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
   }
 }
 

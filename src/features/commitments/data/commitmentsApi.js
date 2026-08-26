@@ -32,6 +32,27 @@ export function deleteCommitment(id) {
   return http.delete(COMMITMENT_ENDPOINTS.one(id), { auth: true });
 }
 
+export function deleteAllCommitments({ type, status } = {}) {
+  return http.delete(`${COMMITMENT_ENDPOINTS.root}${query({ type, status })}`, {
+    auth: true,
+  });
+}
+
+export async function listTrash({ type } = {}) {
+  const rows = await http.get(`${COMMITMENT_ENDPOINTS.trash}${query({ type })}`, {
+    auth: true,
+  });
+  return rows.map(toCommitment);
+}
+
+export function emptyTrash({ type } = {}) {
+  return http.delete(`${COMMITMENT_ENDPOINTS.trash}${query({ type })}`, { auth: true });
+}
+
+export function restoreCommitments(ids) {
+  return http.post(COMMITMENT_ENDPOINTS.restore, { ids }, { auth: true });
+}
+
 export async function listOccurrences({ start, end, status } = {}) {
   const rows = await http.get(
     `${COMMITMENT_ENDPOINTS.occurrences}${query({ start, end, status })}`,

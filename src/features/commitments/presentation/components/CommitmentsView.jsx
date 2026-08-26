@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Alert } from "../../../../core/components/Alert/Alert";
 import { Button } from "../../../../core/components/Button/Button";
@@ -8,14 +8,22 @@ import { Icon } from "../../../../core/components/Icon/Icon";
 import { Picker } from "../../../../core/components/Picker/Picker";
 import { SearchField } from "../../../../core/components/SearchField/SearchField";
 import { useToast } from "../../../../core/components/Toast/useToast";
+import { UndoBar } from "../../../../core/components/UndoBar/UndoBar";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
 import { useToday } from "../../../../core/utils/useToday";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
-import { deleteCommitment, updateCommitment } from "../../data/commitmentsApi";
+import {
+  deleteAllCommitments,
+  deleteCommitment,
+  emptyTrash,
+  restoreCommitments,
+  updateCommitment,
+} from "../../data/commitmentsApi";
 import {
   COMMITMENT_TYPES,
+  REVERSIBLE_STATUS,
   SORTS,
   STATUS_TOAST_KEYS,
   categoryCounts,
@@ -27,19 +35,21 @@ import {
 } from "../../domain/commitment";
 import { parseDate } from "../../domain/formatting";
 import { monthRange, useOccurrences } from "../providers/useOccurrences";
-import { useCommitments } from "../providers/useCommitments";
+import { useCommitments, useTrash } from "../providers/useCommitments";
 import styles from "../styles/commitments.module.css";
 import { CommitmentFormDialog } from "./CommitmentFormDialog";
 import { CommitmentListSkeleton } from "./CommitmentListSkeleton";
 import { CommitmentRow } from "./CommitmentRow";
 import { CommitmentStats } from "./CommitmentStats";
 import { EmptyState } from "./EmptyState";
+import { TrashList } from "./TrashList";
 
 export function CommitmentsView({ type }) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const toast = useToast();
   const { items, loading, error, reload } = useCommitments(type);
+  const { items: trashed, reload: reloadTrash } = useTrash(type);
 
   const today = useToday();
   const range = useMemo(() => monthRange(parseDate(today)), [today]);
@@ -50,8 +60,13 @@ export function CommitmentsView({ type }) {
   const [picked, setPicked] = useState(() => new Set());
   const [editing, setEditing] = useState(null);
   const [formOpen, setFormOpen] = useState(false);
-  const [pendingDelete, setPendingDelete] = useState(null);
+  const [confirmingWipe, setConfirmingWipe] = useState(false);
+  const [confirmingPurge, setConfirmingPurge] = useState(false);
+  const [showTrash, setShowTrash] = useState(false);
+  const [restoringId, setRestoringId] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
+  const [undo, setUndo] = useState(null);
+  const [undoing, setUndoing] = useState(false);
 
   const meta = COMMITMENT_TYPES[type];
   const title = t(meta.titleKey);
@@ -106,7 +121,22 @@ export function CommitmentsView({ type }) {
   const searching = query.trim().length > 0;
   const filtering = searching || picked.size > 0;
 
-  const refresh = () => Promise.all([reload(), reloadDue()]);
+  const refresh = () => Promise.all([reload(), reloadDue(), reloadTrash()]);
+
+  const dismissUndo = useCallback(() => setUndo(null), []);
+
+  const runUndo = async () => {
+    setUndoing(true);
+    try {
+      await undo.run();
+      await refresh();
+      setUndo(null);
+    } catch (caught) {
+      toast.push(messageForError(t, caught), "error");
+    } finally {
+      setUndoing(false);
+    }
+  };
 
   const toggleCategory = (category) =>
     setPicked((current) => {
@@ -128,22 +158,70 @@ export function CommitmentsView({ type }) {
   };
 
   const changeStatus = async (commitment, status) => {
+    const previous = commitment.status;
     try {
       await updateCommitment(commitment.id, { status });
-      toast.push(t(STATUS_TOAST_KEYS[status], { title: commitment.title }));
       await refresh();
+      const message = t(STATUS_TOAST_KEYS[status], { title: commitment.title });
+      if (REVERSIBLE_STATUS.has(status)) {
+        setUndo({
+          message,
+          run: () => updateCommitment(commitment.id, { status: previous }),
+        });
+      } else {
+        toast.push(message);
+      }
     } catch (caught) {
       toast.push(messageForError(t, caught), "error");
     }
   };
 
-  const confirmDelete = async () => {
-    const target = pendingDelete;
-    setPendingDelete(null);
+  const removeOne = async (commitment) => {
     try {
-      await deleteCommitment(target.id);
-      toast.push(t("commitments.deleted", { title: target.title }));
+      const { ids } = await deleteCommitment(commitment.id);
       await refresh();
+      setUndo({
+        message: t("commitments.deleted", { title: commitment.title }),
+        run: () => restoreCommitments(ids),
+      });
+    } catch (caught) {
+      toast.push(messageForError(t, caught), "error");
+    }
+  };
+
+  const restoreOne = async (commitment) => {
+    setRestoringId(commitment.id);
+    try {
+      await restoreCommitments([commitment.id]);
+      await refresh();
+      toast.push(t("commitments.restored", { title: commitment.title }));
+    } catch (caught) {
+      toast.push(messageForError(t, caught), "error");
+    } finally {
+      setRestoringId(null);
+    }
+  };
+
+  const purgeTrash = async () => {
+    setConfirmingPurge(false);
+    try {
+      await emptyTrash({ type });
+      await refresh();
+      setShowTrash(false);
+    } catch (caught) {
+      toast.push(messageForError(t, caught), "error");
+    }
+  };
+
+  const removeAll = async () => {
+    setConfirmingWipe(false);
+    try {
+      const { deleted, ids } = await deleteAllCommitments({ type });
+      await refresh();
+      setUndo({
+        message: t(meta.wipeDoneKey, { count: deleted }),
+        run: () => restoreCommitments(ids),
+      });
     } catch (caught) {
       toast.push(messageForError(t, caught), "error");
     }
@@ -163,41 +241,68 @@ export function CommitmentsView({ type }) {
       </header>
 
       {items.length ? (
+        <CommitmentStats
+          month={monthTotal}
+          due={dueThisMonth.length}
+          pending={dueLoading}
+          rate={rate}
+          next={next}
+          currency={currency}
+        />
+      ) : null}
+
+      {/* La corbeille doit rester atteignable meme quand la liste est vide :
+          c'est precisement le cas ou l'on vient de tout supprimer. */}
+      {items.length || trashed.length ? (
+        <div className={styles.toolbar}>
+          {items.length ? (
+            <>
+              <SearchField
+                className={styles.search}
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                onClear={() => setQuery("")}
+                label={t("commitments.searchLabel", { kind: title.toLowerCase() })}
+                placeholder={t(meta.searchKey)}
+              />
+
+              <Picker
+                label={t("commitments.sortLabel")}
+                value={sort}
+                options={sortOptions}
+                variant="toolbar"
+                onChange={setSort}
+              />
+            </>
+          ) : null}
+
+          {archivedCount || showArchived ? (
+            <Chip active={showArchived} onClick={() => setShowArchived((current) => !current)}>
+              {t("commitments.showArchived", { count: archivedCount })}
+            </Chip>
+          ) : null}
+
+          {trashed.length ? (
+            <Chip active={showTrash} onClick={() => setShowTrash((current) => !current)}>
+              {t("commitments.showTrash", { count: trashed.length })}
+            </Chip>
+          ) : null}
+
+          {items.length ? (
+            <button
+              type="button"
+              className={styles.wipe}
+              onClick={() => setConfirmingWipe(true)}
+            >
+              <Icon name="delete" size={15} />
+              {t("commitments.wipe", { count: items.length })}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+
+      {items.length ? (
         <>
-          <CommitmentStats
-            month={monthTotal}
-            due={dueThisMonth.length}
-            pending={dueLoading}
-            rate={rate}
-            next={next}
-            currency={currency}
-          />
-
-          <div className={styles.toolbar}>
-            <SearchField
-              className={styles.search}
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              onClear={() => setQuery("")}
-              label={t("commitments.searchLabel", { kind: title.toLowerCase() })}
-              placeholder={t(meta.searchKey)}
-            />
-
-            <Picker
-              label={t("commitments.sortLabel")}
-              value={sort}
-              options={sortOptions}
-              variant="toolbar"
-              onChange={setSort}
-            />
-
-            {archivedCount || showArchived ? (
-              <Chip active={showArchived} onClick={() => setShowArchived((current) => !current)}>
-                {t("commitments.showArchived", { count: archivedCount })}
-              </Chip>
-            ) : null}
-          </div>
-
           {buckets.length > 1 ? (
             <div className={styles.filters}>
               <Chip
@@ -229,6 +334,16 @@ export function CommitmentsView({ type }) {
         </>
       ) : null}
 
+      {showTrash && trashed.length ? (
+        <TrashList
+          items={trashed}
+          currency={currency}
+          busyId={restoringId}
+          onRestore={restoreOne}
+          onEmpty={() => setConfirmingPurge(true)}
+        />
+      ) : null}
+
       {error ? <Alert variant="error">{messageForError(t, error)}</Alert> : null}
 
       {loading ? (
@@ -243,7 +358,7 @@ export function CommitmentsView({ type }) {
               today={today}
               index={index}
               onEdit={openEdit}
-              onDelete={setPendingDelete}
+              onDelete={removeOne}
               onStatusChange={changeStatus}
             />
           ))}
@@ -297,14 +412,34 @@ export function CommitmentsView({ type }) {
       ) : null}
 
       <ConfirmDialog
-        open={Boolean(pendingDelete)}
-        title={t("commitments.deleteTitle", { title: pendingDelete?.title ?? "" })}
-        message={t("commitments.deleteMessage")}
+        open={confirmingWipe}
+        title={t(meta.wipeTitleKey, { count: items.length })}
+        message={t("commitments.wipeMessage")}
         confirmLabel={t("common.delete")}
         cancelLabel={t("common.cancel")}
-        onConfirm={confirmDelete}
-        onCancel={() => setPendingDelete(null)}
+        onConfirm={removeAll}
+        onCancel={() => setConfirmingWipe(false)}
       />
+
+      <ConfirmDialog
+        open={confirmingPurge}
+        title={t("commitments.purgeTitle", { count: trashed.length })}
+        message={t("commitments.purgeMessage")}
+        confirmLabel={t("common.delete")}
+        cancelLabel={t("common.cancel")}
+        onConfirm={purgeTrash}
+        onCancel={() => setConfirmingPurge(false)}
+      />
+
+      {undo ? (
+        <UndoBar
+          key={undo.message}
+          message={undo.message}
+          busy={undoing}
+          onUndo={runUndo}
+          onDismiss={dismissUndo}
+        />
+      ) : null}
     </div>
   );
 }

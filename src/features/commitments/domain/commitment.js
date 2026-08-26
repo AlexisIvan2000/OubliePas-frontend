@@ -11,6 +11,8 @@ export const COMMITMENT_TYPES = {
     emptyBodyKey: "commitments.emptySubscriptionsBody",
     addKey: "commitments.addSubscription",
     formTitleKey: "form.newSubscription",
+    wipeTitleKey: "commitments.wipeSubscriptionsTitle",
+    wipeDoneKey: "commitments.wipeSubscriptionsDone",
     formHintKey: "form.subscriptionHint",
     namePlaceholderKey: "form.namePlaceholderSubscription",
   },
@@ -24,6 +26,8 @@ export const COMMITMENT_TYPES = {
     emptyBodyKey: "commitments.emptyInvoicesBody",
     addKey: "commitments.addInvoice",
     formTitleKey: "form.newInvoice",
+    wipeTitleKey: "commitments.wipeInvoicesTitle",
+    wipeDoneKey: "commitments.wipeInvoicesDone",
     formHintKey: "form.invoiceHint",
     namePlaceholderKey: "form.namePlaceholderInvoice",
   },
@@ -313,6 +317,11 @@ export const STATUS_ACTIONS = {
   ],
 };
 
+// Seules les actions qui retirent quelque chose a l'utilisateur meritent un
+// filet : reactiver ou desarchiver est deja une reparation, proposer de l'annuler
+// ne ferait que reproposer le probleme.
+export const REVERSIBLE_STATUS = new Set(["paused", "archived"]);
+
 export const STATUS_TOAST_KEYS = {
   active: "commitments.statusActive",
   paused: "commitments.statusPaused",
@@ -384,6 +393,7 @@ export function toCommitment(raw) {
     status: raw.status,
     notes: raw.notes,
     nextDueDate: raw.next_due_date,
+    purgeOn: raw.purge_on ?? null,
     lateDueDate: raw.late_due_date ?? null,
     createdAt: raw.created_at,
   };
