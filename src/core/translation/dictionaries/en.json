@@ -1,15 +1,16 @@
 {
   "common": {
-    "save": "Save",
-    "cancel": "Cancel",
-    "edit": "Edit",
-    "delete": "Delete",
     "add": "Add",
+    "cancel": "Cancel",
+    "close": "Close",
+    "delete": "Delete",
+    "edit": "Edit",
     "loading": "Loading…",
-    "none": "None",
-    "yes": "Yes",
     "no": "No",
-    "undo": "Undo"
+    "none": "None",
+    "save": "Save",
+    "undo": "Undo",
+    "yes": "Yes"
   },
   "date": {
     "choose": "Pick a date",
@@ -438,34 +439,43 @@
     "skipHint": "No payment this time: this due date leaves your totals without counting as late."
   },
   "calendar": {
+    "dayAllSettled": {
+      "one": "{count} payment, already settled",
+      "other": "{count} payments, all settled"
+    },
+    "dayRemaining": {
+      "one": "{count} payment · {amount} to pay",
+      "other": "{count} payments · {amount} to pay"
+    },
     "documentTitle": "Calendar",
-    "subtitle": "Your charges month by month.",
-    "previousMonth": "Previous month",
-    "nextMonth": "Next month",
     "dueThisMonth": {
       "one": "{count} due date this month · {amount} to pay",
       "other": "{count} due dates this month · {amount} to pay"
     },
-    "nothingThisMonth": "Nothing due this month",
-    "emptyTitle": "Nothing in {month}",
     "emptyBody": "No due date falls in this month.",
+    "emptyTitle": "Nothing in {month}",
+    "filterAll": "All",
+    "filterLabel": "Filter by type",
+    "legendHint": "Click a chip to mark it paid.",
+    "legendInvoice": "Bill",
+    "legendPaid": "Paid",
+    "legendSubscription": "Subscription",
+    "more": {
+      "one": "+{count} more",
+      "other": "+{count} more"
+    },
+    "nextMonth": "Next month",
+    "noInvoices": "No bill this month",
+    "noSubscriptions": "No subscription this month",
+    "nothingThisMonth": "Nothing due this month",
+    "openDay": "See every payment for this day",
+    "previousMonth": "Previous month",
     "remaining": "Left to pay",
     "settledOf": {
       "one": "{amount} settled out of {count} due date",
       "other": "{amount} settled out of {count} due dates"
     },
-    "more": {
-      "one": "+{count} more",
-      "other": "+{count} more"
-    },
-    "legendSubscription": "Subscription",
-    "legendInvoice": "Bill",
-    "legendPaid": "Paid",
-    "legendHint": "Click a chip to mark it paid.",
-    "filterLabel": "Filter by type",
-    "filterAll": "All",
-    "noSubscriptions": "No subscription this month",
-    "noInvoices": "No bill this month"
+    "subtitle": "Your charges month by month."
   },
   "auth": {
     "loginTitle": "Nothing slips past you this month.",

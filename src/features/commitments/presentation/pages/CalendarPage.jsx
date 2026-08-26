@@ -11,6 +11,7 @@ import { useAuth } from "../../../authentication/presentation/providers/useAuth"
 import { buildMonthCells } from "../../domain/calendar";
 import { CALENDAR_FILTERS, filterByType } from "../../domain/commitment";
 import { formatMoney, formatMonth, parseDate } from "../../domain/formatting";
+import { DayDialog } from "../components/DayDialog";
 import { MonthGrid } from "../components/MonthGrid";
 import { MonthGridSkeleton } from "../components/MonthGridSkeleton";
 import { OccurrenceRow } from "../components/OccurrenceRow";
@@ -31,6 +32,7 @@ export function CalendarPage() {
   const { user } = useAuth();
   const [cursor, setCursor] = useState(() => new Date());
   const [kind, setKind] = useState("all");
+  const [openDay, setOpenDay] = useState(null);
   const today = useToday();
 
   useDocumentTitle(t("calendar.documentTitle"));
@@ -46,6 +48,11 @@ export function CalendarPage() {
   const cells = useMemo(
     () => buildMonthCells(cursor, items, parseDate(today)),
     [cursor, items, today],
+  );
+
+  const dayOccurrences = useMemo(
+    () => (openDay ? items.filter((row) => row.dueDate === openDay) : []),
+    [openDay, items],
   );
 
   const remaining = useMemo(
@@ -125,6 +132,7 @@ export function CalendarPage() {
             currency={currency}
             busyId={settle.busyId}
             onToggle={settle.pick}
+            onOpenDay={(cell) => setOpenDay(cell.iso)}
           />
 
           <ul className={styles.mobileList}>
@@ -166,6 +174,18 @@ export function CalendarPage() {
           </div>
         </>
       )}
+
+      {openDay && dayOccurrences.length ? (
+        <DayDialog
+          day={openDay}
+          occurrences={dayOccurrences}
+          currency={currency}
+          busyId={settle.busyId}
+          blocked={Boolean(settle.target)}
+          onToggle={settle.pick}
+          onClose={() => setOpenDay(null)}
+        />
+      ) : null}
 
       {settle.target ? (
         <SettleDialog
