@@ -29,6 +29,7 @@ import {
   parseDate,
 } from "../../domain/formatting";
 import { CategoryDonut } from "../components/CategoryDonut";
+import { UpcomingChart } from "../components/UpcomingChart";
 import { useCommitments } from "../providers/useCommitments";
 import { upcomingRange, useOccurrences } from "../providers/useOccurrences";
 import styles from "../styles/breakdown.module.css";
@@ -67,7 +68,6 @@ export function BreakdownPage() {
   const months = useMemo(() => monthlyTotals(items), [items]);
   const rate = useMemo(() => runRate(commitments.filter((c) => c.status === "active")), [commitments]);
   const top = useMemo(() => heaviest(commitments), [commitments]);
-  const peak = Math.max(...months.map((row) => row.total), 0);
   const inTrial = (item) => Boolean(item.trialEndsOn) && item.trialEndsOn > today;
 
   const busy = loading || loadingCommitments;
@@ -173,20 +173,7 @@ export function BreakdownPage() {
           ) : months.length === 0 ? (
             <p className={styles.empty}>{t("breakdown.comingEmpty")}</p>
           ) : (
-            <ul className={styles.months}>
-              {months.map((row, index) => (
-                <li key={row.month} className={styles.month} style={{ "--enter-delay": `${index * 60}ms` }}>
-                  <span className={styles.monthName}>{formatMonth(row.month)}</span>
-                  <span className={styles.monthTrack} aria-hidden="true">
-                    <span
-                      className={styles.monthBar}
-                      style={{ "--fill": peak ? row.total / peak : 0 }}
-                    />
-                  </span>
-                  <span className={styles.monthValue}>{formatMoney(row.total, currency)}</span>
-                </li>
-              ))}
-            </ul>
+            <UpcomingChart months={months} currency={currency} />
           )}
         </Card>
       </div>

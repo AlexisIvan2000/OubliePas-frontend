@@ -110,6 +110,11 @@ export function formatMonth(month) {
   );
 }
 
+export function formatMonthShort(month) {
+  const [year, index] = month.split("-").map(Number);
+  return dateFormatter("monthShort", { month: "short" }).format(new Date(year, index - 1, 1));
+}
+
 export function formatWeekdays() {
   const formatter = dateFormatter("weekday", { weekday: "short" });
   return Array.from({ length: 7 }, (_, index) =>
