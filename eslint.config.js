@@ -18,4 +18,10 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    // Les tests remplacent les primitives de React : les regles des hooks ne
+    // s'appliquent pas a du code qui n'est jamais rendu.
+    files: ['src/tests/**/*.js'],
+    rules: { 'react-hooks/rules-of-hooks': 'off' },
+  },
 ])
