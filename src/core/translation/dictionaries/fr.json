@@ -654,6 +654,7 @@
     "SAME_EMAIL_AS_CURRENT": "La nouvelle adresse doit être différente de l'actuelle.",
     "SAME_PASSWORD_AS_BEFORE": "Le nouveau mot de passe doit être différent de l'actuel.",
     "STORAGE_UNAVAILABLE": "L'envoi de photos est momentanément indisponible.",
+    "TIMEOUT": "Le serveur met trop de temps à répondre. Réessayez, et vérifiez le résultat avant de recommencer.",
     "TOKEN_REUSE_DETECTED": "Session invalidée pour raison de sécurité. Reconnectez-vous.",
     "TOO_MANY_CODE_REQUESTS": "Trop de codes demandés. Réessayez plus tard.",
     "TOO_MANY_VERIFICATION_ATTEMPTS": "Trop de tentatives échouées. Demandez un nouveau code.",

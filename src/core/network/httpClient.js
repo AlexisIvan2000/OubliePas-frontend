@@ -4,6 +4,12 @@ import { clearTokens, getAccessToken } from "./tokenStorage";
 
 const RETRYABLE_AUTH_CODES = new Set(["INVALID_ACCESS_TOKEN"]);
 
+// Une coupure franche leve tout de suite. Le cas non couvert etait le serveur qui
+// accepte la connexion sans jamais repondre - un conteneur qui redemarre, un proxy
+// qui pend - ou la promesse restait en suspens et le chargement tournait sans fin.
+const REQUEST_TIMEOUT_MS = 20_000;
+const UPLOAD_TIMEOUT_MS = 120_000;
+
 const sessionExpiredListeners = new Set();
 
 let refreshHandler = null;
@@ -74,24 +80,31 @@ async function rawRequest(path, { method = "GET", body, token, signal } = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
+  const expiry = AbortSignal.timeout(multipart ? UPLOAD_TIMEOUT_MS : REQUEST_TIMEOUT_MS);
+
   let response;
   try {
     response = await fetch(buildUrl(path), {
       method,
       headers,
-      signal,
+      signal: signal ? AbortSignal.any([signal, expiry]) : expiry,
       credentials: "include",
       body: body === undefined ? undefined : multipart ? body : JSON.stringify(body),
     });
   } catch (cause) {
+    // L'annulation voulue par l'appelant passe avant l'expiration : les deux
+    // arrivent par le meme chemin, et confondre les deux ferait passer un
+    // changement de page pour une panne.
+    if (signal?.aborted) {
+      throw cause;
+    }
+    if (expiry.aborted) {
+      throw new ApiError({ status: 0, code: "TIMEOUT" });
+    }
     if (cause?.name === "AbortError") {
       throw cause;
     }
-    throw new ApiError({
-      status: 0,
-      code: "NETWORK_ERROR",
-      message: "Impossible de joindre le serveur",
-    });
+    throw new ApiError({ status: 0, code: "NETWORK_ERROR" });
   }
 
   if (!response.ok) {
@@ -104,11 +117,7 @@ async function rawRequest(path, { method = "GET", body, token, signal } = {}) {
 function runRefresh() {
   if (!refreshHandler) {
     return Promise.reject(
-      new ApiError({
-        status: 401,
-        code: "INVALID_REFRESH_TOKEN",
-        message: "Aucune session active",
-      }),
+      new ApiError({ status: 401, code: "INVALID_REFRESH_TOKEN" }),
     );
   }
 

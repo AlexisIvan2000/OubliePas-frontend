@@ -654,6 +654,7 @@
     "SAME_EMAIL_AS_CURRENT": "The new address must differ from the current one.",
     "SAME_PASSWORD_AS_BEFORE": "The new password must differ from the current one.",
     "STORAGE_UNAVAILABLE": "Photo upload is temporarily unavailable.",
+    "TIMEOUT": "The server is taking too long to answer. Try again, and check the result before starting over.",
     "TOKEN_REUSE_DETECTED": "Session invalidated for security reasons. Please sign in again.",
     "TOO_MANY_CODE_REQUESTS": "Too many codes requested. Try again later.",
     "TOO_MANY_VERIFICATION_ATTEMPTS": "Too many failed attempts. Request a new code.",
