@@ -1,15 +1,16 @@
 {
   "common": {
-    "save": "Enregistrer",
-    "cancel": "Annuler",
-    "edit": "Modifier",
-    "delete": "Supprimer",
     "add": "Ajouter",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
     "loading": "Chargement…",
-    "none": "Aucun",
-    "yes": "Oui",
     "no": "Non",
-    "undo": "Annuler"
+    "none": "Aucun",
+    "save": "Enregistrer",
+    "undo": "Annuler",
+    "yes": "Oui"
   },
   "date": {
     "choose": "Choisir une date",
@@ -438,34 +439,43 @@
     "skipHint": "Aucun paiement cette fois : cette échéance sort de tes totaux sans compter comme un retard."
   },
   "calendar": {
+    "dayAllSettled": {
+      "one": "{count} échéance, déjà réglée",
+      "other": "{count} échéances, toutes réglées"
+    },
+    "dayRemaining": {
+      "one": "{count} échéance · {amount} à payer",
+      "other": "{count} échéances · {amount} à payer"
+    },
     "documentTitle": "Calendrier",
-    "subtitle": "Vos prélèvements mois par mois.",
-    "previousMonth": "Mois précédent",
-    "nextMonth": "Mois suivant",
     "dueThisMonth": {
       "one": "{count} échéance ce mois-ci · {amount} à payer",
       "other": "{count} échéances ce mois-ci · {amount} à payer"
     },
-    "nothingThisMonth": "Aucune échéance ce mois-ci",
-    "emptyTitle": "Rien en {month}",
     "emptyBody": "Aucune échéance n'est prévue sur ce mois.",
+    "emptyTitle": "Rien en {month}",
+    "filterAll": "Tout",
+    "filterLabel": "Filtrer par type",
+    "legendHint": "Cliquez une pastille pour marquer payé.",
+    "legendInvoice": "Facture",
+    "legendPaid": "Payé",
+    "legendSubscription": "Abonnement",
+    "more": {
+      "one": "+{count} autre",
+      "other": "+{count} autres"
+    },
+    "nextMonth": "Mois suivant",
+    "noInvoices": "Aucune facture ce mois-ci",
+    "noSubscriptions": "Aucun abonnement ce mois-ci",
+    "nothingThisMonth": "Aucune échéance ce mois-ci",
+    "openDay": "Voir toutes les échéances du jour",
+    "previousMonth": "Mois précédent",
     "remaining": "Reste à payer",
     "settledOf": {
       "one": "{amount} réglés sur {count} échéance",
       "other": "{amount} réglés sur {count} échéances"
     },
-    "more": {
-      "one": "+{count} autre",
-      "other": "+{count} autres"
-    },
-    "legendSubscription": "Abonnement",
-    "legendInvoice": "Facture",
-    "legendPaid": "Payé",
-    "legendHint": "Cliquez une pastille pour marquer payé.",
-    "filterLabel": "Filtrer par type",
-    "filterAll": "Tout",
-    "noSubscriptions": "Aucun abonnement ce mois-ci",
-    "noInvoices": "Aucune facture ce mois-ci"
+    "subtitle": "Vos prélèvements mois par mois."
   },
   "auth": {
     "loginTitle": "Rien ne vous échappe ce mois-ci.",

@@ -4,7 +4,7 @@ import { MAX_VISIBLE_EVENTS, eventTone } from "../../domain/calendar";
 import { formatMoney, formatWeekdays } from "../../domain/formatting";
 import styles from "../styles/calendar.module.css";
 
-export function MonthGrid({ cells, currency, busyId, onToggle }) {
+export function MonthGrid({ cells, currency, busyId, onToggle, onOpenDay }) {
   const { t } = useTranslation();
   const weekdays = formatWeekdays();
 
@@ -56,9 +56,14 @@ export function MonthGrid({ cells, currency, busyId, onToggle }) {
                 ))}
 
                 {cell.events.length > MAX_VISIBLE_EVENTS ? (
-                  <span className={styles.more}>
+                  <button
+                    type="button"
+                    className={styles.more}
+                    onClick={() => onOpenDay(cell)}
+                    aria-label={t("calendar.openDay")}
+                  >
                     {t("calendar.more", { count: cell.events.length - MAX_VISIBLE_EVENTS })}
-                  </span>
+                  </button>
                 ) : null}
               </div>
             </div>
