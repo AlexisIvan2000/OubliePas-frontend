@@ -18,18 +18,34 @@
   overflow: visible;
 }
 
-.slice {
-  transition:
-    opacity 160ms ease,
-    stroke-width 160ms ease;
+.track {
+  stroke: var(--color-border);
+  opacity: 0.55;
+  pointer-events: none;
 }
 
-.slice:hover {
-  stroke-width: 21;
+.slice {
+  transition:
+    opacity 180ms ease,
+    transform 320ms var(--ease-spring),
+    filter 180ms ease;
+  animation: sliceIn 640ms var(--ease-out) backwards;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+.pulled {
+  transform: translate(var(--push-x), var(--push-y));
+  filter: drop-shadow(0 0 6px var(--glow));
 }
 
 .faded {
   opacity: 0.28;
+}
+
+@keyframes sliceIn {
+  from {
+    stroke-dasharray: 0 var(--ring);
+  }
 }
 
 .center {
@@ -43,6 +59,14 @@
   pointer-events: none;
   text-align: center;
   padding: 0 2.25rem;
+  animation: centerSwap 260ms var(--ease-out);
+}
+
+@keyframes centerSwap {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
 }
 
 .centerLabel {

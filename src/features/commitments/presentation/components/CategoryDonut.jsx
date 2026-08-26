@@ -11,6 +11,8 @@ const RADIUS = 52;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const GAP = 2.5;
 const MIN_ARC = 1.5;
+const PUSH = 4;
+const STAGGER = 70;
 
 function arcs(slices) {
   const gap = slices.length > 1 ? GAP : 0;
@@ -19,7 +21,14 @@ function arcs(slices) {
   return slices.map((slice) => {
     const span = slice.share * CIRCUMFERENCE;
     const length = Math.max(span - gap, MIN_ARC);
-    const arc = { ...slice, length, offset };
+    const angle = (2 * Math.PI * (offset + span / 2)) / CIRCUMFERENCE;
+    const arc = {
+      ...slice,
+      length,
+      offset,
+      pushX: Math.cos(angle) * PUSH,
+      pushY: Math.sin(angle) * PUSH,
+    };
     offset += span;
     return arc;
   });
@@ -44,11 +53,21 @@ export function CategoryDonut({ slices, total, currency }) {
         <svg
           viewBox={`0 0 ${SIZE} ${SIZE}`}
           className={styles.chart}
+          style={{ "--ring": CIRCUMFERENCE }}
           role="img"
           aria-label={t("dashboard.categoriesAria", { legend })}
         >
           <g transform={`rotate(-90 ${SIZE / 2} ${SIZE / 2})`}>
-            {arcs(slices).map((slice) => (
+            <circle
+              cx={SIZE / 2}
+              cy={SIZE / 2}
+              r={RADIUS}
+              fill="none"
+              strokeWidth={18}
+              className={styles.track}
+            />
+
+            {arcs(slices).map((slice, index) => (
               <circle
                 key={slice.key}
                 cx={SIZE / 2}
@@ -59,14 +78,24 @@ export function CategoryDonut({ slices, total, currency }) {
                 strokeWidth={18}
                 strokeDasharray={`${slice.length} ${CIRCUMFERENCE - slice.length}`}
                 strokeDashoffset={-slice.offset}
-                className={cx(styles.slice, active && active !== slice.key && styles.faded)}
+                style={{
+                  "--enter-delay": `${index * STAGGER}ms`,
+                  "--push-x": `${slice.pushX}px`,
+                  "--push-y": `${slice.pushY}px`,
+                  "--glow": slice.color,
+                }}
+                className={cx(
+                  styles.slice,
+                  active === slice.key && styles.pulled,
+                  active && active !== slice.key && styles.faded,
+                )}
                 onMouseEnter={() => setActive(slice.key)}
               />
             ))}
           </g>
         </svg>
 
-        <div className={styles.center}>
+        <div className={styles.center} key={shown ? shown.key : "total"}>
           <span className={styles.centerLabel}>
             {shown ? sliceLabel(t, shown) : t("dashboard.categoriesCenter")}
           </span>
