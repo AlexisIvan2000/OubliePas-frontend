@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { useToast } from "../../../../core/components/Toast/useToast";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
+import { addDaysIso, todayIso } from "../../../../core/utils/formatting";
 import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { useCommitments } from "../../../commitments/presentation/providers/useCommitments";
@@ -20,13 +21,11 @@ import styles from "../styles/reminders.module.css";
 const HORIZON_DAYS = 60;
 
 function isoToday() {
-  return new Date().toISOString().slice(0, 10);
+  return todayIso();
 }
 
 function isoIn(days) {
-  const moved = new Date();
-  moved.setDate(moved.getDate() + days);
-  return moved.toISOString().slice(0, 10);
+  return addDaysIso(todayIso(), days);
 }
 
 export function RemindersPage() {

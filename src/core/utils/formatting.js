@@ -73,6 +73,21 @@ export function formatPercent(share) {
   return formatter.format(share);
 }
 
+export function todayIso() {
+  // Date locale, jamais toISOString() : celui-ci rend la date UTC, en avance
+  // d'un jour sur l'utilisateur pendant les dernieres heures de sa soiree.
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${now.getFullYear()}-${month}-${day}`;
+}
+
+export function addDaysIso(iso, days) {
+  const [year, month, day] = iso.split("-").map(Number);
+  const moved = new Date(Date.UTC(year, month - 1, day + days));
+  return moved.toISOString().slice(0, 10);
+}
+
 export function parseDate(iso) {
   const [year, month, day] = iso.split("-").map(Number);
   return new Date(year, month - 1, day);
