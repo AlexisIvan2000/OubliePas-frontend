@@ -9,7 +9,7 @@ import { cx } from "../../../../core/utils/classNames";
 import { useDismiss } from "../../../../core/utils/useDismiss";
 import { useScrollLock } from "../../../../core/utils/useScrollLock";
 import { useToday } from "../../../../core/utils/useToday";
-import { categoryLabel } from "../../domain/commitment";
+import { categoryLabel, normalizeAmount } from "../../domain/commitment";
 import { formatDate, formatMoney } from "../../domain/formatting";
 import styles from "../styles/settle.module.css";
 
@@ -29,7 +29,8 @@ export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) 
     return () => window.removeEventListener("keydown", handler);
   }, [onClose, dismiss]);
 
-  const value = Number(amount);
+  const typed = normalizeAmount(amount);
+  const value = Number(typed);
   const changed = value !== Number(occurrence.amount);
   const validDate = Boolean(paidOn) && paidOn <= today;
   const valid = Number.isFinite(value) && value > 0 && validDate;
@@ -39,7 +40,7 @@ export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) 
     if (!valid || busy) {
       return;
     }
-    onSettle("paid", changed ? amount : undefined, paidOn);
+    onSettle("paid", changed ? typed : undefined, paidOn);
   };
 
   return (
@@ -65,10 +66,10 @@ export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) 
         <form className={styles.form} onSubmit={submit} noValidate>
           <TextField
             label={t("occurrence.settleAmount")}
-            type="number"
+            type="text"
             inputMode="decimal"
-            step="0.01"
-            min="0.01"
+            autoComplete="off"
+            autoFocus
             value={amount}
             onChange={(event) => setAmount(event.target.value)}
             hint={

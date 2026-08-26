@@ -318,6 +318,7 @@
     "subscriptionHint": "A recurring service such as Netflix or Spotify.",
     "invoiceHint": "A fixed cost such as rent or insurance.",
     "name": "Name",
+    "addAnother": "Save and add another",
     "namePlaceholderSubscription": "Netflix",
     "namePlaceholderInvoice": "Rent",
     "amount": "Amount",

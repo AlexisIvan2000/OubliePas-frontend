@@ -318,6 +318,7 @@
     "subscriptionHint": "Un service récurrent comme Netflix ou Spotify.",
     "invoiceHint": "Une charge fixe comme un loyer ou une assurance.",
     "name": "Nom",
+    "addAnother": "Enregistrer et ajouter",
     "namePlaceholderSubscription": "Netflix",
     "namePlaceholderInvoice": "Loyer",
     "amount": "Montant",

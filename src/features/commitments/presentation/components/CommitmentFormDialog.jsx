@@ -29,6 +29,7 @@ import {
   firstTrackedDate,
   formFromCommitment,
   frequencyOptions,
+  normalizeAmount,
   toCommitmentPayload,
   trialEndFrom,
 } from "../../domain/commitment";
@@ -47,6 +48,8 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   const [form, setForm] = useState(() =>
     commitment ? formFromCommitment(commitment) : emptyForm(type, user?.defaultReminderDays),
   );
+
+  const [round, setRound] = useState(0);
 
   const save = useAsyncAction((payload) =>
     editing ? updateCommitment(commitment.id, payload) : createCommitment(payload),
@@ -136,8 +139,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
     return undefined;
   };
 
-  const submit = async (event) => {
-    event.preventDefault();
+  const persist = async (again) => {
     const payload = toCommitmentPayload(form, { currentTrialEnd: currentTrial });
 
     if (editing) {
@@ -155,10 +157,23 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
     }
 
     const result = await save.run(payload);
-    if (result.ok) {
-      onSaved(result.data);
-      onClose();
+    if (!result.ok) {
+      return;
     }
+    onSaved(result.data);
+    if (!again) {
+      onClose();
+      return;
+    }
+    // Remonter le formulaire remet le focus sur le nom : c'est le seul champ a
+    // remplir avant de pouvoir enchainer.
+    setForm(emptyForm(type, user?.defaultReminderDays));
+    setRound((current) => current + 1);
+  };
+
+  const submit = (event) => {
+    event.preventDefault();
+    return persist(false);
   };
 
   const heading = editing
@@ -182,7 +197,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
           <p className={styles.subtitle}>{t(meta.formHintKey)}</p>
         </header>
 
-        <form className={styles.form} onSubmit={submit} noValidate>
+        <form key={round} className={styles.form} onSubmit={submit} noValidate>
           <Alert variant="error" details={save.error?.fieldErrors}>
             {save.error ? messageForError(t, save.error) : null}
           </Alert>
@@ -206,10 +221,9 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
           <div className={styles.pair}>
             <TextField
               label={t(form.isTrial ? "form.amountTrial" : "form.amount")}
-              type="number"
+              type="text"
               inputMode="decimal"
-              step="0.01"
-              min="0.01"
+              autoComplete="off"
               value={form.amount}
               onChange={set("amount")}
               placeholder={t("form.amountPlaceholder")}
@@ -275,6 +289,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
                   <TextField
                     label={t("form.trialCustomDays")}
                     type="number"
+                    inputMode="numeric"
                     min="1"
                     max={String(MAX_TRIAL_DAYS)}
                     value={form.trialDays}
@@ -289,7 +304,9 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
                       ? t("form.trialOver")
                       : t(form.amount ? "form.trialRecap" : "form.trialRecapPlain", {
                           end: formatDate(derivedTrial),
-                          amount: form.amount ? formatMoney(form.amount, currency) : "",
+                          amount: form.amount
+                            ? formatMoney(normalizeAmount(form.amount), currency)
+                            : "",
                         })}
                   </p>
                 ) : currentTrial ? (
@@ -347,6 +364,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
               <TextField
                 label={t("form.noticeDays")}
                 type="number"
+                inputMode="numeric"
                 min="1"
                 max={String(MAX_NOTICE_DAYS)}
                 value={form.cancellationNoticeDays}
@@ -371,6 +389,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
               <TextField
                 label={t("form.daysBefore")}
                 type="number"
+                inputMode="numeric"
                 min="0"
                 max="30"
                 value={form.reminderDaysBefore}
@@ -384,6 +403,17 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
             <Button variant="secondary" onClick={close} disabled={save.loading}>
               {t("common.cancel")}
             </Button>
+            {editing ? null : (
+              <Button
+                variant="secondary"
+                className={styles.again}
+                onClick={() => persist(true)}
+                loading={save.loading}
+                disabled={blocked}
+              >
+                {t("form.addAnother")}
+              </Button>
+            )}
             <Button type="submit" loading={save.loading} disabled={blocked}>
               {editing ? t("common.save") : t("common.add")}
             </Button>

@@ -433,6 +433,23 @@ export function toSummary(raw) {
   };
 }
 
+const SPACES = /\s/g;
+
+export function normalizeAmount(value) {
+  if (typeof value !== "string") {
+    return value;
+  }
+  // Un champ type="number" refuse la virgule et vide sa propre valeur sans le dire :
+  // l'utilisateur voit 18,99 et le serveur recoit une chaine vide. On accepte donc
+  // les deux separateurs, en tenant le dernier pour le decimal.
+  const cleaned = value.trim().replace(SPACES, "");
+  const cut = Math.max(cleaned.lastIndexOf(","), cleaned.lastIndexOf("."));
+  if (cut === -1) {
+    return cleaned;
+  }
+  return `${cleaned.slice(0, cut).replace(/[,.]/g, "")}.${cleaned.slice(cut + 1)}`;
+}
+
 export function toCommitmentPayload(form, { currentTrialEnd = null } = {}) {
   const derived = form.isTrial ? trialEndFrom(form.trialStartsOn, form.trialDays) : null;
 
@@ -440,7 +457,7 @@ export function toCommitmentPayload(form, { currentTrialEnd = null } = {}) {
     title: form.title.trim(),
     type: form.type,
     category: form.category,
-    amount: form.amount,
+    amount: normalizeAmount(form.amount),
     frequency: form.frequency,
     starts_on: derived ?? form.startsOn,
     reminder_days_before: Number(form.reminderDaysBefore),
