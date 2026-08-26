@@ -794,19 +794,29 @@
     }
   },
   "breakdown": {
-    "documentTitle": "Breakdown",
-    "title": "Breakdown",
-    "subtitle": "What you are committed to, and what it weighs.",
     "back": "Dashboard",
-    "monthTitle": "{month}",
-    "monthDescription": "Every category, not just the top five.",
-    "monthEmpty": "Nothing due this month.",
+    "columnAmount": "Amount",
     "columnCategory": "Category",
     "columnCount": "Lines",
-    "columnAmount": "Amount",
     "columnShare": "Share",
-    "total": "Total",
-    "rateTitle": "What you are committed to",
+    "comingDescription": "The due dates already worked out, month by month.",
+    "comingEmpty": "Nothing scheduled yet.",
+    "comingHorizon": {
+      "one": "Over {count} month",
+      "other": "Over {count} months"
+    },
+    "comingReader": "{month}: {amount}, {count} payments",
+    "comingTitle": "What is coming",
+    "documentTitle": "Breakdown",
+    "heaviestDescription": "Ranked by yearly cost, both types together.",
+    "heaviestEmpty": "No active recurring line to rank.",
+    "heaviestTitle": "The heaviest lines",
+    "monthDescription": "Every category, not just the top five.",
+    "monthEmpty": "Nothing due this month.",
+    "monthTitle": "{month}",
+    "perMonth": "Per month",
+    "perYear": "Per year",
+    "perYearValue": "{amount} / year",
     "rateDescription": "Worked out from your active recurring lines, whatever the month.",
     "rateEmpty": "No active recurring line yet.",
     "rateNote": {
@@ -817,15 +827,10 @@
       "one": "{count} one-off line is left out of the total.",
       "other": "{count} one-off lines are left out of the total."
     },
-    "perYear": "Per year",
-    "perMonth": "Per month",
-    "perYearValue": "{amount} / year",
-    "comingTitle": "What is coming",
-    "comingDescription": "The due dates already worked out, month by month.",
-    "comingEmpty": "Nothing scheduled yet.",
-    "heaviestTitle": "The heaviest lines",
-    "trialTag": "Trial",
-    "heaviestDescription": "Ranked by yearly cost, both types together.",
-    "heaviestEmpty": "No active recurring line to rank."
+    "rateTitle": "What you are committed to",
+    "subtitle": "What you are committed to, and what it weighs.",
+    "title": "Breakdown",
+    "total": "Total",
+    "trialTag": "Trial"
   }
 }

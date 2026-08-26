@@ -794,19 +794,29 @@
     }
   },
   "breakdown": {
-    "documentTitle": "Répartition",
-    "title": "Répartition",
-    "subtitle": "À quoi tu t'engages, et ce que ça pèse.",
     "back": "Tableau de bord",
-    "monthTitle": "{month}",
-    "monthDescription": "Toutes les catégories, pas seulement les cinq premières.",
-    "monthEmpty": "Aucune échéance ce mois-ci.",
+    "columnAmount": "Montant",
     "columnCategory": "Catégorie",
     "columnCount": "Lignes",
-    "columnAmount": "Montant",
     "columnShare": "Part",
-    "total": "Total",
-    "rateTitle": "Ce que tu t'engages à payer",
+    "comingDescription": "Les échéances déjà calculées, mois par mois.",
+    "comingEmpty": "Rien n'est encore programmé.",
+    "comingHorizon": {
+      "one": "Sur {count} mois",
+      "other": "Sur {count} mois"
+    },
+    "comingReader": "{month} : {amount}, {count} échéances",
+    "comingTitle": "Ce qui arrive",
+    "documentTitle": "Répartition",
+    "heaviestDescription": "Classées par coût annuel, tous types confondus.",
+    "heaviestEmpty": "Aucune ligne récurrente active à classer.",
+    "heaviestTitle": "Les lignes les plus lourdes",
+    "monthDescription": "Toutes les catégories, pas seulement les cinq premières.",
+    "monthEmpty": "Aucune échéance ce mois-ci.",
+    "monthTitle": "{month}",
+    "perMonth": "Par mois",
+    "perYear": "Par an",
+    "perYearValue": "{amount} / an",
     "rateDescription": "Calculé sur tes lignes actives et récurrentes, indépendamment du mois.",
     "rateEmpty": "Aucune ligne récurrente active pour l'instant.",
     "rateNote": {
@@ -817,15 +827,10 @@
       "one": "{count} ligne ponctuelle est exclue du calcul.",
       "other": "{count} lignes ponctuelles sont exclues du calcul."
     },
-    "perYear": "Par an",
-    "perMonth": "Par mois",
-    "perYearValue": "{amount} / an",
-    "comingTitle": "Ce qui arrive",
-    "comingDescription": "Les échéances déjà calculées, mois par mois.",
-    "comingEmpty": "Rien n'est encore programmé.",
-    "heaviestTitle": "Les lignes les plus lourdes",
-    "trialTag": "Essai",
-    "heaviestDescription": "Classées par coût annuel, tous types confondus.",
-    "heaviestEmpty": "Aucune ligne récurrente active à classer."
+    "rateTitle": "Ce que tu t'engages à payer",
+    "subtitle": "À quoi tu t'engages, et ce que ça pèse.",
+    "title": "Répartition",
+    "total": "Total",
+    "trialTag": "Essai"
   }
 }
