@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Alert } from "../../../../core/components/Alert/Alert";
 import { Button } from "../../../../core/components/Button/Button";
@@ -11,6 +11,7 @@ import { messageForError } from "../../../../core/network/errorMessages";
 import { cx } from "../../../../core/utils/classNames";
 import { useDismiss } from "../../../../core/utils/useDismiss";
 import { useScrollLock } from "../../../../core/utils/useScrollLock";
+import { useReturnFocus } from "../../../../core/utils/useReturnFocus";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useAsyncAction } from "../../../../core/utils/useAsyncAction";
 import { useToday } from "../../../../core/utils/useToday";
@@ -41,7 +42,12 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   const { user } = useAuth();
   const today = useToday();
   const { leaving, dismiss } = useDismiss();
-  const close = () => dismiss(onClose);
+  const restoreFocus = useReturnFocus();
+  const finish = useCallback(() => {
+    restoreFocus();
+    onClose();
+  }, [restoreFocus, onClose]);
+  const close = () => dismiss(finish);
 
   useScrollLock();
   const editing = Boolean(commitment);
@@ -72,10 +78,10 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
   };
 
   useEffect(() => {
-    const handler = (event) => event.key === "Escape" && dismiss(onClose);
+    const handler = (event) => event.key === "Escape" && dismiss(finish);
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [onClose, dismiss]);
+  }, [finish, dismiss]);
 
   const set = (field) => (event) => {
     const value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
@@ -145,13 +151,13 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
     if (editing) {
       const changes = commitmentChanges(payload, commitment);
       if (!Object.keys(changes).length) {
-        onClose();
+        finish();
         return;
       }
       const result = await save.run(changes);
       if (result.ok) {
         onSaved(result.data);
-        onClose();
+        finish();
       }
       return;
     }
@@ -162,7 +168,7 @@ export function CommitmentFormDialog({ type, commitment, onClose, onSaved }) {
     }
     onSaved(result.data);
     if (!again) {
-      onClose();
+      finish();
       return;
     }
     // Remonter le formulaire remet le focus sur le nom : c'est le seul champ a

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Button } from "../../../../core/components/Button/Button";
 import { DateField } from "../../../../core/components/DateField/DateField";
@@ -8,6 +8,7 @@ import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { useDismiss } from "../../../../core/utils/useDismiss";
 import { useScrollLock } from "../../../../core/utils/useScrollLock";
+import { useReturnFocus } from "../../../../core/utils/useReturnFocus";
 import { useToday } from "../../../../core/utils/useToday";
 import { categoryLabel, normalizeAmount } from "../../domain/commitment";
 import { formatDate, formatMoney } from "../../domain/formatting";
@@ -19,15 +20,20 @@ export function SettleDialog({ occurrence, currency, busy, onSettle, onClose }) 
   const [amount, setAmount] = useState(() => String(occurrence.amount));
   const [paidOn, setPaidOn] = useState(() => occurrence.paidOn ?? today);
   const { leaving, dismiss } = useDismiss();
-  const close = () => dismiss(onClose);
+  const restoreFocus = useReturnFocus();
+  const finish = useCallback(() => {
+    restoreFocus();
+    onClose();
+  }, [restoreFocus, onClose]);
+  const close = () => dismiss(finish);
 
   useScrollLock();
 
   useEffect(() => {
-    const handler = (event) => event.key === "Escape" && dismiss(onClose);
+    const handler = (event) => event.key === "Escape" && dismiss(finish);
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [onClose, dismiss]);
+  }, [finish, dismiss]);
 
   const typed = normalizeAmount(amount);
   const value = Number(typed);
