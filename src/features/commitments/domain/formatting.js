@@ -1,6 +1,7 @@
 import { relativeDueKey } from "../../../core/utils/formatting";
 
 export {
+  addDaysIso,
   daysUntil,
   formatDate,
   formatLongDate,
@@ -11,6 +12,7 @@ export {
   formatWeekdays,
   parseDate,
   relativeDueKey,
+  todayIso,
 } from "../../../core/utils/formatting";
 
 export function relativeDue(t, iso) {

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { cx } from "../../utils/classNames";
 import { useDismiss } from "../../utils/useDismiss";
+import { useReturnFocus } from "../../utils/useReturnFocus";
 import { useScrollLock } from "../../utils/useScrollLock";
 import { Button } from "../Button/Button";
 import styles from "./ConfirmDialog.module.css";
@@ -17,6 +18,11 @@ export function ConfirmDialog({
 }) {
   const confirmRef = useRef(null);
   const { leaving, dismiss } = useDismiss();
+  const restoreFocus = useReturnFocus(open);
+  const leave = (done) => dismiss(() => {
+    restoreFocus();
+    done();
+  });
 
   useScrollLock(open);
 
@@ -27,11 +33,12 @@ export function ConfirmDialog({
     confirmRef.current?.focus();
     const handler = (event) => {
       if (event.key === "Escape") {
-        dismiss(onCancel);
+        leave(onCancel);
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, onCancel, dismiss]);
 
   if (!open) {
@@ -41,7 +48,7 @@ export function ConfirmDialog({
   return (
     <div
       className={cx(styles.overlay, leaving && styles.leavingVeil)}
-      onMouseDown={() => dismiss(onCancel)}
+      onMouseDown={() => leave(onCancel)}
     >
       <div
         className={cx(styles.dialog, leaving && styles.leaving)}
@@ -53,10 +60,10 @@ export function ConfirmDialog({
         <h2 className={styles.title}>{title}</h2>
         <p className={styles.message}>{message}</p>
         <div className={styles.actions}>
-          <Button variant="secondary" onClick={() => dismiss(onCancel)}>
+          <Button variant="secondary" onClick={() => leave(onCancel)}>
             {cancelLabel}
           </Button>
-          <Button ref={confirmRef} variant="danger" onClick={() => dismiss(onConfirm)}>
+          <Button ref={confirmRef} variant="danger" onClick={() => leave(onConfirm)}>
             {confirmLabel}
           </Button>
         </div>

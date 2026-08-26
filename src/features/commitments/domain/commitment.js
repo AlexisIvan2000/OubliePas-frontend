@@ -1,4 +1,4 @@
-import { parseDate } from "./formatting";
+import { parseDate, todayIso } from "./formatting";
 
 export const COMMITMENT_TYPES = {
   subscription: {
@@ -515,7 +515,7 @@ export function emptyForm(type, reminderDaysBefore = DEFAULT_REMINDER_DAYS) {
     category: CATEGORIES[type][0],
     amount: "",
     frequency: "monthly",
-    startsOn: new Date().toISOString().slice(0, 10),
+    startsOn: todayIso(),
     endsOn: "",
     isTrial: false,
     trialStartsOn: "",
