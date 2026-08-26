@@ -1,22 +1,38 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { toFieldErrorMap } from "../network/ApiError";
 
 export function useAsyncAction(action) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const inFlight = useRef(null);
 
   const run = useCallback(
     async (...args) => {
+      // La garde porte sur une reference et non sur loading : celui-ci n'est
+      // visible qu'au rendu suivant, un rendu trop tard pour arreter un second
+      // envoi. Le second appelant recoit le resultat du premier.
+      if (inFlight.current) {
+        return inFlight.current;
+      }
+
       setLoading(true);
       setError(null);
+
+      const attempt = (async () => {
+        try {
+          return { ok: true, data: await action(...args), error: null };
+        } catch (caught) {
+          setError(caught);
+          return { ok: false, data: null, error: caught };
+        }
+      })();
+
+      inFlight.current = attempt;
       try {
-        const data = await action(...args);
-        return { ok: true, data, error: null };
-      } catch (caught) {
-        setError(caught);
-        return { ok: false, data: null, error: caught };
+        return await attempt;
       } finally {
+        inFlight.current = null;
         setLoading(false);
       }
     },
