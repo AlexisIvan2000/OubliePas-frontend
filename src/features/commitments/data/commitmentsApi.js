@@ -49,6 +49,14 @@ export function emptyTrash({ type } = {}) {
   return http.delete(`${COMMITMENT_ENDPOINTS.trash}${query({ type })}`, { auth: true });
 }
 
+export function setStatusMany(ids, status) {
+  return http.patch(COMMITMENT_ENDPOINTS.batchStatus, { ids, status }, { auth: true });
+}
+
+export function deleteManyCommitments(ids) {
+  return http.post(COMMITMENT_ENDPOINTS.batchDelete, { ids }, { auth: true });
+}
+
 export function restoreCommitments(ids) {
   return http.post(COMMITMENT_ENDPOINTS.restore, { ids }, { auth: true });
 }

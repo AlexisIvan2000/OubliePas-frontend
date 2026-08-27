@@ -226,6 +226,55 @@
   animation-delay: var(--enter-delay, 0ms);
 }
 
+.pick {
+  display: flex;
+  align-items: center;
+  margin-left: -0.375rem;
+  /* Hors mode selection la case reste dans le flux mais transparente : la
+     ligne ne bouge pas d'un pixel quand le survol la revele. */
+  opacity: 0;
+  transition: opacity var(--dur-fast) ease;
+}
+
+.row:hover .pick,
+.row:focus-within .pick,
+.picking .pick {
+  opacity: 1;
+}
+
+.pickBox {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  accent-color: var(--color-link);
+  cursor: pointer;
+}
+
+.picking {
+  cursor: pointer;
+  user-select: none;
+}
+
+.picked {
+  border-color: var(--color-control-border);
+  background-color: var(--color-accent-soft);
+}
+
+.hiddenActions {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (hover: none) {
+  .pick {
+    opacity: 1;
+  }
+
+  .row:not(.picking) .pick {
+    display: none;
+  }
+}
+
 .row:hover,
 .occurrence:hover {
   position: relative;

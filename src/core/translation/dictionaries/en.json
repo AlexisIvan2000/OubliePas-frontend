@@ -192,6 +192,34 @@
     "allCategories": "All ({count})",
     "archive": "Archive",
     "archived": "archived",
+    "bulkActiveDone": {
+      "one": "{count} line reactivated.",
+      "other": "{count} lines reactivated."
+    },
+    "bulkArchive": "Archive",
+    "bulkArchivedDone": {
+      "one": "{count} line archived.",
+      "other": "{count} lines archived."
+    },
+    "bulkBlocked": {
+      "one": "{count} could not come back, no room left.",
+      "other": "{count} could not come back, no room left."
+    },
+    "bulkDeleteMessage": "They go to the bin and you can restore them for 30 days.",
+    "bulkDeleteTitle": {
+      "one": "Delete {count} line?",
+      "other": "Delete {count} lines?"
+    },
+    "bulkDeleted": {
+      "one": "{count} line deleted.",
+      "other": "{count} lines deleted."
+    },
+    "bulkNothing": "No line changed.",
+    "bulkPause": "Pause",
+    "bulkPausedDone": {
+      "one": "{count} line paused.",
+      "other": "{count} lines paused."
+    },
     "cancellationDeadline": "Cancel before {date}",
     "clearFilters": "Show everything",
     "created": "{title} has been added.",
@@ -218,6 +246,7 @@
     "pause": "Pause",
     "paused": "paused",
     "perYear": "{amount}/yr",
+    "pickAria": "Select {title}",
     "purgeMessage": "There is no coming back from this one: payments and history go with it.",
     "purgeTitle": {
       "one": "Erase this line for good?",
@@ -238,6 +267,15 @@
     "searchInvoices": "Search a cost…",
     "searchLabel": "Search your {kind}",
     "searchSubscriptions": "Search a service…",
+    "selectAll": "Select all ({count})",
+    "selectNone": "Clear the selection",
+    "selectionCount": {
+      "one": "{count} selected",
+      "other": "{count} selected"
+    },
+    "selectionOff": "Selection mode closed.",
+    "selectionOn": "Selection mode. Pick lines, then an action. Press Escape to leave.",
+    "selectionToolbar": "Actions on the selection",
     "showArchived": {
       "one": "{count} archived",
       "other": "{count} archived"

@@ -344,6 +344,36 @@ export const STATUS_ACTIONS = {
 // ne ferait que reproposer le probleme.
 export const REVERSIBLE_STATUS = new Set(["paused", "archived"]);
 
+// Au-dela, une suppression par lot se confirme, comme "tout supprimer".
+export const BULK_CONFIRM_ABOVE = 5;
+
+export function previousStatuses(commitments, ids) {
+  const picked = new Set(ids);
+  return commitments
+    .filter((item) => picked.has(item.id))
+    .map((item) => ({ id: item.id, status: item.status }));
+}
+
+export function undoSteps(previous, changedIds) {
+  // Une selection n'est pas homogene : trois lignes actives et une en pause
+  // reviennent a deux etats differents. On regroupe par etat d'avant, donc
+  // trois appels au plus, et seules les lignes qui ont bouge sont rejouees.
+  const changed = new Set(changedIds);
+  const byStatus = new Map();
+
+  previous.forEach(({ id, status }) => {
+    if (!changed.has(id)) {
+      return;
+    }
+    if (!byStatus.has(status)) {
+      byStatus.set(status, []);
+    }
+    byStatus.get(status).push(id);
+  });
+
+  return [...byStatus.entries()].map(([status, ids]) => ({ status, ids }));
+}
+
 export const STATUS_TOAST_KEYS = {
   active: "commitments.statusActive",
   paused: "commitments.statusPaused",

@@ -192,6 +192,34 @@
     "allCategories": "Toutes ({count})",
     "archive": "Archiver",
     "archived": "archivé",
+    "bulkActiveDone": {
+      "one": "{count} ligne réactivée.",
+      "other": "{count} lignes réactivées."
+    },
+    "bulkArchive": "Archiver",
+    "bulkArchivedDone": {
+      "one": "{count} ligne archivée.",
+      "other": "{count} lignes archivées."
+    },
+    "bulkBlocked": {
+      "one": "{count} n'a pas pu revenir, faute de place.",
+      "other": "{count} n'ont pas pu revenir, faute de place."
+    },
+    "bulkDeleteMessage": "Elles partent à la corbeille et vous pouvez les restaurer pendant 30 jours.",
+    "bulkDeleteTitle": {
+      "one": "Supprimer {count} ligne ?",
+      "other": "Supprimer {count} lignes ?"
+    },
+    "bulkDeleted": {
+      "one": "{count} ligne supprimée.",
+      "other": "{count} lignes supprimées."
+    },
+    "bulkNothing": "Aucune ligne n'a changé.",
+    "bulkPause": "Mettre en pause",
+    "bulkPausedDone": {
+      "one": "{count} ligne mise en pause.",
+      "other": "{count} lignes mises en pause."
+    },
     "cancellationDeadline": "Annuler avant le {date}",
     "clearFilters": "Tout afficher",
     "created": "{title} a été ajouté.",
@@ -218,6 +246,7 @@
     "pause": "Mettre en pause",
     "paused": "en pause",
     "perYear": "{amount}/an",
+    "pickAria": "Sélectionner {title}",
     "purgeMessage": "Cette fois c'est sans retour : les échéances et l'historique de paiements partent avec.",
     "purgeTitle": {
       "one": "Effacer définitivement cette ligne ?",
@@ -238,6 +267,15 @@
     "searchInvoices": "Rechercher une charge…",
     "searchLabel": "Rechercher parmi vos {kind}",
     "searchSubscriptions": "Rechercher un service…",
+    "selectAll": "Tout sélectionner ({count})",
+    "selectNone": "Tout désélectionner",
+    "selectionCount": {
+      "one": "{count} sélectionné",
+      "other": "{count} sélectionnés"
+    },
+    "selectionOff": "Mode sélection quitté.",
+    "selectionOn": "Mode sélection. Choisissez des lignes, puis une action. Échap pour sortir.",
+    "selectionToolbar": "Actions sur la sélection",
     "showArchived": {
       "one": "{count} archivé",
       "other": "{count} archivés"

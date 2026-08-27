@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Alert } from "../../../../core/components/Alert/Alert";
 import { Button } from "../../../../core/components/Button/Button";
@@ -18,11 +18,14 @@ import { useAuth } from "../../../authentication/presentation/providers/useAuth"
 import {
   deleteAllCommitments,
   deleteCommitment,
+  deleteManyCommitments,
   emptyTrash,
   restoreCommitments,
+  setStatusMany,
   updateCommitment,
 } from "../../data/commitmentsApi";
 import {
+  BULK_CONFIRM_ABOVE,
   COMMITMENT_TYPES,
   REVERSIBLE_STATUS,
   SORTS,
@@ -31,11 +34,14 @@ import {
   categoryLabel,
   matchesQuery,
   nextUp,
+  previousStatuses,
   quotaState,
   runRate,
   sortCommitments,
+  undoSteps,
 } from "../../domain/commitment";
 import { parseDate } from "../../domain/formatting";
+import { useSelection } from "../hooks/useSelection";
 import { monthRange, useOccurrences } from "../providers/useOccurrences";
 import { useCommitments, useTrash } from "../providers/useCommitments";
 import styles from "../styles/commitments.module.css";
@@ -43,8 +49,15 @@ import { CommitmentFormDialog } from "./CommitmentFormDialog";
 import { CommitmentListSkeleton } from "./CommitmentListSkeleton";
 import { CommitmentRow } from "./CommitmentRow";
 import { CommitmentStats } from "./CommitmentStats";
+import { SelectionBar } from "./SelectionBar";
 import { EmptyState } from "./EmptyState";
 import { TrashList } from "./TrashList";
+
+const BULK_DONE_KEYS = {
+  active: "commitments.bulkActiveDone",
+  paused: "commitments.bulkPausedDone",
+  archived: "commitments.bulkArchivedDone",
+};
 
 export function CommitmentsView({ type }) {
   const { t } = useTranslation();
@@ -69,6 +82,11 @@ export function CommitmentsView({ type }) {
   const [showArchived, setShowArchived] = useState(false);
   const [undo, setUndo] = useState(null);
   const [undoing, setUndoing] = useState(false);
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [confirmingBulk, setConfirmingBulk] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
+  const selection = useSelection();
+  const { picking, selected } = selection;
 
   const meta = COMMITMENT_TYPES[type];
   const title = t(meta.titleKey);
@@ -172,6 +190,109 @@ export function CommitmentsView({ type }) {
   const openEdit = (commitment) => {
     setEditing(commitment);
     setFormOpen(true);
+  };
+
+  const startPicking = useCallback(
+    (commitment) => {
+      selection.start(commitment?.id);
+      setAnnouncement(t("commitments.selectionOn"));
+    },
+    [selection, t],
+  );
+
+  const stopPicking = useCallback(() => {
+    selection.stop();
+    setAnnouncement(t("commitments.selectionOff"));
+  }, [selection, t]);
+
+  useEffect(() => {
+    if (!picking || confirmingBulk) {
+      return undefined;
+    }
+    const onKey = (event) => {
+      if (event.key === "Escape") {
+        stopPicking();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [picking, confirmingBulk, stopPicking]);
+
+  const togglePick = (commitment) => {
+    if (!picking) {
+      startPicking(commitment);
+      return;
+    }
+    selection.toggle(commitment.id);
+  };
+
+  const toggleAll = () => selection.toggleAll(visible.map((item) => item.id));
+
+  const replay = async (steps) => {
+    for (const step of steps) {
+      await setStatusMany(step.ids, step.status);
+    }
+  };
+
+  const report = (status, changed, blocked, previous) => {
+    if (!changed.length) {
+      toast.push(t("commitments.bulkNothing"));
+      return;
+    }
+
+    const done = t(BULK_DONE_KEYS[status], { count: changed.length });
+    const message = blocked.length
+      ? `${done} ${t("commitments.bulkBlocked", { count: blocked.length })}`
+      : done;
+
+    if (REVERSIBLE_STATUS.has(status)) {
+      setUndo({ message, run: () => replay(undoSteps(previous, changed)) });
+    } else {
+      toast.push(message);
+    }
+  };
+
+  const applyBulk = async (action) => {
+    setConfirmingBulk(false);
+    const ids = visible.filter((item) => selected.has(item.id)).map((item) => item.id);
+    if (!ids.length) {
+      return;
+    }
+
+    setBulkBusy(true);
+    try {
+      if (action === "deleted") {
+        const { deleted, ids: removed } = await deleteManyCommitments(ids);
+        await refresh();
+        stopPicking();
+        setUndo({
+          message: t("commitments.bulkDeleted", { count: deleted }),
+          run: () => restoreCommitments(removed),
+        });
+        return;
+      }
+
+      // L'etat d'avant est releve sur la liste en main, avant l'appel : apres
+      // le rafraichissement il aurait disparu, et l'annulation ne saurait plus
+      // a quoi rendre chaque ligne.
+      const previous = previousStatuses(items, ids);
+      const { changed, blocked } = await setStatusMany(ids, action);
+      await refresh();
+      stopPicking();
+      report(action, changed, blocked, previous);
+    } catch (caught) {
+      toast.push(messageForError(t, caught), "error");
+    } finally {
+      setBulkBusy(false);
+    }
+  };
+
+  const runBulk = (action) => {
+    if (action === "deleted" && selected.size > BULK_CONFIRM_ABOVE) {
+      setConfirmingBulk(true);
+      return;
+    }
+    applyBulk(action);
   };
 
   const changeStatus = async (commitment, status) => {
@@ -387,6 +508,22 @@ export function CommitmentsView({ type }) {
 
       {error ? <Alert variant="error">{messageForError(t, error)}</Alert> : null}
 
+      <p className={styles.reader} role="status" aria-live="polite">
+        {announcement}
+      </p>
+
+      {picking ? (
+        <SelectionBar
+          count={selected.size}
+          total={visible.length}
+          allPicked={selected.size >= visible.length && visible.length > 0}
+          busy={bulkBusy}
+          onAction={runBulk}
+          onToggleAll={toggleAll}
+          onCancel={stopPicking}
+        />
+      ) : null}
+
       {loading ? (
         <CommitmentListSkeleton />
       ) : visible.length ? (
@@ -401,6 +538,10 @@ export function CommitmentsView({ type }) {
               onEdit={openEdit}
               onDelete={removeOne}
               onStatusChange={changeStatus}
+              picking={picking}
+              picked={selected.has(commitment.id)}
+              onTogglePick={togglePick}
+              onStartPicking={() => startPicking(commitment)}
             />
           ))}
         </ul>
@@ -460,6 +601,16 @@ export function CommitmentsView({ type }) {
         cancelLabel={t("common.cancel")}
         onConfirm={removeAll}
         onCancel={() => setConfirmingWipe(false)}
+      />
+
+      <ConfirmDialog
+        open={confirmingBulk}
+        title={t("commitments.bulkDeleteTitle", { count: selected.size })}
+        message={t("commitments.bulkDeleteMessage")}
+        confirmLabel={t("common.delete")}
+        cancelLabel={t("common.cancel")}
+        onConfirm={() => applyBulk("deleted")}
+        onCancel={() => setConfirmingBulk(false)}
       />
 
       <ConfirmDialog

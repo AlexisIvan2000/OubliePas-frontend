@@ -2,6 +2,7 @@ import { Icon } from "../../../../core/components/Icon/Icon";
 import { Menu } from "../../../../core/components/Menu/Menu";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
+import { useLongPress } from "../../../../core/utils/useLongPress";
 import {
   ANNUAL_FACTOR,
   FREQUENCY_SHORT_KEYS,
@@ -23,8 +24,13 @@ export function CommitmentRow({
   onEdit,
   onDelete,
   onStatusChange,
+  picking = false,
+  picked = false,
+  onTogglePick,
+  onStartPicking,
 }) {
   const { t } = useTranslation();
+  const longPress = useLongPress(picking ? null : onStartPicking);
   const deadline = actionDeadline(commitment, today);
   const due = commitment.lateDueDate ?? commitment.nextDueDate;
   const dimmed = commitment.status !== "active";
@@ -45,9 +51,28 @@ export function CommitmentRow({
 
   return (
     <li
-      className={cx(styles.row, styles.enter, dimmed && styles.paused)}
+      className={cx(
+        styles.row,
+        styles.enter,
+        dimmed && styles.paused,
+        picking && styles.picking,
+        picked && styles.picked,
+      )}
       style={{ "--enter-delay": `${Math.min(index, 12) * 40}ms` }}
+      onClick={picking ? () => onTogglePick(commitment) : undefined}
+      {...longPress}
     >
+      <label className={styles.pick}>
+        <input
+          type="checkbox"
+          className={styles.pickBox}
+          checked={picked}
+          onChange={() => onTogglePick(commitment)}
+          onClick={(event) => event.stopPropagation()}
+          aria-label={t("commitments.pickAria", { title: commitment.title })}
+        />
+      </label>
+
       <span
         className={styles.monogram}
         style={{ "--tint": categoryTint(commitment.category) }}
@@ -110,7 +135,7 @@ export function CommitmentRow({
         ) : null}
       </div>
 
-      <div className={styles.rowActions}>
+      <div className={cx(styles.rowActions, picking && styles.hiddenActions)}>
         <button
           type="button"
           className={styles.iconButton}
