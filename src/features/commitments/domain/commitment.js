@@ -188,10 +188,6 @@ export function nextUp(commitments) {
 }
 
 export const COUNTED_STATUSES = ["active", "paused"];
-// Les sept dernieres places, quel que soit le plafond : c'est la marge qui
-// reste utile a connaitre. Au-dela, annoncer une limite ne ferait que poser
-// une question a quelqu'un qui n'en approche pas.
-export const QUOTA_REVEAL_LEFT = 7;
 export const QUOTA_ALERT_LEFT = 3;
 
 export function trackedCount(commitments) {
@@ -199,15 +195,14 @@ export function trackedCount(commitments) {
 }
 
 export function quotaState(commitments, limit) {
+  // Sans plafond connu il n'y a rien a afficher : le serveur est seul a le
+  // donner, et un chiffre devine vaudrait moins que le silence.
   if (!limit) {
     return null;
   }
 
   const used = trackedCount(commitments);
   const left = limit - used;
-  if (left > QUOTA_REVEAL_LEFT) {
-    return null;
-  }
 
   // La restauration depuis la corbeille peut passer au-dessus du plafond :
   // le compteur le dit au lieu de faire semblant.

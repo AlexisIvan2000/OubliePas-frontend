@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import { mapUser } from "../../features/authentication/domain/user";
 import {
   QUOTA_ALERT_LEFT,
-  QUOTA_REVEAL_LEFT,
   quotaState,
   trackedCount,
 } from "../../features/commitments/domain/commitment";
@@ -32,14 +31,17 @@ describe("quotaState", () => {
     expect(quotaState(lignes(24), null)).toBeNull();
   });
 
-  it("se tait tant que la marge est large", () => {
-    expect(quotaState(lignes(LIMITE - QUOTA_REVEAL_LEFT - 1), LIMITE)).toBeNull();
+  it("s'affiche des la premiere ligne", () => {
+    expect(quotaState(lignes(1), LIMITE)).toEqual({
+      used: 1,
+      limit: 25,
+      left: 24,
+      tone: "calm",
+    });
   });
 
-  it("apparait des la premiere des sept dernieres places", () => {
-    const etat = quotaState(lignes(LIMITE - QUOTA_REVEAL_LEFT), LIMITE);
-
-    expect(etat).toEqual({ used: 18, limit: 25, left: 7, tone: "calm" });
+  it("s'affiche meme sur une liste vide", () => {
+    expect(quotaState([], LIMITE)).toEqual({ used: 0, limit: 25, left: 25, tone: "calm" });
   });
 
   it("passe en alerte quand il reste trois places", () => {
@@ -72,7 +74,7 @@ describe("quotaState", () => {
   it("les archives ne prennent pas de place", () => {
     const etat = quotaState([...lignes(10), ...lignes(20, "archived")], LIMITE);
 
-    expect(etat).toBeNull();
+    expect(etat).toMatchObject({ used: 10, left: 15, tone: "calm" });
   });
 
   it("une ligne en pause en prend une", () => {
@@ -127,6 +129,7 @@ describe("le compteur suit la vie de la liste", () => {
 
     expect(etat([...liste, ligne("vieille", "archived")])).toMatchObject({
       used: 24,
+      left: 1,
       tone: "alert",
     });
   });
