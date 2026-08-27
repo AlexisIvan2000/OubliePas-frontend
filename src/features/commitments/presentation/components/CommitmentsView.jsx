@@ -9,7 +9,7 @@ import { Picker } from "../../../../core/components/Picker/Picker";
 import { SearchField } from "../../../../core/components/SearchField/SearchField";
 import { useToast } from "../../../../core/components/Toast/useToast";
 import { UndoBar } from "../../../../core/components/UndoBar/UndoBar";
-import { messageForError } from "../../../../core/network/errorMessages";
+import { messageForCode, messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
@@ -155,6 +155,16 @@ export function CommitmentsView({ type }) {
     });
 
   const openCreate = () => {
+    // Au plafond, ouvrir le formulaire pour le refuser a l'envoi ferait perdre
+    // une saisie entiere : la reponse arrive avant la premiere frappe.
+    if (quota?.tone === "full") {
+      toast.push(
+        messageForCode(t, "COMMITMENT_LIMIT_REACHED", { type, limit: quota.limit }) ||
+          t("errors.unexpected"),
+        "error",
+      );
+      return;
+    }
     setEditing(null);
     setFormOpen(true);
   };

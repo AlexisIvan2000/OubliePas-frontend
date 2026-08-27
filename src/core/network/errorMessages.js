@@ -5,6 +5,16 @@ function keysFor(code, kind) {
   return kind ? [`${base}_${String(kind).toUpperCase()}`, base] : [base];
 }
 
+export function messageForCode(t, code, details = {}) {
+  for (const key of keysFor(code, details.type)) {
+    const translated = t(key, details);
+    if (translated !== key) {
+      return translated;
+    }
+  }
+  return null;
+}
+
 export function messageForError(t, error) {
   if (!error) {
     return t("errors.unexpected");
@@ -12,12 +22,7 @@ export function messageForError(t, error) {
 
   const details = error.details ?? {};
 
-  for (const key of keysFor(error.code, details.type)) {
-    const translated = t(key, details);
-    if (translated !== key) {
-      return translated;
-    }
-  }
-
-  return error.message || t("errors.unexpected");
+  return (
+    messageForCode(t, error.code, details) || error.message || t("errors.unexpected")
+  );
 }

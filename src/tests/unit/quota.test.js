@@ -82,6 +82,56 @@ describe("quotaState", () => {
   });
 });
 
+describe("le compteur suit la vie de la liste", () => {
+  const ligne = (id, status = "active") => ({ id, status });
+  const changer = (liste, id, status) =>
+    liste.map((item) => (item.id === id ? { ...item, status } : item));
+  const retirer = (liste, id) => liste.filter((item) => item.id !== id);
+  const etat = (liste) => quotaState(liste, LIMITE);
+
+  it("creation, archivage, suppression, restauration, annulation", () => {
+    // Chaque etape est la liste telle que le serveur la renvoie apres l'action :
+    // supprimer sort la ligne de la liste vivante, restaurer l'y remet, et
+    // annuler un archivage n'est qu'un statut repose a actif.
+    let liste = Array.from({ length: LIMITE - 1 }, (_, index) => ligne(`l${index}`));
+    expect(etat(liste)).toMatchObject({ used: 24, left: 1, tone: "alert" });
+
+    liste = [...liste, ligne("neuve")];
+    expect(etat(liste)).toMatchObject({ used: 25, left: 0, tone: "full" });
+
+    liste = changer(liste, "l0", "archived");
+    expect(etat(liste)).toMatchObject({ used: 24, left: 1, tone: "alert" });
+
+    liste = retirer(liste, "l1");
+    expect(etat(liste)).toMatchObject({ used: 23, left: 2, tone: "alert" });
+
+    liste = [...liste, ligne("l1")];
+    expect(etat(liste)).toMatchObject({ used: 24, left: 1, tone: "alert" });
+
+    liste = changer(liste, "l0", "active");
+    expect(etat(liste)).toMatchObject({ used: 25, left: 0, tone: "full" });
+  });
+
+  it("l'annulation d'une suppression rend sa place a la ligne", () => {
+    const plein = Array.from({ length: LIMITE }, (_, index) => ligne(`l${index}`));
+    const apresSuppression = retirer(plein, "l3");
+
+    expect(etat(apresSuppression).tone).toBe("alert");
+    expect(etat([...apresSuppression, ligne("l3")]).tone).toBe("full");
+  });
+
+  it("une ligne restauree archivee ne reprend pas de place", () => {
+    // La restauration rend la ligne a la liste avec son statut d'avant : une
+    // ligne archivee puis supprimee revient archivee, donc hors du compte.
+    const liste = Array.from({ length: LIMITE - 1 }, (_, index) => ligne(`l${index}`));
+
+    expect(etat([...liste, ligne("vieille", "archived")])).toMatchObject({
+      used: 24,
+      tone: "alert",
+    });
+  });
+});
+
 describe("le plafond vient du compte", () => {
   it("mapUser porte la limite envoyee par le serveur", () => {
     expect(mapUser({ id: "1", commitment_limit: 40 }).commitmentLimit).toBe(40);

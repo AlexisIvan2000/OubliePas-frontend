@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { ApiError } from "../../core/network/ApiError";
-import { messageForError } from "../../core/network/errorMessages";
+import { messageForCode, messageForError } from "../../core/network/errorMessages";
 import { createTranslator } from "../../core/translation/translate";
 import en from "../../core/translation/dictionaries/en.json";
 import fr from "../../core/translation/dictionaries/fr.json";
@@ -134,6 +134,22 @@ describe("le plafond d'engagements", () => {
 
     expect(rendu).toMatch(action);
     expect(rendu).toMatch(etat);
+  });
+
+  it("le clic bloque et le refus du serveur disent la meme chose", () => {
+    // Le bouton Ajouter au plafond n'appelle pas le serveur : il compose le
+    // message par le meme chemin, sinon les deux textes divergeraient.
+    const t = traducteur("fr");
+    const avant = messageForCode(t, "COMMITMENT_LIMIT_REACHED", {
+      type: "subscription",
+      limit: 25,
+    });
+
+    expect(avant).toBe(messageForError(t, refus("subscription")));
+  });
+
+  it("un code sans traduction ne rend rien, plutot que sa cle", () => {
+    expect(messageForCode(traducteur("fr"), "CODE_TOUT_NEUF")).toBeNull();
   });
 
   it("un type inconnu retombe sur le message sans type", () => {
