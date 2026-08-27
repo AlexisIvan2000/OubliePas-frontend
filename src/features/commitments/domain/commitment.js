@@ -187,6 +187,33 @@ export function nextUp(commitments) {
   )[0] ?? null;
 }
 
+export const COUNTED_STATUSES = ["active", "paused"];
+// Les sept dernieres places, quel que soit le plafond : c'est la marge qui
+// reste utile a connaitre. Au-dela, annoncer une limite ne ferait que poser
+// une question a quelqu'un qui n'en approche pas.
+export const QUOTA_REVEAL_LEFT = 7;
+export const QUOTA_ALERT_LEFT = 3;
+
+export function trackedCount(commitments) {
+  return commitments.filter((item) => COUNTED_STATUSES.includes(item.status)).length;
+}
+
+export function quotaState(commitments, limit) {
+  if (!limit) {
+    return null;
+  }
+
+  const used = trackedCount(commitments);
+  const left = limit - used;
+  if (left > QUOTA_REVEAL_LEFT) {
+    return null;
+  }
+
+  // La restauration depuis la corbeille peut passer au-dessus du plafond :
+  // le compteur le dit au lieu de faire semblant.
+  return { used, limit, left, tone: left <= 0 ? "full" : left <= QUOTA_ALERT_LEFT ? "alert" : "calm" };
+}
+
 export const REST_SLICE = "rest";
 export const MAX_SLICES = TINT_SLOTS.length;
 

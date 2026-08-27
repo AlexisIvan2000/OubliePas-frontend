@@ -187,125 +187,128 @@
     "seeBreakdown": "Voir la répartition"
   },
   "commitments": {
-    "subscriptionsTitle": "Abonnements",
-    "invoicesTitle": "Factures",
-    "subscriptionLabel": "abonnement",
-    "invoiceLabel": "facture",
-    "subscriptionsSubtitle": "Vos services récurrents et ce qu'ils vous coûtent.",
-    "invoicesSubtitle": "Vos charges fixes et leurs échéances.",
-    "searchSubscriptions": "Rechercher un service…",
-    "searchInvoices": "Rechercher une charge…",
-    "searchLabel": "Rechercher parmi vos {kind}",
-    "statThisMonth": "Ce mois-ci",
-    "statPerYear": "Par an",
-    "statNext": "Prochaine échéance",
-    "statDueCount": {
-      "one": "{count} échéance",
-      "other": "{count} échéances"
-    },
-    "statNothingDue": "rien ce mois-ci",
-    "statRecurring": {
-      "one": "{count} ligne récurrente",
-      "other": "{count} lignes récurrentes"
-    },
-    "statExcluded": {
-      "one": "hors {count} ligne ponctuelle",
-      "other": "hors {count} lignes ponctuelles"
-    },
-    "statNoRecurring": "aucune ligne récurrente",
-    "statNoNext": "aucune échéance à venir",
-    "sortLabel": "Trier la liste",
-    "sort_due": "Prochaine échéance",
-    "sort_amount": "Montant",
-    "sort_title": "Nom",
-    "perYear": "{amount}/an",
+    "addInvoice": "Ajouter une facture",
+    "addSubscription": "Ajouter un abonnement",
     "allCategories": "Toutes ({count})",
-    "noCategoryTitle": "Rien dans ces catégories",
-    "clearFilters": "Tout afficher",
-    "results": {
-      "one": "{count} résultat sur {total}",
-      "other": "{count} résultats sur {total}"
-    },
-    "paused": "en pause",
-    "archived": "archivé",
-    "pause": "Mettre en pause",
-    "resume": "Reprendre",
     "archive": "Archiver",
-    "restore": "Désarchiver",
-    "statusActive": "{title} est de nouveau actif.",
-    "statusPaused": "{title} est en pause, les prochaines échéances sont retirées.",
-    "statusArchived": "{title} a été archivé.",
+    "archived": "archivé",
+    "cancellationDeadline": "Annuler avant le {date}",
+    "clearFilters": "Tout afficher",
+    "created": "{title} a été ajouté.",
+    "deleteAria": "Supprimer {title}",
+    "deleted": "{title} a été supprimé.",
+    "editAria": "Modifier {title}",
+    "emptyInvoicesBody": "Ajoutez votre loyer, vos assurances ou vos factures d'énergie pour ne plus les oublier.",
+    "emptyInvoicesTitle": "Aucune facture pour l'instant",
+    "emptySubscriptionsBody": "Ajoutez Netflix, Spotify, iCloud… pour voir ce qu'ils vous coûtent chaque mois.",
+    "emptySubscriptionsTitle": "Aucun abonnement pour l'instant",
+    "invoiceLabel": "facture",
+    "invoicesSubtitle": "Vos charges fixes et leurs échéances.",
+    "invoicesTitle": "Factures",
     "moreAria": "Autres actions pour {title}",
-    "showArchived": {
-      "one": "{count} archivé",
-      "other": "{count} archivés"
-    },
+    "noCategoryTitle": "Rien dans ces catégories",
+    "noDueDate": "aucune échéance",
+    "noResultsBody": "Essayez un autre nom ou une autre catégorie.",
+    "noResultsTitle": "Aucun résultat pour « {query} »",
+    "onlyArchivedBody": "Rien d'actif ici pour le moment. Vos lignes archivées sont conservées avec leur historique.",
     "onlyArchivedTitle": {
       "one": "Une ligne archivée",
       "other": "{count} lignes archivées"
     },
-    "onlyArchivedBody": "Rien d'actif ici pour le moment. Vos lignes archivées sont conservées avec leur historique.",
-    "revealArchived": "Afficher les archives",
-    "noDueDate": "aucune échéance",
+    "pause": "Mettre en pause",
+    "paused": "en pause",
+    "perYear": "{amount}/an",
+    "purgeMessage": "Cette fois c'est sans retour : les échéances et l'historique de paiements partent avec.",
+    "purgeTitle": {
+      "one": "Effacer définitivement cette ligne ?",
+      "other": "Effacer définitivement ces {count} lignes ?"
+    },
+    "quota": "{used} / {limit}",
+    "quotaFull": "Archivez ou supprimez une ligne pour en ajouter une nouvelle.",
+    "quotaReader": "{used} {kind} suivis sur {limit}",
     "reminderDays": "{count} j avant",
-    "editAria": "Modifier {title}",
-    "deleteAria": "Supprimer {title}",
-    "deleted": "{title} a été supprimé.",
-    "wipe": {
-      "one": "Tout supprimer ({count})",
-      "other": "Tout supprimer ({count})"
+    "restore": "Désarchiver",
+    "restored": "{title} a été restauré.",
+    "results": {
+      "one": "{count} résultat sur {total}",
+      "other": "{count} résultats sur {total}"
     },
-    "wipeMessage": "Ils restent récupérables 30 jours, avec leur historique de paiements. Passé ce délai, la suppression est définitive.",
-    "wipeSubscriptionsTitle": {
-      "one": "Supprimer l'abonnement ?",
-      "other": "Supprimer les {count} abonnements ?"
-    },
-    "wipeInvoicesTitle": {
-      "one": "Supprimer la facture ?",
-      "other": "Supprimer les {count} factures ?"
-    },
-    "wipeSubscriptionsDone": {
-      "one": "{count} abonnement supprimé",
-      "other": "{count} abonnements supprimés"
-    },
-    "wipeInvoicesDone": {
-      "one": "{count} facture supprimée",
-      "other": "{count} factures supprimées"
+    "resume": "Reprendre",
+    "revealArchived": "Afficher les archives",
+    "searchInvoices": "Rechercher une charge…",
+    "searchLabel": "Rechercher parmi vos {kind}",
+    "searchSubscriptions": "Rechercher un service…",
+    "showArchived": {
+      "one": "{count} archivé",
+      "other": "{count} archivés"
     },
     "showTrash": {
       "one": "Corbeille ({count})",
       "other": "Corbeille ({count})"
     },
-    "trashTitle": {
-      "one": "{count} ligne supprimée",
-      "other": "{count} lignes supprimées"
+    "sortLabel": "Trier la liste",
+    "sort_amount": "Montant",
+    "sort_due": "Prochaine échéance",
+    "sort_title": "Nom",
+    "statDueCount": {
+      "one": "{count} échéance",
+      "other": "{count} échéances"
     },
-    "trashHint": "Elles gardent leur historique et reviennent intactes si vous les restaurez.",
-    "trashRestore": "Restaurer",
-    "trashEmpty": "Vider la corbeille",
+    "statExcluded": {
+      "one": "hors {count} ligne ponctuelle",
+      "other": "hors {count} lignes ponctuelles"
+    },
+    "statNext": "Prochaine échéance",
+    "statNoNext": "aucune échéance à venir",
+    "statNoRecurring": "aucune ligne récurrente",
+    "statNothingDue": "rien ce mois-ci",
+    "statPerYear": "Par an",
+    "statRecurring": {
+      "one": "{count} ligne récurrente",
+      "other": "{count} lignes récurrentes"
+    },
+    "statThisMonth": "Ce mois-ci",
+    "statusActive": "{title} est de nouveau actif.",
+    "statusArchived": "{title} a été archivé.",
+    "statusPaused": "{title} est en pause, les prochaines échéances sont retirées.",
+    "subscriptionLabel": "abonnement",
+    "subscriptionsSubtitle": "Vos services récurrents et ce qu'ils vous coûtent.",
+    "subscriptionsTitle": "Abonnements",
     "trashCountdown": {
       "one": "Effacée demain",
       "other": "Effacée dans {count} jours"
     },
+    "trashEmpty": "Vider la corbeille",
+    "trashHint": "Elles gardent leur historique et reviennent intactes si vous les restaurez.",
     "trashLastDay": "Effacée aujourd'hui",
-    "restored": "{title} a été restauré.",
-    "purgeTitle": {
-      "one": "Effacer définitivement cette ligne ?",
-      "other": "Effacer définitivement ces {count} lignes ?"
+    "trashRestore": "Restaurer",
+    "trashTitle": {
+      "one": "{count} ligne supprimée",
+      "other": "{count} lignes supprimées"
     },
-    "purgeMessage": "Cette fois c'est sans retour : les échéances et l'historique de paiements partent avec.",
-    "created": "{title} a été ajouté.",
-    "updated": "{title} a été mis à jour.",
-    "emptySubscriptionsTitle": "Aucun abonnement pour l'instant",
-    "emptySubscriptionsBody": "Ajoutez Netflix, Spotify, iCloud… pour voir ce qu'ils vous coûtent chaque mois.",
-    "emptyInvoicesTitle": "Aucune facture pour l'instant",
-    "emptyInvoicesBody": "Ajoutez votre loyer, vos assurances ou vos factures d'énergie pour ne plus les oublier.",
-    "addSubscription": "Ajouter un abonnement",
-    "addInvoice": "Ajouter une facture",
-    "noResultsTitle": "Aucun résultat pour « {query} »",
-    "noResultsBody": "Essayez un autre nom ou une autre catégorie.",
     "trialDeadline": "Essai jusqu'au {date}",
-    "cancellationDeadline": "Annuler avant le {date}"
+    "updated": "{title} a été mis à jour.",
+    "wipe": {
+      "one": "Tout supprimer ({count})",
+      "other": "Tout supprimer ({count})"
+    },
+    "wipeInvoicesDone": {
+      "one": "{count} facture supprimée",
+      "other": "{count} factures supprimées"
+    },
+    "wipeInvoicesTitle": {
+      "one": "Supprimer la facture ?",
+      "other": "Supprimer les {count} factures ?"
+    },
+    "wipeMessage": "Ils restent récupérables 30 jours, avec leur historique de paiements. Passé ce délai, la suppression est définitive.",
+    "wipeSubscriptionsDone": {
+      "one": "{count} abonnement supprimé",
+      "other": "{count} abonnements supprimés"
+    },
+    "wipeSubscriptionsTitle": {
+      "one": "Supprimer l'abonnement ?",
+      "other": "Supprimer les {count} abonnements ?"
+    }
   },
   "form": {
     "suggestHint": "Tapez librement si votre service n'est pas dans les suggestions.",

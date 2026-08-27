@@ -19,6 +19,9 @@ export function mapUser(dto) {
     reminderActionEnabled: dto.reminder_action_enabled ?? true,
     defaultReminderDays: dto.default_reminder_days ?? 3,
     locale: dto.locale ?? "fr",
+    // Sans valeur du serveur on ne devine pas un plafond : l'indicateur se tait
+    // plutot que d'en annoncer un qui n'est peut-etre plus le bon.
+    commitmentLimit: dto.commitment_limit ?? null,
   };
 }
 

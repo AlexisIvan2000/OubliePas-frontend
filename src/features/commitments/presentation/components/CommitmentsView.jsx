@@ -11,6 +11,7 @@ import { useToast } from "../../../../core/components/Toast/useToast";
 import { UndoBar } from "../../../../core/components/UndoBar/UndoBar";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
+import { cx } from "../../../../core/utils/classNames";
 import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
 import { useToday } from "../../../../core/utils/useToday";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
@@ -30,6 +31,7 @@ import {
   categoryLabel,
   matchesQuery,
   nextUp,
+  quotaState,
   runRate,
   sortCommitments,
 } from "../../domain/commitment";
@@ -71,6 +73,11 @@ export function CommitmentsView({ type }) {
   const meta = COMMITMENT_TYPES[type];
   const title = t(meta.titleKey);
   useDocumentTitle(title);
+
+  const quota = useMemo(
+    () => quotaState(items, user?.commitmentLimit),
+    [items, user?.commitmentLimit],
+  );
 
   const archivedCount = useMemo(
     () => items.filter((item) => item.status === "archived").length,
@@ -232,12 +239,36 @@ export function CommitmentsView({ type }) {
       <header className={styles.header}>
         <div>
           <h1 className={styles.title}>{title}</h1>
-          <p className={styles.subtitle}>{t(meta.subtitleKey)}</p>
+          <p className={styles.subtitle}>
+            {quota?.tone === "full" ? t("commitments.quotaFull") : t(meta.subtitleKey)}
+          </p>
         </div>
-        <Button fullWidth={false} compact onClick={openCreate} className={styles.addButton}>
-          <Icon name="add" size={16} />
-          {t("common.add")}
-        </Button>
+        <div className={styles.headerActions}>
+          {quota ? (
+            <span
+              className={cx(
+                styles.quota,
+                quota.tone === "alert" && styles.quotaAlert,
+                quota.tone === "full" && styles.quotaFull,
+              )}
+            >
+              <span aria-hidden="true">
+                {t("commitments.quota", { used: quota.used, limit: quota.limit })}
+              </span>
+              <span className={styles.reader}>
+                {t("commitments.quotaReader", {
+                  used: quota.used,
+                  limit: quota.limit,
+                  kind: title.toLowerCase(),
+                })}
+              </span>
+            </span>
+          ) : null}
+          <Button fullWidth={false} compact onClick={openCreate} className={styles.addButton}>
+            <Icon name="add" size={16} />
+            {t("common.add")}
+          </Button>
+        </div>
       </header>
 
       {items.length ? (

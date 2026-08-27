@@ -187,125 +187,128 @@
     "seeBreakdown": "See the breakdown"
   },
   "commitments": {
-    "subscriptionsTitle": "Subscriptions",
-    "invoicesTitle": "Bills",
-    "subscriptionLabel": "subscription",
-    "invoiceLabel": "bill",
-    "subscriptionsSubtitle": "Your recurring services and what they cost you.",
-    "invoicesSubtitle": "Your fixed costs and their due dates.",
-    "searchSubscriptions": "Search a service…",
-    "searchInvoices": "Search a cost…",
-    "searchLabel": "Search your {kind}",
-    "statThisMonth": "This month",
-    "statPerYear": "Per year",
-    "statNext": "Next due date",
-    "statDueCount": {
-      "one": "{count} due date",
-      "other": "{count} due dates"
-    },
-    "statNothingDue": "nothing this month",
-    "statRecurring": {
-      "one": "{count} recurring line",
-      "other": "{count} recurring lines"
-    },
-    "statExcluded": {
-      "one": "excludes {count} one-off line",
-      "other": "excludes {count} one-off lines"
-    },
-    "statNoRecurring": "no recurring line",
-    "statNoNext": "nothing coming up",
-    "sortLabel": "Sort the list",
-    "sort_due": "Next due date",
-    "sort_amount": "Amount",
-    "sort_title": "Name",
-    "perYear": "{amount}/yr",
+    "addInvoice": "Add a bill",
+    "addSubscription": "Add a subscription",
     "allCategories": "All ({count})",
-    "noCategoryTitle": "Nothing in those categories",
-    "clearFilters": "Show everything",
-    "results": {
-      "one": "{count} result of {total}",
-      "other": "{count} results of {total}"
-    },
-    "paused": "paused",
-    "archived": "archived",
-    "pause": "Pause",
-    "resume": "Resume",
     "archive": "Archive",
-    "restore": "Unarchive",
-    "statusActive": "{title} is active again.",
-    "statusPaused": "{title} is paused, upcoming due dates were removed.",
-    "statusArchived": "{title} has been archived.",
+    "archived": "archived",
+    "cancellationDeadline": "Cancel before {date}",
+    "clearFilters": "Show everything",
+    "created": "{title} has been added.",
+    "deleteAria": "Delete {title}",
+    "deleted": "{title} has been deleted.",
+    "editAria": "Edit {title}",
+    "emptyInvoicesBody": "Add your rent, your insurance or your energy bills so you never forget them.",
+    "emptyInvoicesTitle": "No bill yet",
+    "emptySubscriptionsBody": "Add Netflix, Spotify, iCloud… to see what they cost you each month.",
+    "emptySubscriptionsTitle": "No subscription yet",
+    "invoiceLabel": "bill",
+    "invoicesSubtitle": "Your fixed costs and their due dates.",
+    "invoicesTitle": "Bills",
     "moreAria": "More actions for {title}",
-    "showArchived": {
-      "one": "{count} archived",
-      "other": "{count} archived"
-    },
+    "noCategoryTitle": "Nothing in those categories",
+    "noDueDate": "no due date",
+    "noResultsBody": "Try another name or another category.",
+    "noResultsTitle": "No result for “{query}”",
+    "onlyArchivedBody": "Nothing active here yet. Your archived lines are kept along with their history.",
     "onlyArchivedTitle": {
       "one": "One archived line",
       "other": "{count} archived lines"
     },
-    "onlyArchivedBody": "Nothing active here yet. Your archived lines are kept along with their history.",
-    "revealArchived": "Show the archive",
-    "noDueDate": "no due date",
+    "pause": "Pause",
+    "paused": "paused",
+    "perYear": "{amount}/yr",
+    "purgeMessage": "There is no coming back from this one: payments and history go with it.",
+    "purgeTitle": {
+      "one": "Erase this line for good?",
+      "other": "Erase these {count} lines for good?"
+    },
+    "quota": "{used} / {limit}",
+    "quotaFull": "Archive or delete one line to add a new one.",
+    "quotaReader": "{used} {kind} tracked out of {limit}",
     "reminderDays": "{count} d before",
-    "editAria": "Edit {title}",
-    "deleteAria": "Delete {title}",
-    "deleted": "{title} has been deleted.",
-    "wipe": {
-      "one": "Delete all ({count})",
-      "other": "Delete all ({count})"
+    "restore": "Unarchive",
+    "restored": "{title} was restored.",
+    "results": {
+      "one": "{count} result of {total}",
+      "other": "{count} results of {total}"
     },
-    "wipeMessage": "They stay recoverable for 30 days, payment history included. After that, deletion is permanent.",
-    "wipeSubscriptionsTitle": {
-      "one": "Delete the subscription?",
-      "other": "Delete all {count} subscriptions?"
-    },
-    "wipeInvoicesTitle": {
-      "one": "Delete the bill?",
-      "other": "Delete all {count} bills?"
-    },
-    "wipeSubscriptionsDone": {
-      "one": "{count} subscription deleted",
-      "other": "{count} subscriptions deleted"
-    },
-    "wipeInvoicesDone": {
-      "one": "{count} bill deleted",
-      "other": "{count} bills deleted"
+    "resume": "Resume",
+    "revealArchived": "Show the archive",
+    "searchInvoices": "Search a cost…",
+    "searchLabel": "Search your {kind}",
+    "searchSubscriptions": "Search a service…",
+    "showArchived": {
+      "one": "{count} archived",
+      "other": "{count} archived"
     },
     "showTrash": {
       "one": "Trash ({count})",
       "other": "Trash ({count})"
     },
-    "trashTitle": {
-      "one": "{count} deleted line",
-      "other": "{count} deleted lines"
+    "sortLabel": "Sort the list",
+    "sort_amount": "Amount",
+    "sort_due": "Next due date",
+    "sort_title": "Name",
+    "statDueCount": {
+      "one": "{count} due date",
+      "other": "{count} due dates"
     },
-    "trashHint": "They keep their history and come back untouched if you restore them.",
-    "trashRestore": "Restore",
-    "trashEmpty": "Empty the trash",
+    "statExcluded": {
+      "one": "excludes {count} one-off line",
+      "other": "excludes {count} one-off lines"
+    },
+    "statNext": "Next due date",
+    "statNoNext": "nothing coming up",
+    "statNoRecurring": "no recurring line",
+    "statNothingDue": "nothing this month",
+    "statPerYear": "Per year",
+    "statRecurring": {
+      "one": "{count} recurring line",
+      "other": "{count} recurring lines"
+    },
+    "statThisMonth": "This month",
+    "statusActive": "{title} is active again.",
+    "statusArchived": "{title} has been archived.",
+    "statusPaused": "{title} is paused, upcoming due dates were removed.",
+    "subscriptionLabel": "subscription",
+    "subscriptionsSubtitle": "Your recurring services and what they cost you.",
+    "subscriptionsTitle": "Subscriptions",
     "trashCountdown": {
       "one": "Erased tomorrow",
       "other": "Erased in {count} days"
     },
+    "trashEmpty": "Empty the trash",
+    "trashHint": "They keep their history and come back untouched if you restore them.",
     "trashLastDay": "Erased today",
-    "restored": "{title} was restored.",
-    "purgeTitle": {
-      "one": "Erase this line for good?",
-      "other": "Erase these {count} lines for good?"
+    "trashRestore": "Restore",
+    "trashTitle": {
+      "one": "{count} deleted line",
+      "other": "{count} deleted lines"
     },
-    "purgeMessage": "There is no coming back from this one: payments and history go with it.",
-    "created": "{title} has been added.",
-    "updated": "{title} has been updated.",
-    "emptySubscriptionsTitle": "No subscription yet",
-    "emptySubscriptionsBody": "Add Netflix, Spotify, iCloud… to see what they cost you each month.",
-    "emptyInvoicesTitle": "No bill yet",
-    "emptyInvoicesBody": "Add your rent, your insurance or your energy bills so you never forget them.",
-    "addSubscription": "Add a subscription",
-    "addInvoice": "Add a bill",
-    "noResultsTitle": "No result for “{query}”",
-    "noResultsBody": "Try another name or another category.",
     "trialDeadline": "Trial until {date}",
-    "cancellationDeadline": "Cancel before {date}"
+    "updated": "{title} has been updated.",
+    "wipe": {
+      "one": "Delete all ({count})",
+      "other": "Delete all ({count})"
+    },
+    "wipeInvoicesDone": {
+      "one": "{count} bill deleted",
+      "other": "{count} bills deleted"
+    },
+    "wipeInvoicesTitle": {
+      "one": "Delete the bill?",
+      "other": "Delete all {count} bills?"
+    },
+    "wipeMessage": "They stay recoverable for 30 days, payment history included. After that, deletion is permanent.",
+    "wipeSubscriptionsDone": {
+      "one": "{count} subscription deleted",
+      "other": "{count} subscriptions deleted"
+    },
+    "wipeSubscriptionsTitle": {
+      "one": "Delete the subscription?",
+      "other": "Delete all {count} subscriptions?"
+    }
   },
   "form": {
     "suggestHint": "Type freely if your service is not in the suggestions.",
