@@ -53,13 +53,16 @@ export function TranslationProvider({ children }) {
       intlLocale: active.intl,
       localeLabel: active.label,
       setLocale: changeLocale,
-      t: createTranslator(dictionary ?? {}, active.intl),
+      t: createTranslator(dictionary ?? defaultDictionary, active.intl),
     };
   }, [locale, dictionary, changeLocale]);
 
-  if (!dictionary) {
-    return <TranslationLoading />;
-  }
-
-  return <TranslationContext.Provider value={value}>{children}</TranslationContext.Provider>;
+  // L'ecran d'attente est rendu a l'interieur du contexte, jamais avant lui.
+  // Sorti du fournisseur, le moindre composant qui traduit son libelle lance et
+  // emporte la page entiere - et seuls les comptes en anglais passent par la.
+  return (
+    <TranslationContext.Provider value={value}>
+      {dictionary ? children : <TranslationLoading />}
+    </TranslationContext.Provider>
+  );
 }
