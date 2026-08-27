@@ -91,6 +91,58 @@ describe("les trois codes ajoutes apres l'audit", () => {
   });
 });
 
+describe("le plafond d'engagements", () => {
+  const refus = (type) =>
+    new ApiError({
+      status: 409,
+      code: "COMMITMENT_LIMIT_REACHED",
+      message: "This account already tracks the maximum number of commitments of this type",
+      details: type ? { type, limit: 25 } : {},
+    });
+
+  it.each([
+    ["fr", "subscription", "abonnements"],
+    ["fr", "invoice", "factures"],
+    ["en", "subscription", "subscriptions"],
+    ["en", "invoice", "invoices"],
+  ])("%s : le message dit le nombre et le mot juste pour %s", (locale, type, mot) => {
+    const rendu = messageForError(traducteur(locale), refus(type));
+
+    expect(rendu).toContain("25");
+    expect(rendu).toContain(mot);
+  });
+
+  it.each(Object.keys(LOCALES))("%s : aucun trou de gabarit n'atteint l'ecran", (locale) => {
+    const t = traducteur(locale);
+
+    expect(messageForError(t, refus("subscription"))).not.toMatch(/[{}]/);
+    expect(messageForError(t, refus("invoice"))).not.toMatch(/[{}]/);
+    expect(messageForError(t, refus(null))).not.toMatch(/[{}]/);
+  });
+
+  it("le repli sans type ne contient aucun trou a remplir", () => {
+    // C'est ce qui rend le repli sur : si le detail manque, il ne reste rien
+    // a interpoler, donc rien d'illisible ne s'affiche.
+    expect(fr.errors.COMMITMENT_LIMIT_REACHED).not.toMatch(/[{}]/);
+    expect(en.errors.COMMITMENT_LIMIT_REACHED).not.toMatch(/[{}]/);
+  });
+
+  it.each(Object.keys(LOCALES))("%s : le message dit l'action et l'etat des donnees", (locale) => {
+    const rendu = messageForError(traducteur(locale), refus("subscription"));
+    const action = /archivez|archive/i;
+    const etat = /rien n'a ete cree|rien n'a été créé|nothing was created/i;
+
+    expect(rendu).toMatch(action);
+    expect(rendu).toMatch(etat);
+  });
+
+  it("un type inconnu retombe sur le message sans type", () => {
+    const rendu = messageForError(traducteur("fr"), refus("licorne"));
+
+    expect(rendu).toBe(fr.errors.COMMITMENT_LIMIT_REACHED);
+  });
+});
+
 describe("parite des dictionnaires", () => {
   const aplatir = (objet, prefixe = "") =>
     Object.entries(objet).flatMap(([cle, valeur]) =>

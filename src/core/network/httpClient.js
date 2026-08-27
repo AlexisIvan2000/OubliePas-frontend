@@ -35,11 +35,13 @@ async function parseError(response) {
   const detail = payload?.detail;
 
   if (detail && typeof detail === "object") {
+    const { code, message, errors, ...details } = detail;
     return new ApiError({
       status: response.status,
-      code: detail.code ?? "APP_ERROR",
-      message: detail.message ?? response.statusText,
-      fieldErrors: Array.isArray(detail.errors) ? detail.errors : [],
+      code: code ?? "APP_ERROR",
+      message: message ?? response.statusText,
+      fieldErrors: Array.isArray(errors) ? errors : [],
+      details,
     });
   }
 

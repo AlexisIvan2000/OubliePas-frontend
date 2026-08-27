@@ -1,10 +1,11 @@
 export class ApiError extends Error {
-  constructor({ status, code, message, fieldErrors = [] }) {
+  constructor({ status, code, message, fieldErrors = [], details = {} }) {
     super(message);
     this.name = "ApiError";
     this.status = status;
     this.code = code;
     this.fieldErrors = fieldErrors;
+    this.details = details;
   }
 
   get isValidation() {
