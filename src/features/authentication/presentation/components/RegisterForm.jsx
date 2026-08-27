@@ -104,7 +104,7 @@ export function RegisterForm() {
 
       <div className={styles.separator}>ou</div>
 
-      <GoogleButton label="S'inscrire avec Google" onError={setGoogleNotice} />
+      <GoogleButton label={t("auth.googleRegister")} onError={setGoogleNotice} />
 
       <Alert variant="error">{googleNotice}</Alert>
     </form>

@@ -1,10 +1,12 @@
 import { useId } from "react";
 
+import { useTranslation } from "../../translation/useTranslation";
 import { cx } from "../../utils/classNames";
 import { Icon } from "../Icon/Icon";
 import styles from "./SearchField.module.css";
 
 export function SearchField({ value, onChange, onClear, label, placeholder, className, id }) {
+  const { t } = useTranslation();
   const generatedId = useId();
   const fieldId = id ?? generatedId;
 
@@ -29,7 +31,7 @@ export function SearchField({ value, onChange, onClear, label, placeholder, clas
       />
 
       {value ? (
-        <button type="button" className={styles.clear} onClick={onClear} aria-label="Effacer la recherche">
+        <button type="button" className={styles.clear} onClick={onClear} aria-label={t("a11y.clearSearch")}>
           <Icon name="close" size={16} />
         </button>
       ) : null}

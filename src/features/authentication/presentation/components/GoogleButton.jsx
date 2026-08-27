@@ -7,7 +7,7 @@ import { startGoogleSignIn } from "../../data/authApi";
 import { createHandshake } from "../../domain/googleOAuth";
 import styles from "../styles/GoogleButton.module.css";
 
-export function GoogleButton({ label = "Continuer avec Google", onError, ...rest }) {
+export function GoogleButton({ label, onError, ...rest }) {
   const { t } = useTranslation();
   const [redirecting, setRedirecting] = useState(false);
 
@@ -29,7 +29,7 @@ export function GoogleButton({ label = "Continuer avec Google", onError, ...rest
       {redirecting ? null : (
         <img className={styles.icon} src="/assets/google-icon-logo.svg" alt="" />
       )}
-      {label}
+      {label ?? t("auth.googleContinue")}
     </Button>
   );
 }

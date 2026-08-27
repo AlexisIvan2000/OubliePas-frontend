@@ -51,11 +51,11 @@ export function VerifyEmailForm() {
 
       {location.state?.email ? null : (
         <TextField
-          label="Adresse email"
+          label={t("auth.emailLabel")}
           type="email"
           name="email"
           autoComplete="email"
-          placeholder="vous@exemple.com"
+          placeholder={t("auth.emailPlaceholder")}
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           required

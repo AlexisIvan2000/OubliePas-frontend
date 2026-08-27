@@ -1,3 +1,4 @@
+import { useTranslation } from "../../translation/useTranslation";
 import { cx } from "../../utils/classNames";
 import styles from "./Skeleton.module.css";
 
@@ -20,8 +21,10 @@ export function Skeleton({ width = "100%", height = "1rem", radius, delay = 0, c
 }
 
 export function AppSkeleton() {
+  const { t } = useTranslation();
+
   return (
-    <div className={styles.app} aria-busy="true" aria-label="Chargement de votre espace">
+    <div className={styles.app} aria-busy="true" aria-label={t("a11y.loadingSpace")}>
       <div className={styles.sidebar}>
         <Skeleton width="9rem" height="2rem" />
         {[0, 1, 2, 3, 4, 5].map((index) => (
@@ -59,8 +62,10 @@ export function AppSkeleton() {
 }
 
 export function AuthSkeleton() {
+  const { t } = useTranslation();
+
   return (
-    <div className={styles.centered} aria-busy="true" aria-label="Chargement">
+    <div className={styles.centered} aria-busy="true" aria-label={t("common.loading")}>
       <Skeleton width="9rem" height="2.25rem" />
       <Skeleton width="18rem" height="0.875rem" delay={SHIMMER_STEP} />
       <Skeleton width="14rem" height="0.875rem" delay={SHIMMER_STEP * 2} />
