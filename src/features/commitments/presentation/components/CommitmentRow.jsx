@@ -65,12 +65,16 @@ export function CommitmentRow({
       <label className={styles.pick}>
         <input
           type="checkbox"
-          className={styles.pickBox}
+          className={styles.pickInput}
           checked={picked}
           onChange={() => onTogglePick(commitment)}
           onClick={(event) => event.stopPropagation()}
           aria-label={t("commitments.pickAria", { title: commitment.title })}
         />
+        <span className={styles.pickMark} aria-hidden="true">
+          <span className={styles.pickRing} />
+          <Icon name="done" size={18} className={styles.pickTick} />
+        </span>
       </label>
 
       <span

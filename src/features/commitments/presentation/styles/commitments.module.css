@@ -227,13 +227,24 @@
 }
 
 .pick {
-  display: flex;
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  margin-left: -0.375rem;
-  /* Hors mode selection la case reste dans le flux mais transparente : la
-     ligne ne bouge pas d'un pixel quand le survol la revele. */
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  margin-left: -0.5rem;
+  border-radius: 50%;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  /* Hors mode selection la case garde sa place : la ligne ne bouge pas d'un
+     pixel quand le survol la revele. */
   opacity: 0;
-  transition: opacity var(--dur-fast) ease;
+  transition:
+    opacity var(--dur-fast) ease,
+    background-color 140ms ease,
+    color 140ms ease;
 }
 
 .row:hover .pick,
@@ -242,12 +253,69 @@
   opacity: 1;
 }
 
-.pickBox {
+.pick:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.pickInput {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.pickMark {
+  position: relative;
+  display: inline-flex;
   width: 1.125rem;
   height: 1.125rem;
-  margin: 0;
-  accent-color: var(--color-link);
-  cursor: pointer;
+  pointer-events: none;
+}
+
+.pickRing {
+  position: absolute;
+  inset: 1.5px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.55;
+  transition: opacity 140ms ease;
+}
+
+.pickTick {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.pick:hover .pickRing {
+  opacity: 0;
+}
+
+.pick:hover .pickTick {
+  opacity: 0.4;
+}
+
+.pickInput:checked ~ .pickMark {
+  color: var(--color-link);
+  animation: global(checkPop) 0.3s var(--ease-spring);
+}
+
+.pickInput:checked ~ .pickMark .pickRing {
+  opacity: 0;
+}
+
+.pickInput:checked ~ .pickMark .pickTick,
+.pick:hover .pickInput:checked ~ .pickMark .pickTick {
+  opacity: 1;
+}
+
+.pickInput:focus-visible ~ .pickMark {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+  border-radius: 50%;
 }
 
 .picking {
