@@ -9,6 +9,7 @@ import { useToast } from "../../../../core/components/Toast/useToast";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useAsyncAction } from "../../../../core/utils/useAsyncAction";
+import { useCooldown } from "../../../../core/utils/useCooldown";
 import { isCodeValid, isEmailValid } from "../../domain/validation";
 import { useAuth } from "../providers/useAuth";
 import styles from "../styles/authForms.module.css";
@@ -24,11 +25,13 @@ export function VerifyEmailForm() {
 
   const verify = useAsyncAction(verifyEmail);
   const resend = useAsyncAction(resendVerification);
+  const cooldown = useCooldown();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const result = await verify.run({ email, code });
     if (result.ok) {
+      toast.success(t("auth.verified"));
       navigate("/", { replace: true });
     }
   };
@@ -36,6 +39,7 @@ export function VerifyEmailForm() {
   const handleResend = async () => {
     const result = await resend.run({ email });
     if (result.ok) {
+      cooldown.start();
       toast.success(t("auth.resent"));
       setCode("");
     }
@@ -78,9 +82,9 @@ export function VerifyEmailForm() {
         variant="secondary"
         onClick={handleResend}
         loading={resend.loading}
-        disabled={!isEmailValid(email)}
+        disabled={!isEmailValid(email) || cooldown.waiting}
       >
-        Renvoyer un code
+        {cooldown.waiting ? t("auth.resendIn", { count: cooldown.left }) : t("auth.resend")}
       </Button>
     </form>
   );

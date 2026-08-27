@@ -77,7 +77,7 @@ export function LoginForm() {
       </div>
 
       <Button type="submit" loading={loading}>
-        Se connecter
+        {t("auth.signIn")}
       </Button>
 
       <div className={styles.separator}>ou</div>

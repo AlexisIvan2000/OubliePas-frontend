@@ -10,6 +10,7 @@ import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { useAsyncAction } from "../../../../core/utils/useAsyncAction";
+import { useCooldown } from "../../../../core/utils/useCooldown";
 import { isCodeValid, isEmailValid } from "../../domain/validation";
 import { useAuth } from "../providers/useAuth";
 import styles from "../styles/settings.module.css";
@@ -43,6 +44,7 @@ export function ChangeEmailForm({ onDone }) {
   const requestChange = useAsyncAction(requestEmailChange);
   const confirmChange = useAsyncAction(confirmEmailChange);
   const resend = useAsyncAction(resendEmailChange);
+  const cooldown = useCooldown();
 
   const handleChange = (field) => (event) => {
     setForm((current) => ({ ...current, [field]: event.target.value }));
@@ -68,6 +70,7 @@ export function ChangeEmailForm({ onDone }) {
   const handleResend = async () => {
     const result = await resend.run();
     if (result.ok) {
+      cooldown.start();
       toast.success(t("auth.resent"));
     }
   };
@@ -95,8 +98,13 @@ export function ChangeEmailForm({ onDone }) {
         />
 
         <div className={styles.actions}>
-          <Button variant="secondary" onClick={handleResend} loading={resend.loading}>
-            {t("auth.resend")}
+          <Button
+            variant="secondary"
+            onClick={handleResend}
+            loading={resend.loading}
+            disabled={cooldown.waiting}
+          >
+            {cooldown.waiting ? t("auth.resendIn", { count: cooldown.left }) : t("auth.resend")}
           </Button>
           <Button type="submit" loading={confirmChange.loading} disabled={!isCodeValid(code)}>
             {t("auth.confirm")}

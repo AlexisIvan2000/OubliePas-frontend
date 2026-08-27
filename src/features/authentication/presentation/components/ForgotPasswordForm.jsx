@@ -59,7 +59,7 @@ export function ForgotPasswordForm() {
       />
 
       <Button type="submit" loading={loading} disabled={!isEmailValid(email)}>
-        Envoyer le code
+        {t("auth.sendCode")}
       </Button>
     </form>
   );

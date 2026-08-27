@@ -9,7 +9,7 @@ import { useTranslation } from "../../../../core/translation/useTranslation";
 
 export function ResetPasswordPage() {
   const { t } = useTranslation();
-  useDocumentTitle("Nouveau mot de passe");
+  useDocumentTitle(t("auth.resetDocument"));
 
   return (
     <AuthLayout
@@ -19,7 +19,7 @@ export function ResetPasswordPage() {
       footnote={t("settings.securityHint")}
       footer={
         <Link className={styles.link} to="/mot-de-passe-oublie">
-          Demander un nouveau code
+          {t("auth.askNewCode")}
         </Link>
       }
     >

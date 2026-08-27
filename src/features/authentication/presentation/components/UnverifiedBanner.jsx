@@ -2,6 +2,7 @@ import { useToast } from "../../../../core/components/Toast/useToast";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useAsyncAction } from "../../../../core/utils/useAsyncAction";
+import { useCooldown } from "../../../../core/utils/useCooldown";
 import { useAuth } from "../providers/useAuth";
 import styles from "../styles/settings.module.css";
 
@@ -10,6 +11,7 @@ export function UnverifiedBanner() {
   const { user, resendVerification } = useAuth();
   const toast = useToast();
   const { run, loading } = useAsyncAction(resendVerification);
+  const cooldown = useCooldown();
 
   if (!user || user.isVerified) {
     return null;
@@ -18,6 +20,7 @@ export function UnverifiedBanner() {
   const handleResend = async () => {
     const result = await run({ email: user.email });
     if (result.ok) {
+      cooldown.start();
       toast.success(t("auth.resent"));
     } else {
       toast.error(messageForError(t, result.error));
@@ -31,9 +34,13 @@ export function UnverifiedBanner() {
         type="button"
         className={styles.bannerAction}
         onClick={handleResend}
-        disabled={loading}
+        disabled={loading || cooldown.waiting}
       >
-        {loading ? t("auth.sending") : t("auth.resend")}
+        {loading ? t("auth.sending") : null}
+        {!loading && cooldown.waiting
+          ? t("auth.resendIn", { count: cooldown.left })
+          : null}
+        {!loading && !cooldown.waiting ? t("auth.resend") : null}
       </button>
     </div>
   );
