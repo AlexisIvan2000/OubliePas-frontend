@@ -67,7 +67,7 @@ describe("les trois codes ajoutes apres l'audit", () => {
     expect(fr.errors[code]).not.toBe(en.errors[code]);
   });
 
-  it("seule une 500 promet que rien n'a ete enregistre", () => {
+  it("parmi les echecs inconnus, seule la 500 promet que rien n'a ete enregistre", () => {
     // La distinction est deliberee : sur une 500 la transaction serveur est
     // annulee, donc la promesse est vraie. Une expiration ou une reponse hors
     // enveloppe peuvent venir d'un proxy, et le front ne sait alors rien.
