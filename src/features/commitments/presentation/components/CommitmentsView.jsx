@@ -621,6 +621,12 @@ export function CommitmentsView({ type }) {
             toast.push(
               t(editing ? "commitments.updated" : "commitments.created", { title: saved.title }),
             );
+            // Une ligne neuve nait active : la laisser derriere le filtre des
+            // archives annoncerait une creation que rien ne montre. Modifier
+            // une archive, en revanche, ne fait pas quitter le placard.
+            if (!editing) {
+              setShowArchived(false);
+            }
             refresh();
           }}
         />
