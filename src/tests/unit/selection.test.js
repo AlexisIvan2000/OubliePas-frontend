@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   BULK_CONFIRM_ABOVE,
+  bulkActions,
   previousStatuses,
   undoSteps,
 } from "../../features/commitments/domain/commitment";
@@ -85,6 +86,75 @@ describe("undoSteps", () => {
     expect(undoSteps(previous, ["a", "c", "e"])).toEqual([
       { status: "active", ids: ["a", "c", "e"] },
     ]);
+  });
+});
+
+describe("bulkActions", () => {
+  const noms = (actions) => actions.map((action) => action.labelKey);
+
+  it("une selection d'archives ne propose jamais de les archiver", () => {
+    // Le defaut d'origine : la barre etait figee et proposait "Archiver" sur
+    // des lignes deja archivees, un lot vide et un message absurde.
+    const actions = bulkActions([ligne("a", "archived"), ligne("b", "archived")]);
+
+    expect(noms(actions)).toEqual(["commitments.restore"]);
+  });
+
+  it("une selection d'archives se desarchive d'un geste", () => {
+    const [action] = bulkActions([ligne("a", "archived")]);
+
+    expect(action.status).toBe("active");
+    expect(action.icon).toBe("restore");
+    expect(action.partial).toBe(false);
+  });
+
+  it("une selection active propose la pause et l'archive, pas la reprise", () => {
+    const actions = bulkActions([ligne("a"), ligne("b")]);
+
+    expect(noms(actions)).toEqual(["commitments.bulkPause", "commitments.bulkArchive"]);
+  });
+
+  it("une selection en pause propose la reprise, pas une seconde pause", () => {
+    const actions = bulkActions([ligne("a", "paused"), ligne("b", "paused")]);
+
+    expect(noms(actions)).toEqual(["commitments.resume", "commitments.bulkArchive"]);
+  });
+
+  it("un melange actif et pause compte ce que chaque action concerne", () => {
+    const actions = bulkActions([ligne("a"), ligne("b"), ligne("c"), ligne("d", "paused")]);
+    const par = Object.fromEntries(actions.map((action) => [action.status, action]));
+
+    expect(par.paused).toMatchObject({ count: 3, partial: true });
+    expect(par.active).toMatchObject({ count: 1, partial: true });
+    expect(par.archived).toMatchObject({ count: 4, partial: false });
+  });
+
+  it("le retour a l'actif ne se dit desarchiver que sur un lot homogene", () => {
+    // Depuis une pause on reprend, depuis une archive on desarchive : un lot
+    // qui melange les deux garde le nom le plus general.
+    const actions = bulkActions([ligne("a", "paused"), ligne("b", "archived")]);
+    const retour = actions.find((action) => action.status === "active");
+
+    expect(retour.labelKey).toBe("commitments.resume");
+    expect(retour.count).toBe(2);
+  });
+
+  it("l'archive reste possible sur un melange actif et pause", () => {
+    const actions = bulkActions([ligne("a"), ligne("b", "paused")]);
+    const archive = actions.find((action) => action.status === "archived");
+
+    expect(archive.partial).toBe(false);
+  });
+
+  it("une selection vide ne propose rien", () => {
+    expect(bulkActions([])).toEqual([]);
+  });
+
+  it("l'ordre des actions ne depend pas de l'ordre de la selection", () => {
+    const gauche = bulkActions([ligne("a"), ligne("b", "paused")]);
+    const droite = bulkActions([ligne("b", "paused"), ligne("a")]);
+
+    expect(noms(gauche)).toEqual(noms(droite));
   });
 });
 

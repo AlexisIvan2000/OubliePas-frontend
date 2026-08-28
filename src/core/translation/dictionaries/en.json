@@ -192,6 +192,7 @@
     "allCategories": "All ({count})",
     "archive": "Archive",
     "archived": "archived",
+    "backToList": "Back to the list",
     "bulkActiveDone": {
       "one": "{count} line reactivated.",
       "other": "{count} lines reactivated."
@@ -215,6 +216,7 @@
       "other": "{count} lines deleted."
     },
     "bulkNothing": "No line changed.",
+    "bulkPartial": "{label} ({count})",
     "bulkPause": "Pause",
     "bulkPausedDone": {
       "one": "{count} line paused.",
@@ -226,6 +228,8 @@
     "deleteAria": "Delete {title}",
     "deleted": "{title} has been deleted.",
     "editAria": "Edit {title}",
+    "emptyArchiveBody": "Everything that was here is back in the list.",
+    "emptyArchiveTitle": "Nothing archived",
     "emptyInvoicesBody": "Add your rent, your insurance or your energy bills so you never forget them.",
     "emptyInvoicesTitle": "No bill yet",
     "emptySubscriptionsBody": "Add Netflix, Spotify, iCloud… to see what they cost you each month.",

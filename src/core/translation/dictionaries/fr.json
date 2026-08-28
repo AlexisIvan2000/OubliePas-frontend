@@ -192,6 +192,7 @@
     "allCategories": "Toutes ({count})",
     "archive": "Archiver",
     "archived": "archivé",
+    "backToList": "Revenir à la liste",
     "bulkActiveDone": {
       "one": "{count} ligne réactivée.",
       "other": "{count} lignes réactivées."
@@ -215,6 +216,7 @@
       "other": "{count} lignes supprimées."
     },
     "bulkNothing": "Aucune ligne n'a changé.",
+    "bulkPartial": "{label} ({count})",
     "bulkPause": "Mettre en pause",
     "bulkPausedDone": {
       "one": "{count} ligne mise en pause.",
@@ -226,6 +228,8 @@
     "deleteAria": "Supprimer {title}",
     "deleted": "{title} a été supprimé.",
     "editAria": "Modifier {title}",
+    "emptyArchiveBody": "Tout ce qui était ici est revenu dans la liste.",
+    "emptyArchiveTitle": "Aucune ligne archivée",
     "emptyInvoicesBody": "Ajoutez votre loyer, vos assurances ou vos factures d'énergie pour ne plus les oublier.",
     "emptyInvoicesTitle": "Aucune facture pour l'instant",
     "emptySubscriptionsBody": "Ajoutez Netflix, Spotify, iCloud… pour voir ce qu'ils vous coûtent chaque mois.",

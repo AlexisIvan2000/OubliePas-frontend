@@ -2,7 +2,16 @@ import { Icon } from "../../../../core/components/Icon/Icon";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import styles from "../styles/selection.module.css";
 
-export function SelectionBar({ count, total, allPicked, busy, onAction, onToggleAll, onCancel }) {
+export function SelectionBar({
+  count,
+  total,
+  allPicked,
+  actions,
+  busy,
+  onAction,
+  onToggleAll,
+  onCancel,
+}) {
   const { t } = useTranslation();
 
   return (
@@ -18,25 +27,23 @@ export function SelectionBar({ count, total, allPicked, busy, onAction, onToggle
       <span className={styles.spacer} />
 
       <div className={styles.actions}>
-        <button
-          type="button"
-          className={styles.action}
-          onClick={() => onAction("archived")}
-          disabled={busy || !count}
-        >
-          <Icon name="archive" size={15} />
-          {t("commitments.bulkArchive")}
-        </button>
-
-        <button
-          type="button"
-          className={styles.action}
-          onClick={() => onAction("paused")}
-          disabled={busy || !count}
-        >
-          <Icon name="pause" size={15} />
-          {t("commitments.bulkPause")}
-        </button>
+        {actions.map((action) => (
+          <button
+            key={action.status}
+            type="button"
+            className={styles.action}
+            onClick={() => onAction(action.status)}
+            disabled={busy}
+          >
+            <Icon name={action.icon} size={15} />
+            {action.partial
+              ? t("commitments.bulkPartial", {
+                  label: t(action.labelKey),
+                  count: action.count,
+                })
+              : t(action.labelKey)}
+          </button>
+        ))}
 
         <button
           type="button"

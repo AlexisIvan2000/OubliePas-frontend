@@ -339,6 +339,45 @@ export const STATUS_ACTIONS = {
   ],
 };
 
+const BULK_ORDER = ["active", "paused", "archived"];
+
+const BULK_LABEL_KEYS = {
+  active: "commitments.resume",
+  paused: "commitments.bulkPause",
+  archived: "commitments.bulkArchive",
+};
+
+const BULK_ICONS = { active: "resume", paused: "pause", archived: "archive" };
+
+// La barre se derive de la selection, jamais l'inverse : proposer "Archiver"
+// sur cinq lignes deja archivees produirait un lot vide et un message honnete
+// mais absurde. Une action qui ne concerne personne ne s'affiche pas.
+export function bulkActions(picked) {
+  return BULK_ORDER.flatMap((status) => {
+    const eligible = picked.filter((item) =>
+      (STATUS_ACTIONS[item.status] ?? []).some((action) => action.status === status),
+    );
+    if (!eligible.length) {
+      return [];
+    }
+
+    // Revenir a "actif" porte deux noms selon d'ou l'on vient : on sort d'une
+    // parenthese ou d'une archive. Le lot ne le dit que s'il est homogene.
+    const unarchive =
+      status === "active" && eligible.every((item) => item.status === "archived");
+
+    return [
+      {
+        status,
+        icon: unarchive ? "restore" : BULK_ICONS[status],
+        labelKey: unarchive ? "commitments.restore" : BULK_LABEL_KEYS[status],
+        count: eligible.length,
+        partial: eligible.length < picked.length,
+      },
+    ];
+  });
+}
+
 // Seules les actions qui retirent quelque chose a l'utilisateur meritent un
 // filet : reactiver ou desarchiver est deja une reparation, proposer de l'annuler
 // ne ferait que reproposer le probleme.

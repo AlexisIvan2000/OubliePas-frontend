@@ -30,6 +30,7 @@ import {
   REVERSIBLE_STATUS,
   SORTS,
   STATUS_TOAST_KEYS,
+  bulkActions,
   categoryCounts,
   categoryLabel,
   matchesQuery,
@@ -102,8 +103,15 @@ export function CommitmentsView({ type }) {
     [items],
   );
 
+  // La vue des archives est exclusive, pas additive : les melanger aux lignes
+  // vivantes rendait possible une selection a cheval sur les deux, ou la moitie
+  // des actions n'a aucun sens. L'archive est une sortie, la pause une
+  // parenthese : seule la premiere quitte le flux.
   const pool = useMemo(
-    () => (showArchived ? items : items.filter((item) => item.status !== "archived")),
+    () =>
+      items.filter((item) =>
+        showArchived ? item.status === "archived" : item.status !== "archived",
+      ),
     [items, showArchived],
   );
 
@@ -125,6 +133,13 @@ export function CommitmentsView({ type }) {
       ),
     [pool, picked, query, sort, t],
   );
+
+  const pickedRows = useMemo(
+    () => visible.filter((item) => selected.has(item.id)),
+    [visible, selected],
+  );
+
+  const actions = useMemo(() => bulkActions(pickedRows), [pickedRows]);
 
   const active = useMemo(() => visible.filter((item) => item.status === "active"), [visible]);
   const rate = useMemo(() => runRate(active), [active]);
@@ -254,7 +269,7 @@ export function CommitmentsView({ type }) {
 
   const applyBulk = async (action) => {
     setConfirmingBulk(false);
-    const ids = visible.filter((item) => selected.has(item.id)).map((item) => item.id);
+    const ids = pickedRows.map((item) => item.id);
     if (!ids.length) {
       return;
     }
@@ -402,7 +417,7 @@ export function CommitmentsView({ type }) {
         </div>
       </header>
 
-      {items.length ? (
+      {items.length && !showArchived ? (
         <CommitmentStats
           month={monthTotal}
           due={dueThisMonth.length}
@@ -439,7 +454,13 @@ export function CommitmentsView({ type }) {
           ) : null}
 
           {archivedCount || showArchived ? (
-            <Chip active={showArchived} onClick={() => setShowArchived((current) => !current)}>
+            <Chip
+              active={showArchived}
+              onClick={() => {
+                stopPicking();
+                setShowArchived((current) => !current);
+              }}
+            >
               {t("commitments.showArchived", { count: archivedCount })}
             </Chip>
           ) : null}
@@ -450,7 +471,7 @@ export function CommitmentsView({ type }) {
             </Chip>
           ) : null}
 
-          {items.length ? (
+          {items.length && !showArchived ? (
             <button
               type="button"
               className={styles.wipe}
@@ -517,6 +538,7 @@ export function CommitmentsView({ type }) {
           count={selected.size}
           total={visible.length}
           allPicked={selected.size >= visible.length && visible.length > 0}
+          actions={actions}
           busy={bulkBusy}
           onAction={runBulk}
           onToggleAll={toggleAll}
@@ -559,6 +581,17 @@ export function CommitmentsView({ type }) {
             setQuery("");
             setPicked(new Set());
           }}
+        />
+      ) : showArchived ? (
+        // Desarchiver le dernier element vide la vue : la quitter d'office
+        // deplacerait l'utilisateur sans qu'il l'ait demande, on lui rend la
+        // main a la place.
+        <EmptyState
+          icon="archive"
+          title={t("commitments.emptyArchiveTitle")}
+          message={t("commitments.emptyArchiveBody")}
+          actionLabel={t("commitments.backToList")}
+          onAction={() => setShowArchived(false)}
         />
       ) : archivedCount ? (
         <EmptyState
