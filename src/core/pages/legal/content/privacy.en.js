@@ -51,7 +51,7 @@ export default {
       list: [
         "No bank connection. The app links to no financial institution.",
         "No card or payment data.",
-        "No advertising trackers, no analytics tools, no third-party pixels. The app loads none.",
+        "No advertising trackers, no third-party pixels, no ad networks. The only measurement is a cookieless page count, described below.",
         "No location data.",
         "No profiling and no automated decisions about you.",
       ],
@@ -76,7 +76,7 @@ export default {
       body: [
         "A single cookie is set: the one that keeps your session open. It is unreadable by page JavaScript and is used only to renew your sign-in.",
         "Your browser also keeps, locally, your access token along with your theme and language preferences. That information never leaves your device except to authenticate you.",
-        "No advertising or analytics cookie is used, which is why there is no consent banner.",
+        "Audience measurement is limited to a page-view count handled by the site host. It sets no cookie and keeps no identifier in your browser, which is why there is no consent banner.",
       ],
     },
     {
@@ -104,6 +104,12 @@ export default {
           label: "Hosting",
           items: [
             "The server and the database are hosted with an infrastructure provider, where your data sits at rest.",
+          ],
+        },
+        {
+          label: "Audience measurement",
+          items: [
+            "The site host counts page views so that we know what is being read. It receives the page address, the referrer and the device type. No cookie is set, no identifier is kept in your browser, and this measurement is never tied to your account.",
           ],
         },
       ],

@@ -51,7 +51,7 @@ export default {
       list: [
         "Aucune connexion bancaire. L'application ne se relie à aucune institution financière.",
         "Aucune donnée de carte ni de paiement.",
-        "Aucun traceur publicitaire, aucun outil de mesure d'audience, aucun pixel tiers. L'application n'en charge aucun.",
+        "Aucun traceur publicitaire, aucun pixel tiers, aucune régie. La seule mesure est un comptage de pages sans témoin, décrit plus bas.",
         "Aucune donnée de géolocalisation.",
         "Aucun profilage et aucune décision automatisée vous concernant.",
       ],
@@ -76,7 +76,7 @@ export default {
       body: [
         "Un seul témoin est déposé : celui qui maintient votre session ouverte. Il est inaccessible au JavaScript de la page et sert uniquement à renouveler votre connexion.",
         "Votre navigateur conserve également, en local, votre jeton d'accès ainsi que vos préférences de thème et de langue. Ces informations ne quittent pas votre appareil autrement que pour vous authentifier.",
-        "Aucun témoin publicitaire ni de mesure d'audience n'est utilisé, ce qui explique l'absence de bandeau de consentement.",
+        "La mesure d'audience se limite à un comptage de pages vues, assuré par l'hébergeur du site. Elle ne dépose aucun témoin et ne conserve aucun identifiant dans votre navigateur : c'est ce qui explique l'absence de bandeau de consentement.",
       ],
     },
     {
@@ -106,6 +106,12 @@ export default {
           label: "Hébergement",
           items: [
             "Le serveur et la base de données sont hébergés chez un fournisseur d'infrastructure, où reposent vos données au repos.",
+          ],
+        },
+        {
+          label: "Mesure d'audience",
+          items: [
+            "L'hébergeur du site compte les pages vues afin que nous sachions ce qui est consulté. Il reçoit l'adresse de la page, la provenance et le type d'appareil. Aucun témoin n'est déposé, aucun identifiant n'est conservé dans votre navigateur, et cette mesure n'est jamais rattachée à votre compte.",
           ],
         },
       ],
