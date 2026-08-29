@@ -716,6 +716,8 @@
     "NO_PENDING_EMAIL_CHANGE": "Aucun changement d'adresse n'est en attente. Relancez le changement depuis vos réglages.",
     "OCCURRENCE_NOT_FOUND": "Cette échéance n'existe plus. Rechargez la page pour voir le calendrier à jour.",
     "PASSWORD_ALREADY_SET": "Ce compte possède déjà un mot de passe. Passez par le changement de mot de passe. Rien n'a été modifié.",
+    "PUSH_NOT_CONFIGURED": "Les notifications ne sont pas encore actives sur le serveur. Réessayez plus tard.",
+    "PUSH_SUBSCRIPTION_GONE": "Cet appareil n'est plus joignable pour les notifications. Reprenez l'activation depuis la page Rappels.",
     "RATE_LIMIT_EXCEEDED": "Trop de tentatives. Réessayez dans quelques minutes.",
     "RESET_CODE_EXPIRED": "Ce code a expiré. Demandez-en un nouveau. Votre mot de passe n'a pas changé.",
     "SAME_EMAIL_AS_CURRENT": "La nouvelle adresse doit être différente de l'actuelle. Saisissez une autre adresse. Votre adresse actuelle n'a pas changé.",
@@ -808,9 +810,17 @@
         "description": "Un récapitulatif de la semaine, chaque lundi."
       }
     },
+    "push": {
+      "unsupported": "Ce navigateur ne sait pas recevoir de notifications.",
+      "homeScreen": "Sur iPhone et iPad, ajoutez d'abord OubliePas à votre écran d'accueil : Partager, puis « Sur l'écran d'accueil ».",
+      "denied": "Les notifications sont bloquées pour ce site. Autorisez-les dans les réglages du navigateur, puis revenez ici.",
+      "refused": "Sans la permission du navigateur, aucune notification ne peut arriver sur cet appareil.",
+      "unavailable": "Les notifications ne sont pas encore actives sur le serveur.",
+      "sent": "Notification de test envoyée sur cet appareil."
+    },
     "families": {
       "title": "Types de rappels",
-      "description": "Choisissez ce que vous voulez recevoir par email."
+      "description": "Choisissez ce que vous voulez recevoir, sur tous les canaux allumés."
     },
     "family": {
       "notice": {
@@ -842,8 +852,8 @@
       "dueOn": "échéance {date}",
       "emptyTitle": "Aucun rappel programmé",
       "emptyText": "Les rappels apparaîtront ici dès qu'un abonnement ou une facture avec alerte approchera de son échéance.",
-      "mutedTitle": "Les rappels par courriel sont désactivés",
-      "mutedText": "Rien ne partira tant que l'interrupteur ci-contre est éteint. Tes échéances restent suivies dans l'app.",
+      "mutedTitle": "Les rappels sont désactivés",
+      "mutedText": "Rien ne partira tant que les deux canaux resteront éteints. Vos échéances restent suivies dans l'app.",
       "sameDay": "le jour même",
       "page": "{current} / {pages}",
       "previous": "Page précédente",

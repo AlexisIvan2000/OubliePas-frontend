@@ -3,7 +3,7 @@ export const DEFAULT_LEAD_TIME = 3;
 
 export const CHANNELS = [
   { id: "email", available: true },
-  { id: "push", available: false },
+  { id: "push", available: true },
 ];
 
 export const DIGESTS = [{ id: "weekly", available: false }];

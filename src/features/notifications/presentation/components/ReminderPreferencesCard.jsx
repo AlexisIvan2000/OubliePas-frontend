@@ -5,7 +5,15 @@ import { useTranslation } from "../../../../core/translation/useTranslation";
 import { CHANNELS, DIGESTS, FAMILIES, LEAD_TIMES } from "../../domain/reminders";
 import styles from "../styles/reminders.module.css";
 
-function ToggleRow({ id, group = "channel", soon = false, disabled = false, checked, onChange }) {
+function ToggleRow({
+  id,
+  group = "channel",
+  soon = false,
+  disabled = false,
+  noteKey = null,
+  checked,
+  onChange,
+}) {
   const { t } = useTranslation();
   const label = t(`reminders.${group}.${id}.label`);
 
@@ -23,6 +31,9 @@ function ToggleRow({ id, group = "channel", soon = false, disabled = false, chec
           {soon ? <span className={styles.soon}>{t("nav.soon")}</span> : null}
         </span>
         <span className={styles.toggleHint}>{t(`reminders.${group}.${id}.description`)}</span>
+        {/* Un interrupteur grise sans un mot laisse chercher la panne : la
+            raison compte plus que le blocage. */}
+        {noteKey ? <span className={styles.toggleNote}>{t(noteKey)}</span> : null}
       </div>
       <Switch
         checked={checked}
@@ -34,7 +45,7 @@ function ToggleRow({ id, group = "channel", soon = false, disabled = false, chec
   );
 }
 
-export function ReminderPreferencesCard({ preferences, saving, onToggle, onLeadTime }) {
+export function ReminderPreferencesCard({ preferences, saving, push, onToggle, onLeadTime }) {
   const { t } = useTranslation();
 
   return (
@@ -51,7 +62,12 @@ export function ReminderPreferencesCard({ preferences, saving, onToggle, onLeadT
             key={channel.id}
             id={channel.id}
             soon={!channel.available}
-            disabled={!channel.available || saving === channel.id}
+            disabled={
+              !channel.available ||
+              saving === channel.id ||
+              (channel.id === "push" && (push.locked || push.busy))
+            }
+            noteKey={channel.id === "push" ? push.noteKey : null}
             checked={preferences[channel.id]}
             onChange={onToggle}
           />
@@ -66,7 +82,7 @@ export function ReminderPreferencesCard({ preferences, saving, onToggle, onLeadT
             key={family.id}
             id={family.id}
             group="family"
-            disabled={!preferences.email || saving === family.id}
+            disabled={(!preferences.email && !preferences.push) || saving === family.id}
             checked={preferences[family.id]}
             onChange={onToggle}
           />

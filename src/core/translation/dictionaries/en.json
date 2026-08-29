@@ -716,6 +716,8 @@
     "NO_PENDING_EMAIL_CHANGE": "No email change is pending. Start the change again from your settings.",
     "OCCURRENCE_NOT_FOUND": "This payment no longer exists. Reload the page to see the current calendar.",
     "PASSWORD_ALREADY_SET": "This account already has a password. Use the change password form instead. Nothing was changed.",
+    "PUSH_NOT_CONFIGURED": "Notifications are not switched on yet on the server. Try again later.",
+    "PUSH_SUBSCRIPTION_GONE": "This device is no longer reachable for notifications. Open the Reminders page and switch them on again.",
     "RATE_LIMIT_EXCEEDED": "Too many attempts. Try again in a few minutes.",
     "RESET_CODE_EXPIRED": "This code has expired. Ask for a new one. Your password has not changed.",
     "SAME_EMAIL_AS_CURRENT": "The new address must differ from the current one. Enter a different address. Your current address has not changed.",
@@ -808,9 +810,17 @@
         "description": "A recap of the week, every Monday."
       }
     },
+    "push": {
+      "unsupported": "This browser cannot receive notifications.",
+      "homeScreen": "On iPhone and iPad, add OubliePas to your home screen first: Share, then “Add to Home Screen”.",
+      "denied": "Notifications are blocked for this site. Allow them in your browser settings, then come back here.",
+      "refused": "Without the browser's permission, no notification can reach this device.",
+      "unavailable": "Notifications are not switched on yet on the server.",
+      "sent": "Test notification sent to this device."
+    },
     "families": {
       "title": "Reminder types",
-      "description": "Choose what you want to receive by email."
+      "description": "Choose what you want to receive, across every channel you switched on."
     },
     "family": {
       "notice": {
@@ -842,8 +852,8 @@
       "dueOn": "due {date}",
       "emptyTitle": "No reminder scheduled",
       "emptyText": "Reminders will show up here as soon as a subscription or bill with alerts approaches its due date.",
-      "mutedTitle": "Email reminders are switched off",
-      "mutedText": "Nothing will be sent while the switch is off. Your due dates are still tracked in the app.",
+      "mutedTitle": "Reminders are switched off",
+      "mutedText": "Nothing will be sent while both channels stay off. Your due dates are still tracked in the app.",
       "sameDay": "on the day",
       "page": "{current} / {pages}",
       "previous": "Previous page",

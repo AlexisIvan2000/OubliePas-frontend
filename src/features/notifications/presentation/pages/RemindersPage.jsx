@@ -8,6 +8,7 @@ import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
 import { useCommitments } from "../../../commitments/presentation/providers/useCommitments";
 import { useOccurrences } from "../../../commitments/presentation/providers/useOccurrences";
+import { blockingReason } from "../../domain/push";
 import {
   DEFAULT_LEAD_TIME,
   DEFAULT_PREFERENCES,
@@ -16,6 +17,7 @@ import {
 } from "../../domain/reminders";
 import { ActivityFeedCard } from "../components/ActivityFeedCard";
 import { ReminderPreferencesCard } from "../components/ReminderPreferencesCard";
+import { SENT, usePush } from "../hooks/usePush";
 import styles from "../styles/reminders.module.css";
 
 const HORIZON_DAYS = 60;
@@ -34,6 +36,7 @@ export function RemindersPage() {
   const toast = useToast();
   const [local, setLocal] = useState(DEFAULT_PREFERENCES);
   const [saving, setSaving] = useState(null);
+  const push = usePush();
   const range = useMemo(() => ({ start: isoToday(), end: isoIn(HORIZON_DAYS) }), []);
 
   const { items: occurrences, loading: loadingOccurrences } = useOccurrences(range);
@@ -47,9 +50,15 @@ export function RemindersPage() {
   );
 
   const emailEnabled = user?.reminderEmailEnabled ?? true;
+  // L'interrupteur parle de cet appareil, pas seulement du compte : le reglage
+  // peut etre allume depuis un autre telephone alors que celui-ci n'est abonne
+  // a rien, et l'afficher au vert serait une promesse vide.
+  const pushEnabled = (user?.reminderPushEnabled ?? false) && push.subscribed;
+  const reason = blockingReason(push.state);
   const preferences = {
     ...local,
     email: emailEnabled,
+    push: pushEnabled,
     notice: user?.reminderNoticeEnabled ?? true,
     overdue: user?.reminderOverdueEnabled ?? true,
     action: user?.reminderActionEnabled ?? true,
@@ -67,9 +76,34 @@ export function RemindersPage() {
     }
   };
 
+  const togglePush = async (value) => {
+    setSaving("push");
+    try {
+      if (!value) {
+        await updateProfile({ reminder_push_enabled: false });
+        await push.disable();
+        return;
+      }
+      const outcome = await push.enable();
+      if (outcome !== SENT) {
+        toast.push(t(`reminders.push.${outcome}`), "error");
+        return;
+      }
+      await updateProfile({ reminder_push_enabled: true });
+      toast.push(t("reminders.push.sent"));
+    } catch (caught) {
+      toast.push(messageForError(t, caught), "error");
+    } finally {
+      setSaving(null);
+    }
+  };
+
   const toggle = (id, value) => {
     if (id === "email") {
       return save(id, { reminder_email_enabled: value });
+    }
+    if (id === "push") {
+      return togglePush(value);
     }
     const family = FAMILIES.find((entry) => entry.id === id);
     if (family) {
@@ -92,12 +126,17 @@ export function RemindersPage() {
         <ReminderPreferencesCard
           preferences={preferences}
           saving={saving}
+          push={{
+            busy: push.busy,
+            locked: Boolean(reason),
+            noteKey: reason ? `reminders.push.${reason}` : null,
+          }}
           onToggle={toggle}
           onLeadTime={setLeadTime}
         />
         <ActivityFeedCard
           entries={entries}
-          muted={!emailEnabled}
+          muted={!emailEnabled && !pushEnabled}
           loading={loadingOccurrences || loadingCommitments}
         />
       </div>

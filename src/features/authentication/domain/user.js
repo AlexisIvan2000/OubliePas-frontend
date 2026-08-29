@@ -14,6 +14,7 @@ export function mapUser(dto) {
     hasPassword: Boolean(dto.has_password),
     currency: dto.currency ?? "CAD",
     reminderEmailEnabled: dto.reminder_email_enabled ?? true,
+    reminderPushEnabled: dto.reminder_push_enabled ?? false,
     reminderNoticeEnabled: dto.reminder_notice_enabled ?? true,
     reminderOverdueEnabled: dto.reminder_overdue_enabled ?? true,
     reminderActionEnabled: dto.reminder_action_enabled ?? true,

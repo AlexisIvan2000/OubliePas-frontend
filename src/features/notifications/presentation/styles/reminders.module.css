@@ -125,6 +125,17 @@
   color: var(--color-text-muted);
 }
 
+.toggleNote {
+  margin-top: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--color-warning);
+  background-color: var(--color-warning-soft);
+  border: 1px solid var(--color-warning-border);
+  border-radius: var(--radius-sm);
+  padding: 0.375rem 0.5rem;
+}
+
 .soon {
   font-size: 0.625rem;
   letter-spacing: 0.06em;
