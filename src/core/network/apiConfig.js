@@ -1,4 +1,4 @@
-const rawBaseUrl = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+const rawBaseUrl = import.meta.env.VITE_API_URL ?? "https://api.oubliepas.com";
 
 export const API_BASE_URL = rawBaseUrl.replace(/\/+$/, "");
 
