@@ -41,6 +41,15 @@
   display: flex;
   flex-direction: column;
   gap: 1.125rem;
+  /* La barre est haute de 100dvh sans defilement propre : sur un ecran court,
+     le pied sortait du cadre et le bouton de deconnexion devenait
+     inatteignable. Seule la liste des liens defile, le compte et la sortie
+     restent ancres en bas. min-height est indispensable, un enfant flex
+     refusant sinon de retrecir sous la taille de son contenu. */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 .group {
@@ -297,6 +306,10 @@
   .nav {
     flex-direction: row;
     flex-wrap: wrap;
+    /* En bandeau horizontal la barre reprend sa hauteur naturelle : rien ne
+       deborde, et un defilement interne couperait les liens. */
+    flex: 0 1 auto;
+    overflow: visible;
   }
 
   .foot {
