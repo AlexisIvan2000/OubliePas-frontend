@@ -13,9 +13,17 @@ import { LEGAL, fill } from "./legalConfig";
 import { LEGAL_PATHS, loadLegalDoc } from "./legalDocs";
 import styles from "./LegalPage.module.css";
 
-function Document({ doc, name }) {
+function Document({ doc, name, failed }) {
   const { t } = useTranslation();
   const other = name === "terms" ? "privacy" : "terms";
+
+  if (failed) {
+    return (
+      <div className={styles.sheet} role="alert">
+        <p className={styles.intro}>{t("legal.failed")}</p>
+      </div>
+    );
+  }
 
   if (!doc) {
     return (
@@ -93,19 +101,31 @@ export function LegalPage({ name }) {
   const { isAuthenticated } = useAuth();
   const [loaded, setLoaded] = useState(null);
 
+  // Un seul etat porte le resultat et sa cle : l'echec se derive comme le
+  // document, donc changer de page le remet a zero sans effet supplementaire.
   const key = `${name}|${locale}`;
-  const doc = loaded?.key === key ? loaded.doc : null;
+  const current = loaded?.key === key ? loaded : null;
+  const doc = current?.doc ?? null;
+  const failed = Boolean(current?.failed);
 
   useDocumentTitle(doc ? doc.title : t("legal.loading"));
 
   useEffect(() => {
     let active = true;
 
-    loadLegalDoc(name, locale).then((content) => {
-      if (active) {
-        setLoaded({ key: `${name}|${locale}`, doc: content });
-      }
-    });
+    loadLegalDoc(name, locale)
+      .then((content) => {
+        if (active) {
+          setLoaded({ key: `${name}|${locale}`, doc: content });
+        }
+      })
+      // Un onglet ouvert avant un redeploiement demande un fichier dont le nom
+      // a change : sans ce filet, la page restait en chargement pour toujours.
+      .catch(() => {
+        if (active) {
+          setLoaded({ key: `${name}|${locale}`, doc: null, failed: true });
+        }
+      });
 
     return () => {
       active = false;
@@ -116,7 +136,7 @@ export function LegalPage({ name }) {
     return (
       <AppShell>
         <div className={styles.inShell}>
-          <Document doc={doc} name={name} />
+          <Document doc={doc} name={name} failed={failed} />
         </div>
       </AppShell>
     );
@@ -133,7 +153,7 @@ export function LegalPage({ name }) {
       </header>
 
       <main className={styles.standalone}>
-        <Document doc={doc} name={name} />
+        <Document doc={doc} name={name} failed={failed} />
       </main>
 
       <footer className={styles.footer}>

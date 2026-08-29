@@ -19,6 +19,11 @@ export default defineConfig([
     },
   },
   {
+    // Les fichiers de configuration tournent sous Node, pas dans le navigateur.
+    files: ['*.config.js'],
+    languageOptions: { globals: globals.node },
+  },
+  {
     // Les tests remplacent les primitives de React : les regles des hooks ne
     // s'appliquent pas a du code qui n'est jamais rendu.
     files: ['src/tests/**/*.js'],

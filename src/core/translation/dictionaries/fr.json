@@ -12,6 +12,11 @@
     "undo": "Annuler",
     "yes": "Oui"
   },
+  "crash": {
+    "body": "La page n'a pas pu s'afficher. Rechargez-la ; si cela se reproduit, revenez dans un moment.",
+    "reload": "Recharger l'application",
+    "title": "Quelque chose s'est cassé"
+  },
   "date": {
     "choose": "Choisir une date",
     "today": "Aujourd'hui",
@@ -103,6 +108,7 @@
     }
   },
   "legal": {
+    "failed": "Ce document n'a pas pu être chargé. Rechargez la page.",
     "supportTitle": "Assistance",
     "supportHint": "Une question ou un problème ? Nous répondons.",
     "sectionTitle": "Documents",

@@ -12,6 +12,11 @@
     "undo": "Undo",
     "yes": "Yes"
   },
+  "crash": {
+    "body": "This page could not be displayed. Reload it; if it happens again, come back in a moment.",
+    "reload": "Reload the app",
+    "title": "Something broke"
+  },
   "date": {
     "choose": "Pick a date",
     "today": "Today",
@@ -103,6 +108,7 @@
     }
   },
   "legal": {
+    "failed": "This document could not be loaded. Reload the page.",
     "supportTitle": "Support",
     "supportHint": "A question or a problem? We answer.",
     "sectionTitle": "Documents",

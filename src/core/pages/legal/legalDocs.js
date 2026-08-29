@@ -14,7 +14,14 @@ export const LEGAL_PATHS = {
   privacy: "/confidentialite",
 };
 
+// Meme repli que le dictionnaire : une traduction qui ne se charge pas rend la
+// version francaise plutot que rien. Si le francais lui-meme echoue, l'appelant
+// doit le savoir, donc la promesse est laissee en echec.
 export function loadLegalDoc(name, locale) {
   const byLocale = LOADERS[name];
-  return (byLocale[locale] ?? byLocale.fr)().then((module) => module.default);
+  const load = byLocale[locale] ?? byLocale.fr;
+
+  return load()
+    .catch(() => (load === byLocale.fr ? Promise.reject() : byLocale.fr()))
+    .then((module) => module.default);
 }

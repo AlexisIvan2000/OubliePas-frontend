@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
+import { CrashScreen } from "./core/components/ErrorBoundary/CrashScreen";
 import { HomeRoute } from "./core/pages/HomeRoute";
 import { PrivacyPage } from "./core/pages/legal/PrivacyPage";
 import { TermsPage } from "./core/pages/legal/TermsPage";
@@ -24,6 +25,7 @@ import { VerifyEmailPage } from "./features/authentication/presentation/pages/Ve
 export const router = createBrowserRouter([
   {
     element: <RootLayout />,
+    errorElement: <CrashScreen />,
     children: [
       { path: "/", element: <HomeRoute /> },
       { path: "/conditions", element: <TermsPage /> },
