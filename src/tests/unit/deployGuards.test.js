@@ -2,36 +2,64 @@ import { readFileSync } from "node:fs";
 
 import { describe, expect, it } from "vitest";
 
-import { checkApiUrl } from "../../../vite.guards";
+import { checkApiUrl, isHostedBuild } from "../../../vite.guards";
 import fr from "../../core/translation/dictionaries/fr.json";
 
-describe("l'adresse de l'API ne peut pas manquer en production", () => {
-  it("un build de production sans adresse echoue", () => {
+const HEBERGE = { hosted: true };
+
+describe("l'adresse de l'API ne peut pas manquer sur la plateforme", () => {
+  it("un build heberge sans adresse echoue", () => {
     // Sans cette garde, le repli de developpement part en production et chaque
     // visiteur interroge sa propre machine.
-    expect(() => checkApiUrl("production", undefined)).toThrow(/VITE_API_URL manquante/);
-    expect(() => checkApiUrl("production", "")).toThrow(/VITE_API_URL manquante/);
+    expect(() => checkApiUrl("production", undefined, HEBERGE)).toThrow(/manquante/);
+    expect(() => checkApiUrl("production", "", HEBERGE)).toThrow(/manquante/);
   });
 
-  it("une adresse relative est refusee", () => {
-    expect(() => checkApiUrl("production", "api.oubliepas.com")).toThrow(/absolue/);
+  it("une adresse relative est refusee, hebergee ou non", () => {
+    // Celle-la n'a aucun sens nulle part : une adresse d'API relative ne peut
+    // pas etre resolue par le navigateur depuis une autre origine.
+    expect(() => checkApiUrl("production", "api.oubliepas.com", HEBERGE)).toThrow(/absolue/);
     expect(() => checkApiUrl("production", "/v1")).toThrow(/absolue/);
   });
 
   it("une adresse absolue passe", () => {
-    expect(() => checkApiUrl("production", "https://api.oubliepas.com")).not.toThrow();
-    expect(() => checkApiUrl("production", "http://api.oubliepas.com")).not.toThrow();
+    expect(() => checkApiUrl("production", "https://api.oubliepas.com", HEBERGE)).not.toThrow();
+    expect(() => checkApiUrl("production", "http://api.oubliepas.com", HEBERGE)).not.toThrow();
   });
 
   it("le developpement garde son repli", () => {
-    expect(() => checkApiUrl("development", undefined)).not.toThrow();
+    expect(checkApiUrl("development", undefined)).toBeNull();
+  });
+});
+
+describe("un clone frais construit sans rien configurer", () => {
+  it("un build local sans adresse aboutit, mais previent", () => {
+    // Le danger n'est pas de construire sans la variable, c'est de le faire sur
+    // la machine qui sert le public. Bloquer le poste de developpement
+    // punirait le seul cas ou le repli localhost est exactement ce qu'on veut.
+    const avertissement = checkApiUrl("production", undefined);
+
+    expect(avertissement).toMatch(/localhost:8000/);
+    expect(avertissement).toMatch(/local/);
   });
 
-  it("la configuration branche bien la garde", () => {
+  it("aucun avertissement quand l'adresse est donnee", () => {
+    expect(checkApiUrl("production", "https://api.oubliepas.com")).toBeNull();
+  });
+
+  it("les plateformes se reconnaissent a leur variable", () => {
+    expect(isHostedBuild({ VERCEL: "1" })).toBe(true);
+    expect(isHostedBuild({ CI: "true" })).toBe(true);
+    expect(isHostedBuild({})).toBe(false);
+    expect(isHostedBuild({ HOME: "/home/alexis" })).toBe(false);
+  });
+
+  it("la configuration branche la garde et la detection", () => {
     const source = readFileSync("vite.config.js", "utf8");
 
     expect(source).toContain("checkApiUrl(");
     expect(source).toContain("process.env.VITE_API_URL");
+    expect(source).toContain("isHostedBuild(process.env)");
   });
 });
 
