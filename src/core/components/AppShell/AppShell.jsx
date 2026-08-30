@@ -9,6 +9,7 @@ import { useTranslation } from "../../translation/useTranslation";
 import { cx } from "../../utils/classNames";
 import { Avatar } from "../Avatar/Avatar";
 import { Icon } from "../Icon/Icon";
+import { PreferenceToggles } from "../PreferenceToggles/PreferenceToggles";
 import styles from "./AppShell.module.css";
 
 const NAV_GROUPS = [
@@ -73,7 +74,7 @@ export function AppShell({ children }) {
                     cx(styles.link, styles.enter, isActive && styles.active)
                   }
                 >
-                  <Icon name={item.icon} size={18} className={styles.icon} />
+                  <Icon name={item.icon} size={16} className={styles.icon} />
                   <span className={styles.linkLabel}>{t(`nav.${item.key}`)}</span>
                   {item.counts === "late" && late > 0 ? (
                     <span className={styles.count} title={t("nav.lateCount", { count: late })}>
@@ -87,12 +88,14 @@ export function AppShell({ children }) {
         </nav>
 
         <div className={styles.foot}>
+          <PreferenceToggles className={styles.prefs} />
+
           <div className={styles.account}>
             <Avatar
               seed={user?.email ?? ""}
               initials={initials(user)}
               src={user?.avatarUrl ?? undefined}
-              size={30}
+              size={26}
             />
             <div className={styles.identity}>
               <div className={styles.name}>{fullName(user)}</div>
@@ -101,7 +104,7 @@ export function AppShell({ children }) {
           </div>
 
           <button type="button" className={styles.signOut} onClick={logout}>
-            <Icon name="logout" size={18} className={styles.signOutIcon} />
+            <Icon name="logout" size={16} className={styles.signOutIcon} />
             <span>{t("nav.signOut")}</span>
           </button>
         </div>
