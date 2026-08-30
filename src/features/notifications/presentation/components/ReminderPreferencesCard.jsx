@@ -108,12 +108,14 @@ export function ReminderPreferencesCard({ preferences, saving, push, onToggle, o
 
       <div className={styles.group}>
         <h3 className={styles.groupTitle}>{t("reminders.digest.title")}</h3>
+        {/* Le recapitulatif ne part que par courriel : l'offrir canal coupe
+            promettrait un envoi qui n'a aucun chemin pour sortir. */}
         {DIGESTS.map((digest) => (
           <ToggleRow
             key={digest.id}
             id={digest.id}
             soon={!digest.available}
-            disabled={!digest.available}
+            disabled={!digest.available || !preferences.email || saving === digest.id}
             checked={preferences[digest.id]}
             onChange={onToggle}
           />

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { scheduledReminders } from "../../features/notifications/domain/reminders";
+import { DIGESTS, scheduledReminders } from "../../features/notifications/domain/reminders";
+import { mapUser } from "../../features/authentication/domain/user";
 
 const engagement = (overrides = {}) => ({
   id: "c1",
@@ -94,5 +95,26 @@ describe("scheduledReminders", () => {
 
     expect(ligne.title).toBe("Netflix");
     expect(ligne.amount).toBe("24.99");
+  });
+});
+
+describe("le recapitulatif hebdomadaire", () => {
+  it("porte le champ que la page enverra au serveur", () => {
+    // Sans ce champ, l'interrupteur retomberait dans la branche « etat local »
+    // de la page : il basculerait a l'ecran et ne partirait jamais.
+    const weekly = DIGESTS.find((entry) => entry.id === "weekly");
+
+    expect(weekly.available).toBe(true);
+    expect(weekly.field).toBe("reminder_weekly_enabled");
+  });
+
+  it("se lit depuis la reponse du serveur", () => {
+    expect(mapUser({ reminder_weekly_enabled: true }).reminderWeeklyEnabled).toBe(true);
+  });
+
+  it("vaut faux quand le serveur ne dit rien", () => {
+    // Un compte cree avant la migration ne porte pas le champ : le defaut doit
+    // etre l'absence d'envoi, jamais l'inverse.
+    expect(mapUser({}).reminderWeeklyEnabled).toBe(false);
   });
 });

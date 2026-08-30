@@ -12,6 +12,7 @@ import { blockingReason } from "../../domain/push";
 import {
   DEFAULT_LEAD_TIME,
   DEFAULT_PREFERENCES,
+  DIGESTS,
   FAMILIES,
   scheduledReminders,
 } from "../../domain/reminders";
@@ -62,6 +63,7 @@ export function RemindersPage() {
     notice: user?.reminderNoticeEnabled ?? true,
     overdue: user?.reminderOverdueEnabled ?? true,
     action: user?.reminderActionEnabled ?? true,
+    weekly: user?.reminderWeeklyEnabled ?? false,
     leadTime: user?.defaultReminderDays ?? DEFAULT_LEAD_TIME,
   };
 
@@ -121,6 +123,12 @@ export function RemindersPage() {
     const family = FAMILIES.find((entry) => entry.id === id);
     if (family) {
       return save(id, { [family.field]: value });
+    }
+    // Le recapitulatif se range avec les familles plutot qu'avec les canaux :
+    // c'est un contenu de plus, pas une voie de plus.
+    const digest = DIGESTS.find((entry) => entry.id === id && entry.field);
+    if (digest) {
+      return save(id, { [digest.field]: value });
     }
     setLocal((current) => ({ ...current, [id]: value }));
     return undefined;

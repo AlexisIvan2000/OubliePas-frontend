@@ -18,6 +18,7 @@ export function mapUser(dto) {
     reminderNoticeEnabled: dto.reminder_notice_enabled ?? true,
     reminderOverdueEnabled: dto.reminder_overdue_enabled ?? true,
     reminderActionEnabled: dto.reminder_action_enabled ?? true,
+    reminderWeeklyEnabled: dto.reminder_weekly_enabled ?? false,
     defaultReminderDays: dto.default_reminder_days ?? 3,
     locale: dto.locale ?? "fr",
     // Sans valeur du serveur on ne devine pas un plafond : l'indicateur se tait

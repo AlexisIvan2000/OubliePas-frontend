@@ -6,7 +6,7 @@ export const CHANNELS = [
   { id: "push", available: true },
 ];
 
-export const DIGESTS = [{ id: "weekly", available: false }];
+export const DIGESTS = [{ id: "weekly", available: true, field: "reminder_weekly_enabled" }];
 
 export const FAMILIES = [
   { id: "notice", field: "reminder_notice_enabled" },
