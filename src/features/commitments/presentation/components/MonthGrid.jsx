@@ -1,6 +1,10 @@
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { cx } from "../../../../core/utils/classNames";
 import { MAX_VISIBLE_EVENTS, eventTone } from "../../domain/calendar";
+
+// Trois pastilles suffisent a dire « il se passe quelque chose ce jour-la » dans
+// une case de trente-sept pixels ; le detail est a un doigt, dans le dialogue.
+const MAX_DOTS = 3;
 import { formatMoney, formatWeekdays } from "../../domain/formatting";
 import styles from "../styles/calendar.module.css";
 
@@ -30,8 +34,25 @@ export function MonthGrid({ cells, currency, busyId, onToggle, onOpenDay }) {
                 "--enter-delay": `${(Math.floor(index / 7) + (index % 7)) * 18}ms`,
               }}
             >
-              <div className={cx(styles.dayNumber, cell.isToday && styles.todayNumber)}>
+              {/* Le numero fait office de bouton : seule cible tactile de la
+                  case en grille compacte (et raccourci vers le jour ailleurs). */}
+              <button
+                type="button"
+                className={cx(styles.dayNumber, cell.isToday && styles.todayNumber)}
+                onClick={() => onOpenDay(cell)}
+                disabled={!cell.events.length}
+                aria-label={t("calendar.openDay")}
+              >
                 {cell.day}
+              </button>
+
+              <div className={styles.dots} aria-hidden="true">
+                {cell.events.slice(0, MAX_DOTS).map((occurrence) => (
+                  <span
+                    key={occurrence.id}
+                    className={cx(styles.dot, styles[eventTone(occurrence)])}
+                  />
+                ))}
               </div>
 
               <div className={styles.events}>

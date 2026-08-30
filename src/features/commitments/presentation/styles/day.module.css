@@ -17,7 +17,12 @@
 .dialog {
   width: min(28rem, 100%);
   max-height: calc(100dvh - 2rem);
+  /* overflow-y seul fait deduire overflow-x: auto au navigateur, la
+     specification interdisant de melanger « visible » et une valeur
+     defilante : une barre horizontale apparait alors pour quelques pixels.
+     « clip » coupe sans jamais en offrir. */
   overflow-y: auto;
+  overflow-x: clip;
   padding: 1.5rem;
   border-radius: var(--radius-lg);
   background: var(--color-surface);

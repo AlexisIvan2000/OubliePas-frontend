@@ -125,9 +125,38 @@
 }
 
 .dayNumber {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
   color: var(--color-text-subtle);
+  cursor: pointer;
+}
+
+.dayNumber:disabled {
+  cursor: default;
+}
+
+.dayNumber:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Les pastilles ne servent qu'a la grille compacte : sur grand ecran les
+   evenements se lisent en toutes lettres. */
+.dots {
+  display: none;
+  gap: 0.1875rem;
+}
+
+.dot {
+  width: 0.3125rem;
+  height: 0.3125rem;
+  border-radius: 999px;
 }
 
 .todayNumber {
@@ -261,8 +290,50 @@
     font-size: 1.75rem;
   }
 
+  /* La grille de sept colonnes tient a 390 pixels a condition d'abandonner le
+     texte : une case fait alors trente-sept pixels de large, de quoi loger un
+     numero et trois pastilles, pas « Netflix - 15,99 $ ». La forme du mois se
+     lit d'un coup d'oeil, le detail s'ouvre au doigt. */
   .board {
+    padding: 0.625rem;
+  }
+
+  .weekdays,
+  .grid {
+    gap: 0.1875rem;
+  }
+
+  .weekday {
+    font-size: 0.5625rem;
+    letter-spacing: 0.02em;
+  }
+
+  .cell {
+    gap: 0.1875rem;
+    min-height: 0;
+    aspect-ratio: 1;
+    padding: 0.25rem;
+    border-radius: 0.375rem;
+  }
+
+  .filler {
+    min-height: 0;
+    aspect-ratio: 1;
+  }
+
+  .dayNumber {
+    align-self: center;
+    font-size: 0.6875rem;
+  }
+
+  .events {
     display: none;
+  }
+
+  .dots {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .mobileList {

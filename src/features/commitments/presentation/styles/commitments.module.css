@@ -147,9 +147,42 @@
   opacity: 0.6;
 }
 
+/* Le champ et le selecteur voyagent ensemble : separes, le premier reclamait
+   seize rem de base et poussait le second hors de la rangee. Groupes, ils se
+   partagent une largeur et basculent en pile d'un seul coup. */
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
 .search {
-  flex: 1 1 16rem;
+  flex: 1 1 10rem;
+  min-width: 0;
   max-width: 28rem;
+}
+
+.sort {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 34rem) {
+  .searchRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .search {
+    max-width: none;
+  }
+
+  .sort,
+  .sort button {
+    width: 100%;
+  }
 }
 
 .wipe {

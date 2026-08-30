@@ -102,6 +102,7 @@
     "settings": "Réglages",
     "soon": "bientôt",
     "signOut": "Déconnexion",
+    "menu": "Ouvrir le menu",
     "lateCount": {
       "one": "{count} échéance en retard",
       "other": "{count} échéances en retard"

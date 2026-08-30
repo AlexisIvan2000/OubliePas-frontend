@@ -11,6 +11,7 @@ import { Avatar } from "../Avatar/Avatar";
 import { Icon } from "../Icon/Icon";
 import { PreferenceToggles } from "../PreferenceToggles/PreferenceToggles";
 import styles from "./AppShell.module.css";
+import { useNavDrawer } from "./useNavDrawer";
 
 const NAV_GROUPS = [
   {
@@ -37,6 +38,7 @@ export function AppShell({ children }) {
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const { data: summary, revalidate } = useResource("summary", getSummary);
+  const drawer = useNavDrawer(pathname);
 
   const firstPath = useRef(pathname);
 
@@ -53,7 +55,33 @@ export function AppShell({ children }) {
 
   return (
     <div className={styles.shell}>
-      <aside className={styles.sidebar}>
+      {/* L'en-tete n'existe qu'en dessous du seuil : sur grand ecran la barre
+          reste posee a gauche et n'a rien a ouvrir. */}
+      <header className={styles.bar}>
+        <button
+          type="button"
+          className={styles.burger}
+          aria-expanded={drawer.open}
+          aria-controls="nav-drawer"
+          aria-label={t("nav.menu")}
+          onClick={drawer.toggle}
+        >
+          <Icon name={drawer.open ? "close" : "menu"} size={20} />
+        </button>
+        <NavLink to="/" className={styles.barBrand}>
+          <img className={styles.barLogo} src="/assets/logo.png" alt="" />
+          <span>OubliePas</span>
+        </NavLink>
+      </header>
+
+      {drawer.open ? (
+        <div className={styles.scrim} onClick={drawer.close} aria-hidden="true" />
+      ) : null}
+
+      <aside
+        id="nav-drawer"
+        className={cx(styles.sidebar, drawer.open && styles.sidebarOpen)}
+      >
         <NavLink to="/" className={styles.brand}>
           <img className={styles.logo} src="/assets/logo.png" alt="" />
           <span className={styles.wordmark}>OubliePas</span>

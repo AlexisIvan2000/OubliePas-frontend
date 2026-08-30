@@ -102,6 +102,7 @@
     "settings": "Settings",
     "soon": "soon",
     "signOut": "Sign out",
+    "menu": "Open the menu",
     "lateCount": {
       "one": "{count} overdue payment",
       "other": "{count} overdue payments"

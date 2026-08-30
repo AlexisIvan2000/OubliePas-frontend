@@ -6,7 +6,12 @@
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  /* overflow-y seul fait deduire overflow-x: auto au navigateur, la
+     specification interdisant de melanger « visible » et une valeur
+     defilante : une barre horizontale apparait alors pour quelques pixels.
+     « clip » coupe sans jamais en offrir. */
   overflow-y: auto;
+  overflow-x: clip;
   background-color: var(--color-overlay);
   animation: global(veilIn) var(--dur-base) var(--ease-out) forwards;
 }

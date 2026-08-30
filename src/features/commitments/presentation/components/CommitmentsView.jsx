@@ -433,7 +433,7 @@ export function CommitmentsView({ type }) {
       {items.length || trashed.length ? (
         <div className={styles.toolbar}>
           {items.length ? (
-            <>
+            <div className={styles.searchRow}>
               <SearchField
                 className={styles.search}
                 value={query}
@@ -444,13 +444,14 @@ export function CommitmentsView({ type }) {
               />
 
               <Picker
+                className={styles.sort}
                 label={t("commitments.sortLabel")}
                 value={sort}
                 options={sortOptions}
                 variant="toolbar"
                 onChange={setSort}
               />
-            </>
+            </div>
           ) : null}
 
           {archivedCount || showArchived ? (
