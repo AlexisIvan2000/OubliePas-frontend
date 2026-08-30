@@ -1,3 +1,4 @@
+import { Button } from "../../../../core/components/Button/Button";
 import { Chip } from "../../../../core/components/Chip/Chip";
 import { cx } from "../../../../core/utils/classNames";
 import { Switch } from "../../../../core/components/Switch/Switch";
@@ -11,6 +12,7 @@ function ToggleRow({
   soon = false,
   disabled = false,
   noteKey = null,
+  action = null,
   checked,
   onChange,
 }) {
@@ -34,6 +36,7 @@ function ToggleRow({
         {/* Un interrupteur grise sans un mot laisse chercher la panne : la
             raison compte plus que le blocage. */}
         {noteKey ? <span className={styles.toggleNote}>{t(noteKey)}</span> : null}
+        {action ? <div className={styles.toggleAction}>{action}</div> : null}
       </div>
       <Switch
         checked={checked}
@@ -68,6 +71,20 @@ export function ReminderPreferencesCard({ preferences, saving, push, onToggle, o
               (channel.id === "push" && (push.locked || push.busy))
             }
             noteKey={channel.id === "push" ? push.noteKey : null}
+            action={
+              channel.id === "push" && push.onTest ? (
+                <Button
+                  variant="secondary"
+                  compact
+                  fullWidth={false}
+                  loading={push.testing}
+                  disabled={push.busy}
+                  onClick={push.onTest}
+                >
+                  {t("reminders.push.testLabel")}
+                </Button>
+              ) : null
+            }
             checked={preferences[channel.id]}
             onChange={onToggle}
           />

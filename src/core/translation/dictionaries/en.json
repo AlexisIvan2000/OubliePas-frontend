@@ -816,7 +816,9 @@
       "denied": "Notifications are blocked for this site. Allow them in your browser settings, then come back here.",
       "refused": "Without the browser's permission, no notification can reach this device.",
       "unavailable": "Notifications are not switched on yet on the server.",
-      "sent": "Test notification sent to this device."
+      "sent": "Test notification sent to this device.",
+      "enabled": "Reminders will arrive on this device.",
+      "testLabel": "Send a test"
     },
     "families": {
       "title": "Reminder types",

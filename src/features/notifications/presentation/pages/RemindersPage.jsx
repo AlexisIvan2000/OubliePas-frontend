@@ -17,7 +17,7 @@ import {
 } from "../../domain/reminders";
 import { ActivityFeedCard } from "../components/ActivityFeedCard";
 import { ReminderPreferencesCard } from "../components/ReminderPreferencesCard";
-import { SENT, usePush } from "../hooks/usePush";
+import { READY, usePush } from "../hooks/usePush";
 import styles from "../styles/reminders.module.css";
 
 const HORIZON_DAYS = 60;
@@ -85,12 +85,25 @@ export function RemindersPage() {
         return;
       }
       const outcome = await push.enable();
-      if (outcome !== SENT) {
+      if (outcome !== READY) {
         toast.push(t(`reminders.push.${outcome}`), "error");
         return;
       }
       await updateProfile({ reminder_push_enabled: true });
-      toast.push(t("reminders.push.sent"));
+      toast.push(t("reminders.push.enabled"));
+    } catch (caught) {
+      toast.push(messageForError(t, caught), "error");
+    } finally {
+      setSaving(null);
+    }
+  };
+
+  const sendTest = async () => {
+    setSaving("test");
+    try {
+      if (await push.test()) {
+        toast.push(t("reminders.push.sent"));
+      }
     } catch (caught) {
       toast.push(messageForError(t, caught), "error");
     } finally {
@@ -130,6 +143,10 @@ export function RemindersPage() {
             busy: push.busy,
             locked: Boolean(reason),
             noteKey: reason ? `reminders.push.${reason}` : null,
+            // Proposer l'essai a qui n'est pas abonne sur cet appareil ne
+            // menerait qu'a un bouton qui ne peut rien envoyer.
+            onTest: pushEnabled ? sendTest : null,
+            testing: saving === "test",
           }}
           onToggle={toggle}
           onLeadTime={setLeadTime}

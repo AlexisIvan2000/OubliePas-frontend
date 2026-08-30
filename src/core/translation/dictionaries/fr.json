@@ -816,7 +816,9 @@
       "denied": "Les notifications sont bloquées pour ce site. Autorisez-les dans les réglages du navigateur, puis revenez ici.",
       "refused": "Sans la permission du navigateur, aucune notification ne peut arriver sur cet appareil.",
       "unavailable": "Les notifications ne sont pas encore actives sur le serveur.",
-      "sent": "Notification de test envoyée sur cet appareil."
+      "sent": "Notification de test envoyée sur cet appareil.",
+      "enabled": "Les rappels arriveront sur cet appareil.",
+      "testLabel": "Envoyer un test"
     },
     "families": {
       "title": "Types de rappels",

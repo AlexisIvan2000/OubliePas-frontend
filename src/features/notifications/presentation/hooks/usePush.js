@@ -20,7 +20,7 @@ const WORKER_URL = "/sw.js";
 // Le resultat de l'activation se dit en un mot, parce que l'ecran n'a pas la
 // meme phrase a montrer selon qu'on a refuse la permission ou que le serveur
 // n'a pas de paire VAPID.
-export const SENT = "sent";
+export const READY = "ready";
 export const REFUSED = "refused";
 export const UNAVAILABLE = "unavailable";
 
@@ -97,10 +97,26 @@ export function usePush() {
 
       await subscribeDevice(payload);
       setSubscribed(true);
-      // La preuve vient du service de push, jamais d'une notification fabriquee
-      // ici : celle-ci s'afficherait meme si le chemin etait coupe.
-      await sendTestNotification(payload.endpoint);
-      return SENT;
+      return READY;
+    } finally {
+      setBusy(false);
+    }
+  }, []);
+
+  // Declenchable, plus automatique : une notification a chaque activation
+  // devient du bruit. Elle reste offerte parce qu'elle est la seule preuve que
+  // le canal fonctionne — un abonnement enregistre ne prouve rien, et la
+  // preuve doit venir du service de push, jamais d'une notification fabriquee
+  // ici, qui s'afficherait meme si le chemin etait coupe.
+  const test = useCallback(async () => {
+    setBusy(true);
+    try {
+      const subscription = await currentSubscription();
+      if (!subscription) {
+        return false;
+      }
+      await sendTestNotification(subscription.endpoint);
+      return true;
     } finally {
       setBusy(false);
     }
@@ -124,5 +140,5 @@ export function usePush() {
     }
   }, []);
 
-  return { state, busy, subscribed, enable, disable };
+  return { state, busy, subscribed, enable, disable, test };
 }

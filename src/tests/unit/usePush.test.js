@@ -164,13 +164,15 @@ describe("l'etat que le crochet expose des le premier rendu", () => {
 });
 
 describe("l'activation", () => {
-  it("enregistre l'appareil, puis fait envoyer la notification par l'API", async () => {
+  it("enregistre l'appareil sans rien lui envoyer", async () => {
+    // L'essai n'est plus automatique : une notification a chaque activation
+    // devient du bruit. Le journal ne doit donc porter aucun api:test.
     const { module, rendre } = await chargerHook();
 
     const resultat = await rendre().enable();
 
-    expect(resultat).toBe(module.SENT);
-    expect(journal).toEqual(["api:cle", "navigateur:abonne", "api:abonne", "api:test"]);
+    expect(resultat).toBe(module.READY);
+    expect(journal).toEqual(["api:cle", "navigateur:abonne", "api:abonne"]);
   });
 
   it("marque l'appareil comme abonne", async () => {
@@ -229,6 +231,29 @@ describe("l'activation", () => {
       "navigateur:desabonne",
       "navigateur:abonne",
     ]);
+  });
+});
+
+describe("l'essai declenche a la main", () => {
+  it("passe par l'API pour l'abonnement de cet appareil", async () => {
+    // La preuve doit venir du service de push : une notification fabriquee
+    // localement s'afficherait meme si le chemin etait coupe.
+    poserLeNavigateur({ existant: abonnement(null) });
+    const { rendre } = await chargerHook();
+
+    const envoye = await rendre().test();
+
+    expect(envoye).toBe(true);
+    expect(journal).toEqual(["api:test"]);
+  });
+
+  it("ne tente rien quand cet appareil n'est pas abonne", async () => {
+    const { rendre } = await chargerHook();
+
+    const envoye = await rendre().test();
+
+    expect(envoye).toBe(false);
+    expect(journal).toEqual([]);
   });
 });
 
