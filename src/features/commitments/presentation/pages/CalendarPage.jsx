@@ -11,7 +11,7 @@ import { useAuth } from "../../../authentication/presentation/providers/useAuth"
 import { buildMonthCells } from "../../domain/calendar";
 import { CALENDAR_FILTERS, filterByType } from "../../domain/commitment";
 import { formatMoney, formatMonth, parseDate } from "../../domain/formatting";
-import { DayDialog } from "../components/DayDialog";
+import { DayPanel } from "../components/DayPanel";
 import { MonthGrid } from "../components/MonthGrid";
 import { MonthGridSkeleton } from "../components/MonthGridSkeleton";
 import { OccurrenceRow } from "../components/OccurrenceRow";
@@ -135,18 +135,31 @@ export function CalendarPage() {
             onOpenDay={(cell) => setOpenDay(cell.iso)}
           />
 
-          <ul className={styles.mobileList}>
-            {items.map((occurrence, index) => (
-              <OccurrenceRow
-                key={occurrence.id}
-                occurrence={occurrence}
-                currency={currency}
-                busy={settle.busyId === occurrence.id}
-                index={index}
-                onToggle={settle.pick}
-              />
-            ))}
-          </ul>
+          {/* Un jour choisi remplace la liste du mois plutot que de s'ouvrir
+              par-dessus : le reglement est alors la seule modale de la page. */}
+          {openDay && dayOccurrences.length ? (
+            <DayPanel
+              day={openDay}
+              occurrences={dayOccurrences}
+              currency={currency}
+              busyId={settle.busyId}
+              onToggle={settle.pick}
+              onClear={() => setOpenDay(null)}
+            />
+          ) : (
+            <ul className={styles.mobileList}>
+              {items.map((occurrence, index) => (
+                <OccurrenceRow
+                  key={occurrence.id}
+                  occurrence={occurrence}
+                  currency={currency}
+                  busy={settle.busyId === occurrence.id}
+                  index={index}
+                  onToggle={settle.pick}
+                />
+              ))}
+            </ul>
+          )}
 
           <div className={styles.legend}>
             <span className={styles.legendItem}>
@@ -174,18 +187,6 @@ export function CalendarPage() {
           </div>
         </>
       )}
-
-      {openDay && dayOccurrences.length ? (
-        <DayDialog
-          day={openDay}
-          occurrences={dayOccurrences}
-          currency={currency}
-          busyId={settle.busyId}
-          blocked={Boolean(settle.target)}
-          onToggle={settle.pick}
-          onClose={() => setOpenDay(null)}
-        />
-      ) : null}
 
       {settle.target ? (
         <SettleDialog

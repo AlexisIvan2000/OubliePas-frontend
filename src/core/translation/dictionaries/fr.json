@@ -491,6 +491,7 @@
     "skipHint": "Aucun paiement cette fois : cette échéance sort de tes totaux sans compter comme un retard."
   },
   "calendar": {
+    "wholeMonth": "Tout le mois",
     "dayAllSettled": {
       "one": "{count} échéance, déjà réglée",
       "other": "{count} échéances, toutes réglées"

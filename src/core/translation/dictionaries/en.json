@@ -491,6 +491,7 @@
     "skipHint": "No payment this time: this due date leaves your totals without counting as late."
   },
   "calendar": {
+    "wholeMonth": "Whole month",
     "dayAllSettled": {
       "one": "{count} payment, already settled",
       "other": "{count} payments, all settled"
