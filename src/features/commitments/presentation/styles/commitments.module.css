@@ -683,3 +683,104 @@
 .empty .emptyIcon {
   animation: global(breathe) 4.5s var(--ease-in-out) infinite;
 }
+
+/* A 390 pixels la rangee en ligne s'ecrase : .rowMain porte flex: 1, donc une
+   base de zero, et se reduit jusqu'a ce que chaque mot tombe sur sa propre
+   ligne. Les quatre colonnes squelettiques s'entrelacent alors et se lisent
+   comme un chevauchement. Une grille nommee remet chaque bloc sur sa rangee. */
+@media (max-width: 34rem) {
+  .row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "mono main amount"
+      "mono due due"
+      "mono actions actions";
+    align-items: start;
+    column-gap: 0.75rem;
+    row-gap: 0.3125rem;
+    padding: 0.875rem;
+  }
+
+  /* En mode selection la case reprend sa colonne : lui laisser le placement
+     automatique la ferait atterrir dans la premiere cellule libre. */
+  .row.picking {
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "pick mono main amount"
+      "pick mono due due"
+      "pick mono actions actions";
+  }
+
+  .pick {
+    grid-area: pick;
+    align-self: center;
+    margin-left: 0;
+  }
+
+  .monogram {
+    grid-area: mono;
+    align-self: center;
+  }
+
+  .rowMain {
+    grid-area: main;
+  }
+
+  .rowDue {
+    grid-area: due;
+    text-align: left;
+  }
+
+  .rowAmount {
+    grid-area: amount;
+    margin-left: 0;
+    text-align: right;
+  }
+
+  .rowActions {
+    grid-area: actions;
+    margin-left: -0.375rem;
+  }
+
+  /* Trois informations separees par des points ne tiennent pas sur une ligne
+     de 250 pixels : elles passent a la suivante plutot que de deborder. */
+  .rowMeta,
+  .occurrenceMeta {
+    flex-wrap: wrap;
+    row-gap: 0.125rem;
+  }
+
+  /* Meme ecrasement pour les echeances : la pastille d'etat ne cede jamais de
+     largeur, et le titre finissait en colonne d'un mot. */
+  .occurrence {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "check main amount"
+      "check badge badge";
+    align-items: start;
+    column-gap: 0.75rem;
+    row-gap: 0.3125rem;
+    padding: 0.875rem;
+  }
+
+  .occurrence > button:first-child {
+    grid-area: check;
+    align-self: center;
+  }
+
+  .occurrenceMain {
+    grid-area: main;
+  }
+
+  .occurrence > .badge {
+    grid-area: badge;
+    justify-self: start;
+  }
+
+  .occurrenceAmount {
+    grid-area: amount;
+    margin-left: 0;
+  }
+}
