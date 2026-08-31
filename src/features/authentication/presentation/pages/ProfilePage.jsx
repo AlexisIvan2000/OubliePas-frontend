@@ -6,6 +6,7 @@ import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
 import { AvatarCard } from "../components/AvatarCard";
 import { DangerZone } from "../components/DangerZone";
 import { EmailSection } from "../components/EmailSection";
+import { InstallSection } from "../components/InstallSection";
 import { LanguageSection } from "../components/LanguageSection";
 import { LegalSection, SupportSection } from "../components/LegalSection";
 import { ProfileFieldsCard } from "../components/ProfileFieldsCard";
@@ -74,6 +75,7 @@ export function ProfilePage() {
         <TabPanel id="general" className={styles.panelStack}>
           <LanguageSection />
           <ThemeSection />
+          <InstallSection />
           <LegalSection />
           <SupportSection />
         </TabPanel>

@@ -9,6 +9,7 @@ import { ErrorBoundary } from "./core/components/ErrorBoundary/ErrorBoundary";
 import { ToastProvider } from "./core/components/Toast/ToastProvider";
 import { ThemeProvider } from "./core/theme/ThemeProvider";
 import { TranslationProvider } from "./core/translation/TranslationProvider";
+import { registerServiceWorker } from "./core/pwa/registerServiceWorker";
 import { AuthProvider } from "./features/authentication/presentation/providers/AuthProvider";
 import { router } from "./router";
 import "./index.css";
@@ -31,3 +32,10 @@ createRoot(document.getElementById("root")).render(
     </ErrorBoundary>
   </StrictMode>,
 );
+
+// En developpement le worker resservirait des modules perimes a chaque
+// rechargement ; usePush l'enregistre a la demande, donc le push reste
+// essayable en local.
+if (import.meta.env.PROD) {
+  registerServiceWorker();
+}

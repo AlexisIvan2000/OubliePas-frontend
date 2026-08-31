@@ -680,6 +680,17 @@
     "emailNeedsPassword": "Définissez d'abord un mot de passe pour pouvoir changer d'adresse.",
     "password": "Mot de passe"
   },
+  "install": {
+    "title": "Installer l'application",
+    "hint": "OubliePas s'ouvre alors dans sa propre fenêtre, sans barre d'adresse, et reste consultable hors connexion.",
+    "action": "Installer",
+    "done": "L'application est installée sur cet appareil.",
+    "steps": {
+      "share": "Touchez le bouton Partager, en bas de Safari.",
+      "add": "Choisissez « Sur l’écran d’accueil ».",
+      "launch": "Ouvrez OubliePas depuis l’icône ajoutée : les notifications deviennent possibles à partir de là."
+    }
+  },
   "errors": {
     "ACCOUNT_DISABLED": "Ce compte a été désactivé. Écrivez à support@oubliepas.com pour le réactiver.",
     "APP_ERROR": "Le serveur a répondu de façon inattendue. Réessayez, et vérifiez le résultat avant de recommencer.",

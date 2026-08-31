@@ -1,12 +1,15 @@
 {
+  "id": "/",
   "name": "OubliePas",
   "short_name": "OubliePas",
   "description": "Vos abonnements, vos factures et leurs échéances dans une seule vue.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "lang": "fr",
+  "dir": "ltr",
+  "categories": ["finance", "productivity"],
   "background_color": "#f1f5f9",
   "theme_color": "#f1f5f9",
   "icons": [
@@ -21,6 +24,47 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/assets/logo-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Calendrier",
+      "short_name": "Calendrier",
+      "url": "/calendrier"
+    },
+    {
+      "name": "Abonnements",
+      "short_name": "Abonnements",
+      "url": "/abonnements"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/screenshots/Dashboard.png",
+      "sizes": "1917x916",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Tableau de bord"
+    },
+    {
+      "src": "/assets/screenshots/Calendar.png",
+      "sizes": "1912x913",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Calendrier des échéances"
+    },
+    {
+      "src": "/assets/screenshots/Subscriptions.png",
+      "sizes": "1918x913",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Abonnements"
     }
   ]
 }

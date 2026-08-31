@@ -1,4 +1,90 @@
+const VERSION = "v1";
+const SHELL_CACHE = `oubliepas-shell-${VERSION}`;
+const ASSET_CACHE = `oubliepas-assets-${VERSION}`;
+const MINE = /^oubliepas-/;
+
+const SHELL = "/";
+const ASSETS = "/assets/";
+
+// Chaque deploiement publie un bundle sous un nom empreinte que rien ne
+// remplace jamais : sans cette coupe le cache grossit d'un bundle par livraison
+// jusqu'a ce que le navigateur evince au hasard.
+const MAX_ASSETS = 60;
+
+const NAVIGATE = "navigate";
+const ASSET = "asset";
+const PASS = "pass";
+
 const FALLBACK = { title: "Oublie pas !", body: "", url: "/" };
+
+function strategyFor(request, origin) {
+  if (request.method !== "GET") {
+    return PASS;
+  }
+  // L'API vit sur un autre domaine : le test d'origine suffit a la tenir hors
+  // du cache, et une reponse d'API mise en cache serait un montant faux montre
+  // avec assurance.
+  if (new URL(request.url).origin !== origin) {
+    return PASS;
+  }
+  if (request.mode === NAVIGATE) {
+    return NAVIGATE;
+  }
+  return new URL(request.url).pathname.startsWith(ASSETS) ? ASSET : PASS;
+}
+
+function storable(response) {
+  // Une redirection ne se remet pas en cache : cache.put leve dessus.
+  return response.ok && !response.redirected;
+}
+
+async function trim(cache) {
+  const keys = await cache.keys();
+  // cache.keys rend les entrees dans leur ordre d'insertion, donc les plus
+  // anciennes en premier. Le plancher a zero n'est pas decoratif : une fin
+  // negative fait compter slice depuis la fin du tableau, et le cache se
+  // vidait par la tete des qu'il depassait la moitie de sa borne.
+  for (const key of keys.slice(0, Math.max(0, keys.length - MAX_ASSETS))) {
+    await cache.delete(key);
+  }
+}
+
+async function shellFirstFromNetwork(request) {
+  // Le reseau d'abord, et c'est la ligne qui tient la promesse du rechargement
+  // unique : servir la coquille depuis le cache obligerait un testeur ouvert
+  // pendant un deploiement a recharger deux fois, une pour reveiller le worker
+  // et une pour voir enfin la nouvelle version.
+  try {
+    const response = await fetch(request);
+    if (storable(response)) {
+      const cache = await caches.open(SHELL_CACHE);
+      await cache.put(SHELL, response.clone());
+    }
+    return response;
+  } catch (error) {
+    const cached = await caches.match(SHELL, { cacheName: SHELL_CACHE });
+    if (cached) {
+      return cached;
+    }
+    throw error;
+  }
+}
+
+async function assetFirstFromCache(request) {
+  // Vite empreinte ces noms : une reponse trouvee ici ne peut pas etre perimee,
+  // elle peut seulement etre inutile.
+  const cached = await caches.match(request, { cacheName: ASSET_CACHE });
+  if (cached) {
+    return cached;
+  }
+  const response = await fetch(request);
+  if (storable(response)) {
+    const cache = await caches.open(ASSET_CACHE);
+    await cache.put(request, response.clone());
+    await trim(cache);
+  }
+  return response;
+}
 
 function readPayload(data) {
   if (!data) {
@@ -39,12 +125,44 @@ async function openTarget(url) {
   await self.clients.openWindow(target.href);
 }
 
-self.addEventListener("install", () => {
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(SHELL_CACHE);
+      // cache: "reload" court-circuite le cache HTTP du navigateur : sans lui le
+      // worker neuf naitrait en pre-cachant la coquille qu'il vient remplacer.
+      await cache.put(SHELL, await fetch(new Request(SHELL, { cache: "reload" })));
+    })(),
+  );
+  // Sans cela un worker corrige attendrait la fermeture de tous les onglets
+  // pour prendre la main, c'est-a-dire indefiniment sur un telephone.
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    (async () => {
+      const names = await caches.keys();
+      await Promise.all(
+        names
+          .filter((name) => MINE.test(name) && name !== SHELL_CACHE && name !== ASSET_CACHE)
+          .map((name) => caches.delete(name)),
+      );
+      await self.clients.claim();
+    })(),
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  const strategy = strategyFor(event.request, self.location.origin);
+
+  if (strategy === NAVIGATE) {
+    event.respondWith(shellFirstFromNetwork(event.request));
+    return;
+  }
+  if (strategy === ASSET) {
+    event.respondWith(assetFirstFromCache(event.request));
+  }
 });
 
 self.addEventListener("push", (event) => {

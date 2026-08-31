@@ -1,26 +1,22 @@
+import { isApple, isStandalone } from "../../../core/pwa/platform";
+
 export const UNSUPPORTED = "unsupported";
 export const HOME_SCREEN = "homeScreen";
 export const IDLE = "idle";
 export const DENIED = "denied";
 export const GRANTED = "granted";
 
-const IOS = /iPad|iPhone|iPod/;
 const MAX_USER_AGENT = 255;
 
 export function inspect(win = globalThis) {
   const nav = win?.navigator;
-  const agent = nav?.userAgent ?? "";
   return {
     hasWorker: Boolean(nav?.serviceWorker),
     hasPush: typeof win?.PushManager !== "undefined",
     hasNotification: typeof win?.Notification !== "undefined",
     permission: win?.Notification?.permission ?? "default",
-    // Depuis iPadOS 13 un iPad se declare Macintosh : seul le nombre de points
-    // de contact le separe d'un vrai Mac, qui lui sait recevoir le push.
-    apple: IOS.test(agent) || (agent.includes("Macintosh") && (nav?.maxTouchPoints ?? 0) > 1),
-    standalone:
-      Boolean(nav?.standalone) ||
-      Boolean(win?.matchMedia?.("(display-mode: standalone)")?.matches),
+    apple: isApple(nav),
+    standalone: isStandalone(win),
   };
 }
 

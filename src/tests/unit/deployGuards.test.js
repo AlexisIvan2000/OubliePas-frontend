@@ -130,3 +130,69 @@ describe("le deploiement statique est decrit", () => {
     expect(readFileSync(".env.example", "utf8")).toContain("VITE_API_URL=");
   });
 });
+
+describe("l'application se laisse installer", () => {
+  const manifeste = JSON.parse(readFileSync("public/manifest.webmanifest", "utf8"));
+
+  it("le worker est enregistre au demarrage, et pas seulement par le push", () => {
+    // Tant que seul usePush l'enregistrait, quelqu'un qui n'activait jamais les
+    // notifications n'avait aucun worker : ni installation proposee, ni page
+    // lisible hors connexion.
+    const source = readFileSync("src/main.jsx", "utf8");
+
+    expect(source).toContain("registerServiceWorker()");
+    expect(source).toContain("import.meta.env.PROD");
+  });
+
+  it("le worker reste a la racine de public", () => {
+    // La portee d'un worker vient du chemin ou il est servi : ailleurs il ne
+    // verrait ni les navigations a mettre en cache ni les pages a reveiller.
+    expect(() => readFileSync("public/sw.js")).not.toThrow();
+  });
+
+  it("la page relie le manifeste et l'icone d'iOS", () => {
+    const source = readFileSync("index.html", "utf8");
+
+    expect(source).toContain('rel="manifest"');
+    expect(source).toContain('rel="apple-touch-icon"');
+  });
+
+  it("une icone maskable existe", () => {
+    // Sans elle Android pose l'icone telle quelle dans son cercle, avec une
+    // marge blanche autour que rien n'explique.
+    expect(manifeste.icons.some((icone) => icone.purpose === "maskable")).toBe(true);
+  });
+
+  it("les deux tailles que Chrome reclame sont declarees", () => {
+    const tailles = manifeste.icons.map((icone) => icone.sizes);
+
+    expect(tailles).toContain("192x192");
+    expect(tailles).toContain("512x512");
+  });
+
+  it("chaque fichier annonce par le manifeste existe vraiment", () => {
+    // Une capture renommee ne casse rien a l'ecran : elle fait seulement
+    // disparaitre la boite d'installation de Chrome, sans un mot.
+    const annonces = [...manifeste.icons, ...manifeste.screenshots, ...manifeste.shortcuts];
+    const manquants = annonces
+      .filter((entree) => entree.src)
+      .filter((entree) => {
+        try {
+          readFileSync(`public${entree.src}`);
+          return false;
+        } catch {
+          return true;
+        }
+      });
+
+    expect(manquants).toEqual([]);
+  });
+
+  it("les raccourcis visent des routes qui existent", () => {
+    const routeur = readFileSync("src/router.jsx", "utf8");
+
+    for (const raccourci of manifeste.shortcuts) {
+      expect(routeur).toContain(`path: "${raccourci.url}"`);
+    }
+  });
+});

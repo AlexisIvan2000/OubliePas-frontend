@@ -680,6 +680,17 @@
     "emailNeedsPassword": "Set a password first to be able to change your address.",
     "password": "Password"
   },
+  "install": {
+    "title": "Install the app",
+    "hint": "OubliePas then opens in its own window, without an address bar, and stays readable offline.",
+    "action": "Install",
+    "done": "The app is installed on this device.",
+    "steps": {
+      "share": "Tap the Share button at the bottom of Safari.",
+      "add": "Choose “Add to Home Screen”.",
+      "launch": "Open OubliePas from the new icon: notifications become possible from there."
+    }
+  },
   "errors": {
     "ACCOUNT_DISABLED": "This account has been disabled. Email support@oubliepas.com to have it reactivated.",
     "APP_ERROR": "The server answered unexpectedly. Try again, and check the result before starting over.",

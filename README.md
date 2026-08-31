@@ -176,7 +176,7 @@ and say whether anything was saved.
 npm run test
 ```
 
-349 tests across 23 files. The environment is **node, not jsdom**: nothing here
+399 tests across 25 files. The environment is **node, not jsdom**: nothing here
 renders. Pure logic is tested directly, and hooks are tested by mocking the
 `react` module itself and replaying effects by hand — the harness lives at the top
 of `src/tests/unit/usePush.test.js` and is reused by the others.
@@ -190,12 +190,56 @@ prevents and watch a named test fail, before calling it a guard.
 
 ## Progressive web app
 
+The app installs, runs in its own window and stays readable offline.
+
 `public/sw.js` and `public/manifest.webmanifest` sit at the **root** on purpose. A
 service worker's scope comes from its file's path — served from anywhere else it
 would not see the pages it has to wake, and no notification would arrive. The
 manifest declares `standalone`, without which adding the site to an iPhone home
 screen opens a tab rather than an app, and Safari does not expose `PushManager`
 inside a tab.
+
+### The worker
+
+Registered from `main.jsx` on every production visit, not only when someone turns
+push on. Until it was, a visitor who never touched notifications had no worker at
+all: nothing offline, and no install prompt, because Chrome only offers to install
+a site whose worker declares a `fetch` handler.
+
+Three routes, and nothing else is touched:
+
+| request | strategy |
+|---|---|
+| navigation | network first, cached shell as the offline fallback |
+| `/assets/*` | cache first — Vite fingerprints these names, so a hit cannot be stale |
+| anything else | passed straight through |
+
+A cross-origin request never enters the cache, and neither does a `POST`. The API
+lives on another domain, so the origin test alone keeps a stale amount from being
+re-served with confidence.
+
+### Two lines that look removable
+
+**Navigation is network-first, and must stay that way.** Serving the cached shell
+first is the usual recipe, and it costs a reload: one to wake the new worker, one
+more to finally see the new version. With the network first, a tester who had the
+app open during a deployment sees it after a single reload.
+
+**`Math.max(0, keys.length - MAX_ASSETS)` in `trim`.** A negative end makes
+`slice` count from the end of the array: without the floor the asset cache emptied
+itself from the head as soon as it passed half its bound. The test named *restent
+tous là tant que la borne n'est pas atteinte* is the one that caught it.
+
+The cache version is bumped by hand, and deliberately not on every deploy: the
+names are fingerprinted, so nothing goes stale, and purging on each release would
+delete the lazy chunks a page already open still needs.
+
+### Installing
+
+`core/pwa/` holds the state machine. Chrome's `beforeinstallprompt` is captured
+and relayed as a button in **Settings → General**; Safari never fires it, so an
+iPhone gets the Share → *Add to Home Screen* gesture written out instead — the
+same gesture that unlocks push there.
 
 ## Deployment
 
