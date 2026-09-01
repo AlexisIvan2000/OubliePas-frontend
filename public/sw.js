@@ -105,8 +105,19 @@ function readPayload(data) {
   }
 }
 
+function sameOriginTarget(url) {
+  const demande = new URL(url, self.location.origin);
+  // La charge vient du serveur et seule notre paire VAPID peut pousser vers un
+  // abonnement : aucune origine etrangere ne peut arriver ici aujourd'hui. Le
+  // jour ou une de ces URL portera un morceau de contenu, cette ligne sera la
+  // seule chose entre une notification et une page qui n'est pas la notre.
+  return demande.origin === self.location.origin
+    ? demande
+    : new URL(FALLBACK.url, self.location.origin);
+}
+
 async function openTarget(url) {
-  const target = new URL(url, self.location.origin);
+  const target = sameOriginTarget(url);
   const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
 
   for (const client of windows) {

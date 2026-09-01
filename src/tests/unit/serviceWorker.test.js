@@ -110,7 +110,12 @@ function worker() {
     location: { origin: ORIGIN },
     addEventListener: (type, ecouteur) => ecouteurs.set(type, ecouteur),
     skipWaiting: vi.fn(),
-    clients: { claim: vi.fn(async () => {}) },
+    ouvertes: [],
+    clients: {
+      claim: vi.fn(async () => {}),
+      matchAll: vi.fn(async () => self.ouvertes),
+      openWindow: vi.fn(async () => {}),
+    },
     registration: { showNotification: vi.fn(async () => {}) },
   };
 
@@ -322,5 +327,45 @@ describe("ce que le worker ne met jamais en cache", () => {
     await sw.recevoir("fetch", evenement(requete("/assets/disparu.js")));
 
     expect(await (await sw.caches.open(ASSET_CACHE)).keys()).toEqual([]);
+  });
+});
+
+
+function notification(url) {
+  return {
+    notification: { close: () => {}, data: { url } },
+    reponse: null,
+    attendu: null,
+    respondWith() {},
+    waitUntil(promesse) {
+      this.attendu = promesse;
+    },
+  };
+}
+
+describe("la page qu'un clic sur la notification peut ouvrir", () => {
+  it("une adresse de chez nous s'ouvre telle quelle", async () => {
+    await sw.recevoir("notificationclick", notification("/rappels"));
+
+    expect(sw.self.clients.openWindow).toHaveBeenCalledWith(ORIGIN + "/rappels");
+  });
+
+  it("une origine etrangere ramene a l'accueil, jamais chez elle", async () => {
+    // La charge vient du serveur et seule notre paire VAPID peut pousser vers
+    // un abonnement, donc ce cas n'arrive pas aujourd'hui. Il arrivera le jour
+    // ou une de ces URL portera un morceau de contenu.
+    await sw.recevoir("notificationclick", notification("https://ailleurs.example/piege"));
+
+    expect(sw.self.clients.openWindow).toHaveBeenCalledWith(ORIGIN + "/");
+  });
+
+  it("une fenetre deja ouverte est ramenee au lieu d'en ouvrir une seconde", async () => {
+    const navigate = vi.fn(async () => {});
+    sw.self.ouvertes = [{ url: ORIGIN + "/calendrier", focus: async () => ({ navigate }) }];
+
+    await sw.recevoir("notificationclick", notification("/rappels"));
+
+    expect(navigate).toHaveBeenCalledWith(ORIGIN + "/rappels");
+    expect(sw.self.clients.openWindow).not.toHaveBeenCalled();
   });
 });
