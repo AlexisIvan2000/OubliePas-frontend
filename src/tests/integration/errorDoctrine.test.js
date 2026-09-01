@@ -27,7 +27,9 @@ const WRITE_CODES = [
   "INVALID_OR_EXPIRED_RESET_CODE",
   "INVALID_RESET_CODE",
   "PASSWORD_ALREADY_SET",
+  "PUSH_ENDPOINT_REFUSED",
   "RESET_CODE_EXPIRED",
+  "RESTORE_LIMIT_REACHED",
   "SAME_EMAIL_AS_CURRENT",
   "SAME_PASSWORD_AS_BEFORE",
   "STORAGE_UNAVAILABLE",
@@ -36,8 +38,8 @@ const WRITE_CODES = [
 ];
 
 const STATE = {
-  fr: /rien n'a été (enregistré|modifié|créé)|n'a pas changé|n'a pas été (enregistré|supprimé)|votre saisie est conservée/i,
-  en: /nothing was (saved|changed|created)|has not changed|was not (deleted|recorded|saved)|your entry is kept/i,
+  fr: /rien n'a été (enregistré|modifié|créé|restauré)|n'a pas changé|n'a pas été (enregistré|supprimé)|votre saisie est conservée/i,
+  en: /nothing was (saved|changed|created|restored)|has not changed|was not (deleted|recorded|saved)|your entry is kept/i,
 };
 
 const ACTION = {
