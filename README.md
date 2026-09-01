@@ -135,6 +135,13 @@ and per month, and the heaviest lines ranked across both types together.
 Three families of alert, each switchable on its own, over two channels, plus the
 weekly digest.
 
+### On the phone
+
+![A push notification](public/assets/screenshots/notifications.jpg)
+
+A push notification carries the title, the line and how many days are left, and
+never the amount. A locked screen is a public place.
+
 ## Architecture
 
 ```
