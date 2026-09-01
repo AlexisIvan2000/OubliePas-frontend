@@ -212,8 +212,39 @@ export function quotaState(commitments, limit) {
 export const REST_SLICE = "rest";
 export const MAX_SLICES = TINT_SLOTS.length;
 
+// Le meme depart que le SQL, qui ordonne par total decroissant puis categorie.
+// A montants egaux, un tri sur le seul total laisse l'ordre a l'implementation :
+// le tableau de bord et le Breakdown cesseraient de nommer les memes cinq
+// premieres, par intermittence et sans que rien ne casse. Les categories sont
+// des identifiants ASCII, donc cette comparaison et celle de Postgres tombent
+// d'accord.
+function byWeight(left, right) {
+  return (
+    Number(right.total) - Number(left.total) ||
+    String(left.category).localeCompare(String(right.category))
+  );
+}
+
+// La repartition naît une seule fois, dans le resume mensuel du serveur. Ceci
+// n'est pas un second calcul : c'est la mise en forme de ce qu'il a rendu, la
+// part comprise, pour les deux pages qui la montrent.
+export function categoryRows(rows) {
+  const sorted = [...rows].sort(byWeight);
+  const total = sorted.reduce((sum, row) => sum + Number(row.total), 0);
+
+  return {
+    total,
+    rows: sorted.map((row) => ({
+      category: row.category,
+      total: Number(row.total),
+      count: row.count,
+      share: total ? Number(row.total) / total : 0,
+    })),
+  };
+}
+
 export function topCategories(rows, max = MAX_SLICES) {
-  const sorted = [...rows].sort((left, right) => Number(right.total) - Number(left.total));
+  const sorted = [...rows].sort(byWeight);
   const head = sorted.slice(0, max);
   const tail = sorted.slice(max);
 

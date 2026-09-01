@@ -176,7 +176,7 @@ and say whether anything was saved.
 npm run test
 ```
 
-411 tests across 26 files. The environment is **node, not jsdom**: nothing here
+427 tests across 27 files. The environment is **node, not jsdom**: nothing here
 renders. Pure logic is tested directly, and hooks are tested by mocking the
 `react` module itself and replaying effects by hand — the harness lives at the top
 of `src/tests/unit/usePush.test.js` and is reused by the others.

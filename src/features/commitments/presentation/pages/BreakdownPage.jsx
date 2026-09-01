@@ -7,18 +7,15 @@ import { Icon } from "../../../../core/components/Icon/Icon";
 import { messageForError } from "../../../../core/network/errorMessages";
 import { useTranslation } from "../../../../core/translation/useTranslation";
 import { useDocumentTitle } from "../../../../core/utils/useDocumentTitle";
+import { useResource } from "../../../../core/network/useResource";
 import { useToday } from "../../../../core/utils/useToday";
 import { useAuth } from "../../../authentication/presentation/providers/useAuth";
-import {
-  HORIZON_DAYS,
-  categoryBreakdown,
-  heaviest,
-  monthlyTotals,
-  withinMonth,
-} from "../../domain/breakdown";
+import { SUMMARY, getSummary } from "../../data/commitmentsApi";
+import { HORIZON_DAYS, heaviest, monthlyTotals } from "../../domain/breakdown";
 import {
   COMMITMENT_TYPES,
   categoryLabel,
+  categoryRows,
   runRate,
   topCategories,
 } from "../../domain/commitment";
@@ -33,6 +30,10 @@ import { UpcomingChart } from "../components/UpcomingChart";
 import { useCommitments } from "../providers/useCommitments";
 import { upcomingRange, useOccurrences } from "../providers/useOccurrences";
 import styles from "../styles/breakdown.module.css";
+
+// Une seule reference vide : un tableau neuf a chaque rendu ferait recalculer
+// la mise en forme sans que rien n'ait change.
+const EMPTY = [];
 
 function monthStart(iso) {
   const date = parseDate(iso);
@@ -52,25 +53,32 @@ export function BreakdownPage() {
   );
   const { items, loading, error } = useOccurrences(range);
   const { items: commitments, loading: loadingCommitments } = useCommitments();
+  // La meme lecture que le tableau de bord, a la meme cle : la repartition ne
+  // se recalcule pas ici, sinon les deux pages finissent par ne plus parler du
+  // meme mois — ce qui est arrive, l'une en UTC et l'autre en heure locale.
+  const {
+    data: summary,
+    loading: loadingSummary,
+    error: summaryError,
+  } = useResource(SUMMARY, getSummary);
 
   const currency = user?.currency ?? "CAD";
-  const month = today.slice(0, 7);
+  const month = summary?.month ?? "";
+  const categories = summary?.byCategory ?? EMPTY;
+
   const monthLabel = useMemo(() => {
-    const label = formatMonth(month);
+    const label = month ? formatMonth(month) : "";
     return label.charAt(0).toUpperCase() + label.slice(1);
   }, [month]);
 
-  const breakdown = useMemo(() => categoryBreakdown(withinMonth(items, month)), [items, month]);
-  const donut = useMemo(
-    () => topCategories(breakdown.rows.map((row) => ({ ...row, total: row.total }))),
-    [breakdown.rows],
-  );
+  const breakdown = useMemo(() => categoryRows(categories), [categories]);
+  const donut = useMemo(() => topCategories(breakdown.rows), [breakdown.rows]);
   const months = useMemo(() => monthlyTotals(items), [items]);
   const rate = useMemo(() => runRate(commitments.filter((c) => c.status === "active")), [commitments]);
   const top = useMemo(() => heaviest(commitments), [commitments]);
   const inTrial = (item) => Boolean(item.trialEndsOn) && item.trialEndsOn > today;
 
-  const busy = loading || loadingCommitments;
+  const busy = loading || loadingCommitments || loadingSummary;
 
   return (
     <div className={styles.page}>
@@ -83,7 +91,9 @@ export function BreakdownPage() {
         <p className={styles.subtitle}>{t("breakdown.subtitle")}</p>
       </header>
 
-      {error ? <Alert variant="error">{messageForError(t, error)}</Alert> : null}
+      {error || summaryError ? (
+        <Alert variant="error">{messageForError(t, error ?? summaryError)}</Alert>
+      ) : null}
 
       <Card
         title={t("breakdown.monthTitle", { month: monthLabel })}

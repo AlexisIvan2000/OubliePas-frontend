@@ -18,22 +18,6 @@ function counted(occurrences, key) {
   return [...groups.values()];
 }
 
-export function categoryBreakdown(occurrences) {
-  const rows = counted(occurrences, (row) => row.category).sort(
-    (left, right) => right.total - left.total || left.id.localeCompare(right.id),
-  );
-  const total = rows.reduce((sum, row) => sum + row.total, 0);
-  return {
-    total,
-    rows: rows.map((row) => ({
-      category: row.id,
-      total: row.total,
-      count: row.count,
-      share: total ? row.total / total : 0,
-    })),
-  };
-}
-
 export function monthlyTotals(occurrences) {
   return counted(occurrences, (row) => row.dueDate.slice(0, 7))
     .map((row) => ({ month: row.id, total: row.total, count: row.count }))
@@ -54,8 +38,4 @@ export function heaviest(commitments, limit = MAX_HEAVIEST) {
       .slice(0, limit)
       .map((item) => ({ ...item, share: total ? item.annual / total : 0 })),
   };
-}
-
-export function withinMonth(occurrences, month) {
-  return occurrences.filter((row) => row.dueDate.slice(0, 7) === month);
 }
