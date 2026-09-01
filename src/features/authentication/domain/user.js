@@ -13,6 +13,7 @@ export function mapUser(dto) {
     hasCustomAvatar: Boolean(dto.has_custom_avatar),
     hasPassword: Boolean(dto.has_password),
     currency: dto.currency ?? "CAD",
+    timezone: dto.timezone ?? null,
     reminderEmailEnabled: dto.reminder_email_enabled ?? true,
     reminderPushEnabled: dto.reminder_push_enabled ?? false,
     reminderNoticeEnabled: dto.reminder_notice_enabled ?? true,

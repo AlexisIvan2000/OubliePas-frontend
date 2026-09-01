@@ -1,13 +1,17 @@
 import { http } from "../../../core/network/httpClient";
 import { AUTH_ENDPOINTS } from "./authEndpoints";
 
-export function register({ firstName, email, password, currency, locale }) {
+export function register({ firstName, email, password, currency, locale, timezone }) {
   return http.post(AUTH_ENDPOINTS.register, {
     first_name: firstName,
     email,
     password,
     currency,
     locale,
+    // Le navigateur le connait, le serveur ne peut que le deviner d'une
+    // adresse IP, et mal. Absent, le compte reste en UTC et la connexion
+    // suivante le corrigera.
+    ...(timezone ? { timezone } : {}),
   });
 }
 

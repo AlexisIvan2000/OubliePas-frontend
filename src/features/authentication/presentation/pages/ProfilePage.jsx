@@ -12,6 +12,7 @@ import { LegalSection, SupportSection } from "../components/LegalSection";
 import { ProfileFieldsCard } from "../components/ProfileFieldsCard";
 import { SecuritySection } from "../components/SecuritySection";
 import { ThemeSection } from "../components/ThemeSection";
+import { TimezoneSection } from "../components/TimezoneSection";
 import { UnverifiedBanner } from "../components/UnverifiedBanner";
 import styles from "../styles/settings.module.css";
 
@@ -74,6 +75,7 @@ export function ProfilePage() {
       {section === "general" ? (
         <TabPanel id="general" className={styles.panelStack}>
           <LanguageSection />
+          <TimezoneSection />
           <ThemeSection />
           <InstallSection />
           <LegalSection />

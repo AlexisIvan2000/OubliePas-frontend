@@ -33,12 +33,17 @@ import { greetingKey, greetingSlot, msUntilNextSlot } from "../utils/greeting";
 import { messageForError } from "../network/errorMessages";
 import { useTranslation } from "../../core/translation/useTranslation";
 import { useDocumentTitle } from "../utils/useDocumentTitle";
+import { startOfDayIn } from "../utils/timezone";
 import { useToday } from "../utils/useToday";
 import styles from "./HomePage.module.css";
 
 export function HomePage() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  // La ligne de date et les cartes en dessous doivent tomber sur le meme
+  // jour. La capture du 31 aout montrait « MONDAY, AUGUST 31 » au-dessus du
+  // total de septembre : l'une lisait l'horloge du navigateur, l'autre un
+  // resume calcule ailleurs.
   const [now, setNow] = useState(() => new Date());
 
   useDocumentTitle(t("dashboard.documentTitle"));
@@ -78,7 +83,9 @@ export function HomePage() {
     <>
       <div className={styles.header}>
         <div>
-          <div className={styles.eyebrow}>{formatLongDate(now)}</div>
+          <div className={styles.eyebrow}>
+            {formatLongDate(startOfDayIn(user?.timezone, now))}
+          </div>
           <h1 key={greetingSlot(now)} className={styles.title}>
             {t(greetingKey(now), { name: user?.firstName ?? "" })}
           </h1>

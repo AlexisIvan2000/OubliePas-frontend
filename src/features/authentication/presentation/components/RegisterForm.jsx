@@ -7,7 +7,8 @@ import { PasswordField } from "../../../../core/components/PasswordField/Passwor
 import { PickerField } from "../../../../core/components/Picker/PickerField";
 import { TextField } from "../../../../core/components/TextField/TextField";
 import { messageForError } from "../../../../core/network/errorMessages";
-import { useTranslation } from "../../../../core/translation/useTranslation";
+import { useTranslation } from "../../../../core/translation/useTranslation";
+import { browserTimezone } from "../../../../core/utils/timezone";
 import { useAsyncAction } from "../../../../core/utils/useAsyncAction";
 import { currencyOptions, DEFAULT_CURRENCY } from "../../domain/currencies";
 import { isEmailValid, isPasswordValid } from "../../domain/validation";
@@ -40,7 +41,9 @@ export function RegisterForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await run({ ...form, locale });
+    // Le navigateur est le seul a le savoir de source sure : le serveur ne
+    // pourrait que le deduire d'une adresse IP, et se tromper.
+    const result = await run({ ...form, locale, timezone: browserTimezone() });
     if (result.ok) {
       navigate("/verification", { state: { email: form.email } });
     }

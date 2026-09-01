@@ -12,6 +12,7 @@ import * as authApi from "../../data/authApi";
 import { installSessionRefresh } from "../../data/sessionBootstrap";
 import * as userApi from "../../data/userApi";
 import { mapUser } from "../../domain/user";
+import { browserTimezone, timezoneToAdopt } from "../../../../core/utils/timezone";
 import { AuthContext } from "./AuthContext";
 
 installSessionRefresh();
@@ -21,6 +22,26 @@ const STATUS = {
   authenticated: "authenticated",
   anonymous: "anonymous",
 };
+
+// Les comptes crees avant la colonne sont restes en UTC : ils se corrigent
+// a leur prochaine connexion, sans rien demander. Un fuseau deja choisi
+// n'est jamais ecrase — timezoneToAdopt s'en charge — et l'echec de
+// l'ecriture ne doit pas empecher d'entrer : le compte garde ce qu'il a.
+async function adoptTimezone(user) {
+  const adopter = timezoneToAdopt(user?.timezone, browserTimezone());
+  if (!user || !adopter) {
+    return user;
+  }
+  try {
+    await userApi.updateProfile({ timezone: adopter });
+    // La valeur posee plutot que la reponse relue : une PATCH qui reussit
+    // dit deja tout, et une seconde lecture couterait un aller-retour a
+    // chaque connexion.
+    return { ...user, timezone: adopter };
+  } catch {
+    return user;
+  }
+}
 
 export function AuthProvider({ children }) {
   const [status, setStatus] = useState(() =>
@@ -47,7 +68,7 @@ export function AuthProvider({ children }) {
 
   const loadUser = useCallback(async () => {
     const dto = await authApi.fetchCurrentUser();
-    const mapped = mapUser(dto);
+    const mapped = await adoptTimezone(mapUser(dto));
     if (mounted.current) {
       setUser(mapped);
       setStatus(STATUS.authenticated);
