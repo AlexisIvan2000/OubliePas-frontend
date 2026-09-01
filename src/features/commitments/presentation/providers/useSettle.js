@@ -2,8 +2,9 @@ import { useState } from "react";
 
 import { useToast } from "../../../../core/components/Toast/useToast";
 import { messageForError } from "../../../../core/network/errorMessages";
+import { refreshResource } from "../../../../core/network/resourceCache";
 import { useTranslation } from "../../../../core/translation/useTranslation";
-import { updateOccurrence } from "../../data/commitmentsApi";
+import { SUMMARY, getSummary, updateOccurrence } from "../../data/commitmentsApi";
 
 export function useSettle(onUpdated) {
   const { t } = useTranslation();
@@ -15,6 +16,11 @@ export function useSettle(onUpdated) {
     setBusyId(occurrence.id);
     try {
       onUpdated(await updateOccurrence(occurrence.id, payload));
+      // Le resume est derive des echeances : tout reglement passe par ici, donc
+      // c'est ici qu'il se rafraichit. Laisser chaque ecran s'en charger, c'est
+      // l'oublier sur l'un d'eux — le calendrier ne le faisait pas, et la
+      // pastille des retards y survivait au paiement.
+      await refreshResource(SUMMARY, getSummary);
       return true;
     } catch (caught) {
       toast.push(messageForError(t, caught), "error");

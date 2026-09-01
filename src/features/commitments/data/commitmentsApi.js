@@ -80,6 +80,10 @@ export async function updateOccurrence(id, payload) {
   );
 }
 
+// La barre laterale, le tableau de bord et le reglement lisent tous ce resume :
+// une cle recopiee de travers ferait diverger la pastille sans rien casser.
+export const SUMMARY = "summary";
+
 export async function getSummary() {
   return toSummary(await http.get(COMMITMENT_ENDPOINTS.summary, { auth: true }));
 }

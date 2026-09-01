@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import { fullName, initials } from "../../../features/authentication/domain/user";
-import { getSummary } from "../../../features/commitments/data/commitmentsApi";
+import { SUMMARY, getSummary } from "../../../features/commitments/data/commitmentsApi";
 import { useAuth } from "../../../features/authentication/presentation/providers/useAuth";
 import { useResource } from "../../network/useResource";
 import { useTranslation } from "../../translation/useTranslation";
@@ -37,7 +37,7 @@ export function AppShell({ children }) {
   const { user, logout } = useAuth();
   const { t } = useTranslation();
   const { pathname } = useLocation();
-  const { data: summary, revalidate } = useResource("summary", getSummary);
+  const { data: summary, revalidate } = useResource(SUMMARY, getSummary);
   const drawer = useNavDrawer(pathname);
 
   const firstPath = useRef(pathname);

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { useAuth } from "../../features/authentication/presentation/providers/useAuth";
 import {
+  SUMMARY,
   getSummary,
   listLateOccurrences,
 } from "../../features/commitments/data/commitmentsApi";
@@ -42,11 +43,7 @@ export function HomePage() {
 
   useDocumentTitle(t("dashboard.documentTitle"));
 
-  const {
-    data: summary,
-    error,
-    revalidate: reloadSummary,
-  } = useResource("summary", getSummary);
+  const { data: summary, error } = useResource(SUMMARY, getSummary);
 
   const { data: late, setData: setLate } = useResource("late", listLateOccurrences);
 
@@ -73,7 +70,6 @@ export function HomePage() {
         .map((row) => (row.id === updated.id ? updated : row))
         .filter((row) => row.status === "pending"),
     );
-    reloadSummary();
   });
 
   const failure = error ?? dueError;

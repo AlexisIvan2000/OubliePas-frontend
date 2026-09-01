@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { readResource, resourceGeneration, writeResource } from "./resourceCache";
+import {
+  readResource,
+  resourceGeneration,
+  subscribeResource,
+  writeResource,
+} from "./resourceCache";
 
 function snapshot(key) {
   const cached = readResource(key);
@@ -44,6 +49,18 @@ export function useResource(key, fetcher) {
       active = false;
     };
   }, [load]);
+
+  useEffect(
+    () =>
+      subscribeResource(key, (value) =>
+        // La comparaison par reference rend l'ecriture qu'on vient de faire
+        // soi-meme sans effet, et evite un rendu de plus a chaque lecture.
+        setState((previous) =>
+          previous.data === value ? previous : { data: value, loading: false, error: null },
+        ),
+      ),
+    [key],
+  );
 
   const setData = useCallback(
     (updater) => {
