@@ -253,7 +253,6 @@ src/
   tests/
     unit/                  pure logic and hooks, no rendering
     integration/           several modules together, still no DOM
-    e2e/                   reserved, empty
 
 public/
   sw.js                    the service worker: cache, offline, notifications
@@ -572,8 +571,8 @@ above was found, before it ever shipped.
 The house rule is that a guard must prove it bites: reintroduce the defect it
 prevents and watch a named test fail, before calling it a guard.
 
-`src/tests/e2e/` is reserved and empty. End-to-end coverage of the deployment
-lives in the backend repository, which checks this site from the outside.
+End-to-end coverage lives in the backend repository, which checks this
+deployment from the outside rather than from a browser here.
 
 ## Deployment
 
