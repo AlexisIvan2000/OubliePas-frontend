@@ -13,6 +13,30 @@ function repli() {
   return trouve?.[1] ?? null;
 }
 
+// Les dimensions lues dans l'en-tete, sans dependance : le PNG les porte a
+// position fixe, le JPEG dans le premier marqueur SOF rencontre.
+function dimensions(octets) {
+  if (octets.readUInt32BE(0) === 0x89504e47) {
+    return `${octets.readUInt32BE(16)}x${octets.readUInt32BE(20)}`;
+  }
+  if (octets.readUInt16BE(0) !== 0xffd8) {
+    return null;
+  }
+  let position = 2;
+  while (position < octets.length) {
+    if (octets[position] !== 0xff) {
+      return null;
+    }
+    const marqueur = octets[position + 1];
+    // Les SOF portent la taille, sauf DHT, DAC et les RSTn qui partagent la plage.
+    if (marqueur >= 0xc0 && marqueur <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marqueur)) {
+      return `${octets.readUInt16BE(position + 7)}x${octets.readUInt16BE(position + 5)}`;
+    }
+    position += 2 + octets.readUInt16BE(position + 2);
+  }
+  return null;
+}
+
 describe("le repli de l'adresse d'API ne vise jamais une machine locale", () => {
   it("c'est l'invariante qui remplace la detection de plateforme", () => {
     // Un bundle construit sans VITE_API_URL part avec ce repli. Quand il valait
@@ -186,6 +210,40 @@ describe("l'application se laisse installer", () => {
       });
 
     expect(manquants).toEqual([]);
+  });
+
+  it("une capture au format telephone est declaree", () => {
+    // Chrome sur Android ne montre sa boite d'installation riche que si au
+    // moins une capture porte form_factor narrow. Sans elle, il installe quand
+    // meme, avec sa boite sobre, et rien ne dit pourquoi.
+    const etroites = manifeste.screenshots.filter(
+      (capture) => capture.form_factor === "narrow",
+    );
+
+    expect(etroites).not.toHaveLength(0);
+  });
+
+  it("chaque taille annoncee est celle du fichier", () => {
+    // Une capture remplacee par une autre de dimensions differentes fait
+    // ignorer toutes les captures par Chrome, sans un mot. C'est le genre de
+    // panne qu'on ne voit qu'en installant l'application.
+    const fautes = [...manifeste.icons, ...manifeste.screenshots]
+      .map((entree) => ({
+        entree,
+        reelle: dimensions(readFileSync(`public${entree.src}`)),
+      }))
+      .filter(({ entree, reelle }) => reelle && entree.sizes !== reelle)
+      .map(({ entree, reelle }) => `${entree.src} declare ${entree.sizes}, mesure ${reelle}`);
+
+    expect(fautes).toEqual([]);
+  });
+
+  it("le lecteur de dimensions sait lire les deux formats du depot", () => {
+    // Un lecteur qui rend null sur tout ferait passer la garde a vide.
+    expect(dimensions(readFileSync("public/assets/logo-192.png"))).toBe("192x192");
+    expect(dimensions(readFileSync("public/assets/screenshots/notifications.jpg"))).toBe(
+      "946x2049",
+    );
   });
 
   it("les raccourcis visent des routes qui existent", () => {

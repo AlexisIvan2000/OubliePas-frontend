@@ -46,6 +46,13 @@
   ],
   "screenshots": [
     {
+      "src": "/assets/screenshots/notifications.jpg",
+      "sizes": "946x2049",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Un rappel sur le telephone"
+    },
+    {
       "src": "/assets/screenshots/Dashboard.png",
       "sizes": "1917x916",
       "type": "image/png",

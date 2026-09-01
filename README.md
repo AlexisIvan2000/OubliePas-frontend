@@ -557,7 +557,7 @@ which is the same gesture that unlocks push there.
 npm run test
 ```
 
-446 tests across 28 files. The environment is **node, not jsdom**: nothing here
+449 tests across 28 files. The environment is **node, not jsdom**: nothing here
 renders.
 
 Pure logic is tested directly. Hooks are tested by mocking the `react` module
